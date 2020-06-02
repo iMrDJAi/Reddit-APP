@@ -27,7 +27,6 @@ export class TopAppBar extends Component {
                     <button className="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Options"><Icon path={mdiDotsVertical} /></button>
                 </section>
             </div>
-            <TabBar />
         </header>
     )
 }

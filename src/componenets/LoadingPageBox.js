@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
-import { brandName, brandLogo } from '../config.json';
-import { Loading, Login, Success, Error } from './LoadingPageBoxBtnPart'
+import { brandName, brandLogo } from '../config.json'
+import { Loading } from './LoadingPageBox/Loading'
+import { Login } from './LoadingPageBox/Login'
+import { Success } from './LoadingPageBox/Success'
+import { Error } from './LoadingPageBox/Error'
 
 export class LoadingPageBox extends Component {
     constructor() {

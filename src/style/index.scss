@@ -228,8 +228,8 @@ body * {
 
 }
 
-
-
+//Drawer
+$barsHeight: 55px;
 .Drawer {
     .CommunityBar {
         position: fixed;
@@ -237,38 +237,30 @@ body * {
         align-items: center;
         background: linear-gradient(180deg, #323339 -20%, transparent);
         @include theme.prop(color, on-primary);
-        height: 44px;
+        height: $barsHeight;
         z-index: inherit;
         width: inherit;
-
         .CommunityIcon {
-            //background-image: url(logo.png);
-            background-position: center;
-            background-size: cover;
-            background-repeat: no-repeat;
             border: 1px solid #fff;
             border-radius: 50%;
             transition: 0.5s;
-            width: 30px;
-            height: 30px;
-            margin: 6px 10px;
+            width: 36px;
+            height: 36px;
+            margin: 0px 14px 0px 10px;
         }
-
         .CommunityIcon:hover {
             border-radius: 5px;
         }
-
         .CommunityName {
-            color: white;
-            font-weight: 600;
-            font-family: sans-serif;
+            @extend .mdc-typography--subtitle1;
+        }
+        .CommunityName:hover {
+            text-decoration: underline;
         }
     }
-
     .CommunityBar2 {
-        @include theme.prop(background-color, primary);
+        @include theme.prop(background, primary);
     }
-
     .mdc-drawer__content {
         width: inherit;
         overflow-x: hidden;
@@ -277,13 +269,11 @@ body * {
             width: 100%;
             display: block;
         }
-
         nav {
-            height: calc(100% - 44px);
+            height: calc(100% - $barsHeight);
             box-sizing: border-box;
         }
     }
-
     .ProfileBar {
         @include theme.prop(background-color, primary);
         @include theme.prop(color, on-primary);
@@ -292,32 +282,25 @@ body * {
         position: fixed;
         bottom: 0;
         width: inherit;
-        height: 44px;
-
+        height: $barsHeight;
         .UserAvatar {
-            //background-image: url(logo.png);
-            background-position: center;
-            background-size: cover;
-            background-repeat: no-repeat;
             border: 1px solid #fff;
             border-radius: 50%;
             transition: 0.5s;
-            width: 30px;
-            height: 30px;
-            margin: 6px 10px;
+            width: 36px;
+            height: 36px;
+            margin: 0px 14px 0px 10px;
         }
-
         .UserAvatar:hover {
             border-radius: 5px;
         }
-
         .UserName {
-            color: white;
-            font-weight: 600;
-            font-family: sans-serif;
+            @extend .mdc-typography--subtitle1;
+        }
+        .UserName:hover {
+            text-decoration: underline;
         }
     }
-
 }
 
 //AppPage
