@@ -20,15 +20,14 @@ export class LoadingPageBox extends Component {
         });
     }
     render = () => (
-  <div className="LoginBox">
-    <div className="BrandPart">
-      <div className="BrandLogo" style={{ background: brandLogo }}></div>
-      <div className="BrandName">{brandName}</div>
-    </div>
-    {this.state.type === "loading" && <Loading />}
-  </div>
-);
-
+        <div className="LoginBox">
+            <div className="BrandPart">
+                <div className="BrandLogo" style={{"background": brandLogo}}></div>
+                <div className="BrandName">{brandName}</div>
+            </div>
+            {this[this.state.type]}
+        </div>
+    )
     update = data => this.setState(data)
     get loading() {
         return <Loading />;
