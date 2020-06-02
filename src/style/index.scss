@@ -246,7 +246,7 @@ $barsHeight: 55px;
             transition: 0.5s;
             width: 36px;
             height: 36px;
-            margin: 0px 14px 0px 10px;
+            margin: 0px 12px 0px 10px;
             cursor: pointer;
         }
         .CommunityIcon:hover {
@@ -271,7 +271,7 @@ $barsHeight: 55px;
             width: 100%;
             display: block;
         }
-        nav {
+        div {
             height: calc(100% - #{$barsHeight});
             box-sizing: border-box;
         }
@@ -291,7 +291,7 @@ $barsHeight: 55px;
             transition: 0.5s;
             width: 36px;
             height: 36px;
-            margin: 0px 14px 0px 10px;
+            margin: 0px 12px 0px 10px;
             cursor: pointer;
         }
         .UserAvatar:hover {

@@ -85,9 +85,10 @@ export class Drawer extends Component {
     constructor() {
         super()
         this.items = window.app.flairs.map(flair => {
-            if (flair === window.app.flairs[0]) var i = 0; else var i = -1
+            if (flair === window.app.flairs[0]) var i = 0, cls = "mdc-list-item mdc-list-item--activated"; 
+            else var i = -1, cls = "mdc-list-item";
             return (
-                <li className="mdc-list-item" key={flair.id} tabIndex={i}>
+                <li className={cls} key={flair.id} tabIndex={i}>
                     <span className="mdc-list-item__text" role="option" aria-selected="false">{flair.text}</span>
                 </li>
             )
@@ -113,12 +114,25 @@ export class Drawer extends Component {
             </header>
             <div ref={elem => this.scrollable = elem} onScroll={this.handleScroll.bind(this)} className="mdc-drawer__content" >
                 <img className="CommunityBanner" src={window.app.subreddit.mobile_banner_image.split('?')[0] || window.app.subreddit.banner_background_image.split('?')[0]} alt="banner" ref={elem => this.banner = elem}></img>
-                <nav className="mdc-list" data-main="true">
-                    <div className="mdc-list-group">
-                        <h3 className="mdc-list-group__subheader">FLAIRS</h3>
-                        {this.items}
-                    </div>
-                </nav>
+                <div>
+                    <nav className="mdc-list">
+                        <div className="mdc-list-group">
+                            <h3 className="mdc-list-group__subheader">FLAIRS</h3>
+                            {this.items}
+                        </div>
+                    </nav>
+                    <nav className="mdc-list">
+                        <div className="mdc-list-group">
+                                <h3 className="mdc-list-group__subheader">LINKS</h3>
+                                <li className="mdc-list-item">
+                                    <span className="mdc-list-item__text" role="option" aria-selected="false">DISCORD</span>
+                                </li>
+                                <li className="mdc-list-item">
+                                    <span className="mdc-list-item__text" role="option" aria-selected="false">FACEBOOK</span>
+                                </li>
+                        </div>
+                    </nav>
+                </div>
             </div>
             <footer className="ProfileBar">
                 <img className="UserAvatar" src={window.app.user.icon_img.split('?')[0]}></img>
