@@ -1,0 +1,11 @@
+{
+    "clientId": "xuLBDaEvQJfwVg",
+    "scope": ["account", "creddits", "edit", "flair", "history", "identity", "livemanage", "modconfig", "modcontributors", 
+        "modflair", "modlog", "modmail", "modothers", "modposts", "modself", "modtraffic", "modwiki", "mysubreddits", "privatemessages",
+        "read", "report", "save", "structuredstyles", "submit", "subscribe", "vote", "wikiedit", "wikiread"],
+    "redirectUri": "http://localhost/login",
+    "subreddit": "Dz_Gamers_Community",
+    "pingURL": "https://www.googleapis.com",
+    "brandName": "Dz Gamers Community",
+    "brandLogo": "url('/assets/logo.ce58dab35e9958574e0f1de86188bf86.png')"
+}

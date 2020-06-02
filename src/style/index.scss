@@ -1,0 +1,407 @@
+@use "@material/theme"with ($primary: #101d55,
+    $on-primary: #ffffff,
+    $secondary: #29e3ee,
+    $on-secondary: #000000,
+    $error: #b00020,
+    $on-error: #ffffff,
+    $surface: #ffffff,
+    $on-surface: #000000,
+    $background: #e5e5e5,
+);
+@use "@material/elevation"as elevation;
+@use "@material/shape"as radius;
+@use "@material/button";
+@use "@material/icon-button";
+@use "@material/top-app-bar/mdc-top-app-bar";
+@use "@material/drawer/mdc-drawer";
+@use "@material/list/mdc-list";
+@use "@material/tab-bar/mdc-tab-bar";
+@use "@material/tab-scroller/mdc-tab-scroller";
+@use "@material/tab-indicator/mdc-tab-indicator";
+@use "@material/tab/mdc-tab";
+@use "@material/fab/mdc-fab";
+
+@include button.core-styles;
+@include icon-button.core-styles;
+
+@import "@material/typography/mdc-typography";
+@import "@material/elevation/mdc-elevation";
+
+$mdc-shape-small-component-radius: 4px;
+$mdc-shape-medium-component-radius: 8px;
+$mdc-shape-large-component-radius: 0px;
+
+
+//Responsive Layouts!
+//Default is large devices
+//Small devices
+@mixin s {
+    @media (max-width: 599px) {
+        @content;
+    }
+}
+
+//Medium devices
+@mixin m {
+    @media (min-width: 600px) and (max-width: 1023px) {
+        @content;
+    }
+}
+
+//For debugging
+.App * {
+    //border: white dashed 2px;
+    box-sizing: border-box;
+}
+
+
+body {
+    /*@include s {
+        background-color: #121212;
+    }
+
+    @include m {
+        background-color: #242424;
+    }*/
+
+    @include theme.prop(background-color, background);
+}
+
+
+//The hard work starts here
+
+body {
+    margin: 0;
+}
+
+body * {
+    unicode-bidi: plaintext;
+}
+
+/*@include s {
+    font-size: 2.6vw;
+}*/
+
+
+.LoadingPage {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .LoginBox {
+        width: 540px;
+        height: 300px;
+
+        @include s {
+            width: 90vw;
+            height: calc(90vw/1.8);
+        }
+
+        display: grid;
+        grid-template-columns: 45% 55%;
+        overflow: hidden;
+        user-select: none;
+        -moz-user-select: none;
+        @include theme.prop(background-color, surface);
+        @include theme.prop(color, on-surface);
+        @include radius.radius($mdc-shape-medium-component-radius);
+        @extend .mdc-elevation--z8;
+
+        .BrandPart {
+            height: inherit;
+            display: grid;
+            grid-template-columns: auto 90% auto;
+            grid-template-rows: auto 60% 1rem min-content auto;
+            background-position: center !important;
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            @include theme.prop(background-color, primary);
+            @include theme.prop(color, on-primary);
+
+            .BrandLogo {
+                grid-column-start: 2;
+                grid-row-start: 2;
+                background-position: center !important;
+                background-size: contain !important;
+                background-repeat: no-repeat !important;
+            }
+
+            .BrandName {
+                grid-column-start: 2;
+                grid-row-start: 4;
+                text-align: center;
+                @extend .mdc-typography--subtitle1;
+            }
+        }
+
+        .ButtonPart {
+            height: inherit;
+            display: grid;
+            grid-template-columns: auto 85% auto;
+            grid-template-rows: 1.5rem min-content 0.8rem auto 0.8rem min-content 1.5rem;
+
+            .Title {
+                grid-row-start: 2;
+                grid-column-start: 2;
+                text-decoration: underline;
+                text-align: center;
+                @extend .mdc-typography--headline6;
+            }
+
+            .LoadingIcon {
+                grid-column-start: 2;
+                grid-row-start: 4;
+                @include theme.prop(color, secondary);
+                margin: auto;
+                width: 95px;
+
+                @include s {
+                    width: 16vw;
+                }
+            }
+
+            .ErrorIcon {
+                grid-column-start: 2;
+                grid-row-start: 4;
+                @include theme.prop(color, error);
+                margin: auto;
+                width: 95px;
+
+                @include s {
+                    width: 16vw;
+                }
+            }
+
+            .Avatar {
+                grid-column-start: 2;
+                grid-row-start: 4;
+                max-height: 100%;
+                max-width: 100%;
+                margin: auto;
+                @include radius.radius($mdc-shape-medium-component-radius);
+            }
+
+            .Username {
+                grid-column-start: 2;
+                grid-row-start: 6;
+                text-align: center;
+                @extend .mdc-typography--subtitle1;
+            }
+
+            .Paragraph {
+                grid-column-start: 2;
+                grid-row-start: 4;
+                margin: auto;
+                text-align: center;
+                white-space: pre-wrap;
+                @extend .mdc-typography--body1;
+            }
+
+            .Error {
+                grid-column-start: 2;
+                grid-row-start: 6;
+                text-align: center;
+                @extend .mdc-typography--body1;
+            }
+
+            .Button {
+                grid-column-start: 2;
+                grid-row-start: 6;
+                padding: 0.3rem;
+                --mdc-theme-primary: #FF4500;
+                --mdc-theme-on-primary: hsl(20, 100%, 90%);
+                @include button.ink-color(#ffffff);
+
+                :first-child {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        white-space: pre-wrap;
+                        svg {
+                            width: 2.5rem;
+                        }
+                    }
+            }
+        }
+    }
+
+}
+
+
+
+.Drawer {
+    .CommunityBar {
+        position: fixed;
+        display: flex;
+        align-items: center;
+        background: linear-gradient(180deg, #323339 -20%, transparent);
+        @include theme.prop(color, on-primary);
+        height: 44px;
+        z-index: inherit;
+        width: inherit;
+
+        .CommunityIcon {
+            //background-image: url(logo.png);
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            border: 1px solid #fff;
+            border-radius: 50%;
+            transition: 0.5s;
+            width: 30px;
+            height: 30px;
+            margin: 6px 10px;
+        }
+
+        .CommunityIcon:hover {
+            border-radius: 5px;
+        }
+
+        .CommunityName {
+            color: white;
+            font-weight: 600;
+            font-family: sans-serif;
+        }
+    }
+
+    .CommunityBar2 {
+        @include theme.prop(background-color, primary);
+    }
+
+    .mdc-drawer__content {
+        width: inherit;
+        overflow-x: hidden;
+
+        .CommunityBanner {
+            width: 100%;
+            display: block;
+        }
+
+        nav {
+            height: calc(100% - 44px);
+            box-sizing: border-box;
+        }
+    }
+
+    .ProfileBar {
+        @include theme.prop(background-color, primary);
+        @include theme.prop(color, on-primary);
+        display: flex;
+        align-items: center;
+        position: fixed;
+        bottom: 0;
+        width: inherit;
+        height: 44px;
+
+        .UserAvatar {
+            //background-image: url(logo.png);
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            border: 1px solid #fff;
+            border-radius: 50%;
+            transition: 0.5s;
+            width: 30px;
+            height: 30px;
+            margin: 6px 10px;
+        }
+
+        .UserAvatar:hover {
+            border-radius: 5px;
+        }
+
+        .UserName {
+            color: white;
+            font-weight: 600;
+            font-family: sans-serif;
+        }
+    }
+
+}
+
+//AppPage
+.AppPage {
+    min-height: 100vh;
+
+    .PostsPart {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        height: min-content;
+        height: -moz-min-content;
+        top: 64px;
+        height: 150vh;
+    }
+}
+
+
+.mdc-fab {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+}
+
+svg {
+    width: 1.5rem;
+    /* 24px */
+}
+
+.mdc-tab-indicator .mdc-tab-indicator__content--underline {
+    @include theme.prop(border-color, on-primary);
+}
+
+.mdc-tab--active .mdc-tab__icon {
+    @include theme.prop(color, on-primary);
+}
+
+.mdc-tab--active .mdc-tab__text-label {
+    @include theme.prop(color, on-primary);
+}
+
+/*.mdc-tab .mdc-tab__icon {
+    color: rgba(0, 0, 0, 0.54);
+}
+
+.mdc-tab .mdc-tab__text-label {
+    color: rgba(0, 0, 0, 0.6);
+}*/
+
+/*.mdc-elevation--z0 {
+    background-image: linear-gradient(to top, #121212eb, #121212eb);
+}
+
+.mdc-elevation--z1 {
+    background-image: linear-gradient(to top, #1e1e1eeb, #1e1e1eeb);
+}
+
+.mdc-elevation--z2 {
+    background-image: linear-gradient(to top, #232323eb, #232323eb);
+}
+
+.mdc-elevation--z3 {
+    background-image: linear-gradient(to top, #252525eb, #252525eb);
+}
+
+.mdc-elevation--z4 {
+    background-image: linear-gradient(to top, #272727eb, #272727eb);
+}
+
+.mdc-elevation--z6 {
+    background-image: linear-gradient(to top, #2c2c2ceb, #2c2c2ceb);
+}
+
+.mdc-elevation--z8 {
+    background-image: linear-gradient(to top, #2e2e2eeb, #2e2e2eeb);
+}
+
+.mdc-elevation--z12 {
+    background-image: linear-gradient(to top, #333333eb, #333333eb);
+}
+
+.mdc-elevation--z16 {
+    background-image: linear-gradient(to top, #363636eb, #363636eb);
+}
+.mdc-elevation--z24 {
+    background-image: linear-gradient(to top, #383838eb, #383838eb);
+}*/
