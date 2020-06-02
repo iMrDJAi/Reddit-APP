@@ -108,11 +108,11 @@ export class Drawer extends Component {
     render = () => (
         <aside ref={elem => this.element = elem} className="Drawer mdc-drawer mdc-drawer--modal">
             <header ref={elem => this.header = elem} className="CommunityBar">
-                <img className="CommunityIcon" src={window.app.subreddit.community_icon}></img>
+                <img className="CommunityIcon" src={window.app.subreddit.community_icon.split('?')[0]}></img>
                 <div className="CommunityName">{window.app.subreddit.title}</div>
             </header>
             <div ref={elem => this.scrollable = elem} onScroll={this.handleScroll.bind(this)} className="mdc-drawer__content" >
-                <img className="CommunityBanner" src={window.app.subreddit.mobile_banner_image || window.app.subreddit.banner_background_image} alt="banner" ref={elem => this.banner = elem}></img>
+                <img className="CommunityBanner" src={window.app.subreddit.mobile_banner_image.split('?')[0] || window.app.subreddit.banner_background_image.split('?')[0]} alt="banner" ref={elem => this.banner = elem}></img>
                 <nav className="mdc-list" data-main="true">
                     <div className="mdc-list-group">
                         <h3 className="mdc-list-group__subheader">FLAIRS</h3>
@@ -121,7 +121,7 @@ export class Drawer extends Component {
                 </nav>
             </div>
             <footer className="ProfileBar">
-                <img className="UserAvatar" src={window.app.user.icon_img}></img>
+                <img className="UserAvatar" src={window.app.user.icon_img.split('?')[0]}></img>
                 <div className="UserName">{window.app.user.name}</div>
             </footer>
         </aside>

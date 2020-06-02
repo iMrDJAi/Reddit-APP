@@ -247,12 +247,14 @@ $barsHeight: 55px;
             width: 36px;
             height: 36px;
             margin: 0px 14px 0px 10px;
+            cursor: pointer;
         }
         .CommunityIcon:hover {
             border-radius: 5px;
         }
         .CommunityName {
             @extend .mdc-typography--subtitle1;
+            cursor: pointer;
         }
         .CommunityName:hover {
             text-decoration: underline;
@@ -270,7 +272,7 @@ $barsHeight: 55px;
             display: block;
         }
         nav {
-            height: calc(100% - $barsHeight);
+            height: calc(100% - #{$barsHeight});
             box-sizing: border-box;
         }
     }
@@ -290,12 +292,14 @@ $barsHeight: 55px;
             width: 36px;
             height: 36px;
             margin: 0px 14px 0px 10px;
+            cursor: pointer;
         }
         .UserAvatar:hover {
             border-radius: 5px;
         }
         .UserName {
             @extend .mdc-typography--subtitle1;
+            cursor: pointer;
         }
         .UserName:hover {
             text-decoration: underline;
