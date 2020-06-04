@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
-import { TopAppBar, TabBar, Drawer, Fab } from './AppPageParts'
+import { TopAppBar } from './AppPageParts/TopAppBar'
+import { TabBar } from './AppPageParts/TabBar'
+import { Drawer } from './AppPageParts/Drawer'
+import { Fab } from './AppPageParts/Fab'
 
 export class AppPage extends Component {
     constructor() {
