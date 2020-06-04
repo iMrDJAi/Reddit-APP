@@ -5,6 +5,7 @@ import Icon from '@mdi/react'
 import { mdiMenu, mdiBell, mdiDotsVertical, mdiMagnify, mdiHeart, mdiPlus } from '@mdi/js'
 import { MDCRipple } from '@material/ripple';
 import { MDCTabBar } from '@material/tab-bar';
+import { MDCList } from '@material/list';
 
 export class TopAppBar extends Component {
     constructor() {
@@ -96,7 +97,9 @@ export class Drawer extends Component {
     }
     async componentDidMount() {
         var drawer = new MDCDrawer(this.element);
+        drawer.list.destroy();
         window.app.events.on("DrawerToggle", () => drawer.open = !drawer.open);
+        for (var ele of this.element.querySelectorAll('.mdc-list')) new MDCList(ele);
         for (var ele of this.element.querySelectorAll('.mdc-list-item')) new MDCRipple(ele);
     }
     handleScroll() {
@@ -123,13 +126,13 @@ export class Drawer extends Component {
                     </nav>
                     <nav className="mdc-list">
                         <div className="mdc-list-group">
-                                <h3 className="mdc-list-group__subheader">LINKS</h3>
-                                <li className="mdc-list-item">
-                                    <span className="mdc-list-item__text" role="option" aria-selected="false">DISCORD</span>
-                                </li>
-                                <li className="mdc-list-item">
-                                    <span className="mdc-list-item__text" role="option" aria-selected="false">FACEBOOK</span>
-                                </li>
+                            <h3 className="mdc-list-group__subheader">LINKS</h3>
+                            <li className="mdc-list-item" tabIndex="0">
+                                <span className="mdc-list-item__text" role="option" aria-selected="false">DISCORD</span>
+                            </li>
+                            <li className="mdc-list-item" tabIndex="1">
+                                <span className="mdc-list-item__text" role="option" aria-selected="false">FACEBOOK</span>
+                            </li>
                         </div>
                     </nav>
                 </div>
