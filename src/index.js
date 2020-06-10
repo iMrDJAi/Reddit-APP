@@ -67,13 +67,15 @@ async function init() {
 
 async function app(r) {
     //window.localStorage.refreshToken = '';
-    window.app.r = r;
-    window.app.user = r._ownUserInfo;
+    window.app.r = r
+    window.app.user = r._ownUserInfo
     window.app.subreddit = await r.getSubreddit(config.subreddit).fetch().catch(console.error)
     window.app.subreddit.subscribe().catch(console.error)
     window.app.flairs = await r.oauthRequest({ uri: `r/${config.subreddit}/api/link_flair_v2` })
 
-
-    ui.appPage();
+    await ui.appPage();
+    var posts = await window.app.subreddit.getNew({ 'limit': 30 });
+    console.log(posts);
+    ui.pushPost(posts[0]);
     console.log('starting!');
 }

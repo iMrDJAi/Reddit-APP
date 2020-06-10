@@ -1,4 +1,5 @@
-@use "@material/theme"with ($primary: #101d55,
+@use "@material/theme" with (
+    $primary: #101d55,
     $on-primary: #ffffff,
     $secondary: #29e3ee,
     $on-secondary: #000000,
@@ -8,6 +9,16 @@
     $on-surface: #000000,
     $background: #e5e5e5,
 );
+
+@use "@material/typography" with (
+    $styles-headline1: (font-size: 38px),
+    $styles-headline2: (font-size: 28px),
+    $styles-headline3: (font-size: 22px),
+    $styles-headline4: (font-size: 18px),
+    $styles-headline5: (font-size: 16px),
+    $styles-headline6: (font-size: 13px)
+);
+
 @use "@material/elevation"as elevation;
 @use "@material/shape"as radius;
 @use "@material/button";
@@ -20,12 +31,18 @@
 @use "@material/tab-indicator/mdc-tab-indicator";
 @use "@material/tab/mdc-tab";
 @use "@material/fab/mdc-fab";
-
+@use "@material/card";
+@include card.core-styles;
 @include button.core-styles;
 @include icon-button.core-styles;
 
 @import "@material/typography/mdc-typography";
 @import "@material/elevation/mdc-elevation";
+@import "@material/layout-grid/mdc-layout-grid";
+
+//Link other files
+@import "./postCard.scss";
+@import "./markdown.scss";
 
 $mdc-shape-small-component-radius: 4px;
 $mdc-shape-medium-component-radius: 8px;
@@ -344,6 +361,10 @@ svg {
 
 .mdc-tab--active .mdc-tab__text-label {
     @include theme.prop(color, on-primary);
+}
+
+.Posts {
+    margin-top: 50px;
 }
 
 /*.mdc-tab .mdc-tab__icon {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Icon from '@mdi/react'
 import { mdiPlus } from '@mdi/js'
-import { MDCRipple } from '@material/ripple';
+import { MDCRipple } from '@material/ripple'
 
 export class Fab extends Component {
     constructor() {
@@ -16,5 +16,4 @@ export class Fab extends Component {
             <span className="mdc-fab__icon"><Icon path={mdiPlus} /></span>
         </button>
     )
-
 }

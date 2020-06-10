@@ -26,4 +26,16 @@ module.exports = class Utils {
     urlStateReplace(url) {
         window.history.replaceState("", "", url);
     }
+    async userData(userName) {
+        try {
+            var data = await fetch(`https://www.reddit.com/user/${userName}/about.json?raw_json=1`);
+            if (data.status === 200) {
+                return (await data.json()).data;
+            } else {
+                return await this.userData(userName);
+            }
+        } catch {
+            return await this.userData(userName);
+        }
+    }
 }

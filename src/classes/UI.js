@@ -3,7 +3,10 @@ var ReactDOM = require('react-dom');
 var Strings = require('./Strings');
 var Utils = require('./Utils');
 import { LoadingPage } from '../componenets/LoadingPage';
-import { AppPage } from '../componenets/AppPage' 
+import { AppPage } from '../componenets/AppPage'
+import { Text } from '../componenets/Post/Text'
+import { Link } from '../componenets/Post/Link'
+import { Cross } from '../componenets/Post/Cross'
 module.exports = class UI {
     constructor() {
         this.strings = new Strings().strings;
@@ -37,6 +40,23 @@ module.exports = class UI {
         });
     }
     appPage() {
-        ReactDOM.render(<AppPage />, document.querySelector('.App'));
+        return new Promise(async (resolve) => {
+            ReactDOM.render(<AppPage />, document.querySelector('.App'));
+            await new Promise(res => setTimeout(() => res(), 500));
+            resolve(true);
+        });
+    }
+    async pushPost(postObj) {
+        if (!postObj.crosspost_parent) { //regular post
+            var authorObj = await this.utils.userData(postObj.author.name);
+            console.log([postObj, authorObj]);
+            if (postObj.is_self) { //self post (text)
+                ReactDOM.render(<Text postData={postObj} authorData={authorObj} />, document.querySelector('.Posts'));
+            } else {
+                ReactDOM.render(<Link postData={postObj} authorData={authorObj} />, document.querySelector('.Posts'));
+            }
+        } else {
+
+        }
     }
 }
