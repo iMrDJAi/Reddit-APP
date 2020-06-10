@@ -49,11 +49,15 @@ module.exports = class UI {
     async pushPost(postObj) {
         if (!postObj.crosspost_parent) { //regular post
             var authorObj = await this.utils.userData(postObj.author.name);
-            console.log([postObj, authorObj]);
+            //console.log([postObj, authorObj]);
             if (postObj.is_self) { //self post (text)
-                ReactDOM.render(<Text postData={postObj} authorData={authorObj} key={postObj.id} />, document.querySelector('.PostsContainer > div'));
+                window.app.events.emit("PostPush", {
+                    element: <Text postData={postObj} authorData={authorObj} key={postObj.id} />
+                });
             } else {
-                ReactDOM.render(<Link postData={postObj} authorData={authorObj} key={postObj.id} />, document.querySelector('.PostsContainer > div'));
+                window.app.events.emit("PostPush", {
+                    element: <Link postData={postObj} authorData={authorObj} key={postObj.id} />
+                });            
             }
         } else {
 
