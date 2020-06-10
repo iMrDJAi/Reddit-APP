@@ -324,21 +324,14 @@ $barsHeight: 55px;
     }
 }
 
-//AppPage
-.AppPage {
-    min-height: 100vh;
-
-    .PostsPart {
-        position: relative;
-        display: flex;
-        justify-content: center;
-        height: min-content;
-        height: -moz-min-content;
-        top: 64px;
-        height: 150vh;
+//PostsPart
+.PostsContainer {
+    position: relative;
+    top: 64px;
+    @include s {
+        top: 56px;
     }
 }
-
 
 .mdc-fab {
     position: fixed;

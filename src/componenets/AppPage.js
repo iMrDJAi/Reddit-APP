@@ -14,16 +14,12 @@ export class AppPage extends Component {
             <Drawer />
             <div className="mdc-drawer-scrim"></div>
 
-            <div class="mdc-layout-grid">
-                <div class="mdc-layout-grid__inner">
-                    <div class="mdc-layout-grid__cell">
-                        <div className="Posts" />
-                    </div>
-                    <div class="mdc-layout-grid__cell"></div>
-                    <div class="mdc-layout-grid__cell"></div>
+
+            <div className="mdc-layout-grid PostsContainer">
+                <div className="mdc-layout-grid__inner">
                 </div>
             </div>
-            
+
             <Fab />
         </div>
     )
@@ -31,4 +27,22 @@ export class AppPage extends Component {
 
 /*            <div className="PostsPart">
                 <div className="Posts"></div>
-            </div>*/
+            </div>
+            
+            
+            
+            
+            
+            <div className="mdc-layout-grid">
+                <div className="mdc-layout-grid__inner">
+                    <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-6">
+                        <div className="Posts" />
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            */

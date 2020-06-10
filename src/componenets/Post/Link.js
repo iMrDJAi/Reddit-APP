@@ -3,23 +3,114 @@ import { MDCRipple } from '@material/ripple';
 import Icon from '@mdi/react'
 import { mdiThumbUp, mdiThumbDown, mdiThumbUpOutline, mdiThumbDownOutline, mdiDotsVertical, mdiBookmark, mdiBookmarkOutline } from '@mdi/js'
 import { MDCIconButtonToggle } from '@material/icon-button';
+const renderMarkdown = require('imrdjai-mdr');
+console.log();
 
 export class Link extends Component {
     constructor(props) {
         super(props)
+        this.state = {
+            likes: this.props.postData.score
+        }
+        this.markdown = renderMarkdown(this.props.postData.selftext)
+        this.update = this.update.bind(this)
     }
     componentDidMount() {
-        for (var btn of this.element.querySelectorAll(".toggle")) {
-            window.MDCIconButtonToggle = new MDCIconButtonToggle(btn);
-        }
+        var likeBtn = new MDCIconButtonToggle(this.like)
+        var dislikeBtn = new MDCIconButtonToggle(this.dislike)
+        this.handleVotes(likeBtn, dislikeBtn)
+
+        var saveBtn = new MDCIconButtonToggle(this.save)
+        if (this.props.postData.saved === true) saveBtn.on = true; else saveBtn.on = false
+        var tries = 0
+        var current = ''
+        var blocked = false
+        saveBtn.listen("MDCIconButtonToggle:change", async (e) => {
+            if (e.detail.isOn) {
+                current = 'save'
+            } else {
+                current = 'unsave'
+            }
+            if (tries < 3) {
+                tries++
+                await new Promise(res => setTimeout(() => res(), tries * 1000))
+                this.props.postData[current]()
+            } else {
+                if (!blocked) blocked = true, setTimeout(() => {
+                    blocked = false
+                    tries = 1
+                    this.props.postData[current]()
+                }, 30000)
+            }
+            console.log(tries, current, blocked)
+        })
+    }
+    handleVotes(likeBtn, dislikeBtn) {
+        var tries = 0
+        var current = ''
+        var blocked = false
+        if (this.props.postData.likes === true) likeBtn.on = true
+        if (this.props.postData.likes === false) dislikeBtn.on = true
+        likeBtn.listen("MDCIconButtonToggle:change", async (e) => {
+            if (e.detail.isOn) {
+                if (dislikeBtn.on) {
+                    dislikeBtn.on = false;
+                    this.update(this.state.likes + 2, 'likes')
+                } else {
+                    this.update(this.state.likes + 1, 'likes')
+                }
+                current = 'upvote'
+            } else {
+                this.update(this.state.likes - 1, 'likes')
+                current = 'unvote'
+            }
+            if (tries < 3) {
+                tries++
+                await new Promise(res => setTimeout(() => res(), tries * 1750));
+                this.props.postData[current]()
+            } else {
+                if (!blocked) blocked = true, setTimeout(() => {
+                    blocked = false
+                    tries = 1
+                    this.props.postData[current]()
+                }, 30000)
+            }
+            console.log(tries, current, blocked)
+        })
+        dislikeBtn.listen("MDCIconButtonToggle:change", async (e) => {
+            if (e.detail.isOn) {
+                if (likeBtn.on) {
+                    likeBtn.on = false;
+                    this.update(this.state.likes - 2, 'likes')
+                } else {
+                    this.update(this.state.likes - 1, 'likes')
+                }
+                current = 'downvote'
+            } else {
+                this.update(this.state.likes + 1, 'likes')
+                current = 'unvote'
+            }
+            if (tries < 3) {
+                tries++
+                await new Promise(res => setTimeout(() => res(), tries * 1750));
+                this.props.postData[current]()
+            } else {
+                if (!blocked) blocked = true, setTimeout(() => {
+                    blocked = false
+                    tries = 1
+                    this.props.postData[current]()
+                }, 30000)
+            }
+            console.log(tries, current, blocked)
+        })
     }
     render = () => (
-        <div ref={elm => this.element = elm} className="PostCard mdc-card">
+        <div ref={elm => this.element = elm} className="PostCard mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12 ">
 
             <header className="mdc-card__actions">
                 <div className="mdc-card__action-buttons">
-                    <img className="UserAvatar" src={this.props.authorData.icon_img.split('?')[0]}></img>
-                    <div className="UserName">{this.props.authorData.name}</div>
+                    <img className="UserAvatar mdc-card__action" src={this.props.authorData.icon_img.split('?')[0]}></img>
+                    <div className="UserName mdc-card__action">{this.props.authorData.name}</div>
                 </div>
                 <div className="mdc-card__action-icons">
                     <button className="mdc-icon-button mdc-card__action mdc-card__action--icon--unbounded" title="Options">
@@ -28,28 +119,26 @@ export class Link extends Component {
                 </div>
             </header>
 
-            <title></title>
-
-            <div className="mdc-card__primary-action demo-card__primary-action" tabIndex="0">
-                <div className="mdc-card__media mdc-card__media--16-9 demo-card__media" style={{backgroundImage: 'url("https://material-components.github.io/material-components-web-catalog/static/media/photos/3x2/2.jpg")'}}></div>
-                <div className="demo-card__secondary mdc-typography mdc-typography--body2">Visit ten places on our planet that are undergoing the biggest changes today.</div>
+            <div className="mdc-card__primary-action Content Markdown" tabIndex="0">
+                <title>{this.props.postData.title}</title>
+                <div dangerouslySetInnerHTML={{__html: this.markdown}} />
             </div>
 
             <footer className="mdc-card__actions">
                 <div className="mdc-card__action-buttons">
-                    <button className="mdc-icon-button mdc-card__action mdc-card__action--icon--unbounded toggle" title="Like">
+                    <button ref={elm => this.like = elm} className="mdc-icon-button mdc-card__action mdc-card__action--icon--unbounded toggle" title="Like">
                         <i className="mdc-icon-button__icon mdc-icon-button__icon--on"><Icon path={mdiThumbUp} /></i>
                         <i className="mdc-icon-button__icon"><Icon path={mdiThumbUpOutline} /></i>
                     </button>
-                    <div className="mdc-card__action mdc-typography mdc-typography--caption">6768</div>
-                    <button className="mdc-icon-button mdc-card__action mdc-card__action--icon--unbounded toggle" title="Dislike">
+                    <div className="mdc-typography mdc-typography--caption">{this.state.likes}</div>
+                    <button ref={elm => this.dislike = elm} className="mdc-icon-button mdc-card__action mdc-card__action--icon--unbounded toggle" title="Dislike">
                         <i className="mdc-icon-button__icon mdc-icon-button__icon--on"><Icon path={mdiThumbDown} /></i>
                         <i className="mdc-icon-button__icon"><Icon path={mdiThumbDownOutline} /></i>
                     </button>
                 </div>
                 <div className="mdc-card__action-icons">
-                    <div className="mdc-card__action mdc-typography mdc-typography--caption">947 Comments</div>
-                    <button className="mdc-icon-button mdc-card__action mdc-card__action--icon--unbounded toggle" title="Like">
+                    <div className="mdc-typography mdc-typography--caption">{this.props.postData.num_comments} Comments</div>
+                    <button ref={elm => this.save = elm} className="mdc-icon-button mdc-card__action mdc-card__action--icon--unbounded toggle" title="Save">
                         <i className="mdc-icon-button__icon mdc-icon-button__icon--on"><Icon path={mdiBookmark} /></i>
                         <i className="mdc-icon-button__icon"><Icon path={mdiBookmarkOutline} /></i>
                     </button>
@@ -58,6 +147,11 @@ export class Link extends Component {
 
         </div>
     )
+    update = (data, key) => this.setState(oldState => {
+        var newState = oldState;
+        newState[key] = data;
+        return newState;
+    })
 }
 
 /*

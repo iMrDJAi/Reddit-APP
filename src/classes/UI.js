@@ -51,9 +51,9 @@ module.exports = class UI {
             var authorObj = await this.utils.userData(postObj.author.name);
             console.log([postObj, authorObj]);
             if (postObj.is_self) { //self post (text)
-                ReactDOM.render(<Text postData={postObj} authorData={authorObj} />, document.querySelector('.Posts'));
+                ReactDOM.render(<Text postData={postObj} authorData={authorObj} key={postObj.id} />, document.querySelector('.PostsContainer > div'));
             } else {
-                ReactDOM.render(<Link postData={postObj} authorData={authorObj} />, document.querySelector('.Posts'));
+                ReactDOM.render(<Link postData={postObj} authorData={authorObj} key={postObj.id} />, document.querySelector('.PostsContainer > div'));
             }
         } else {
 

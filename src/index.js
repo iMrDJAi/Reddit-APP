@@ -76,6 +76,9 @@ async function app(r) {
     await ui.appPage();
     var posts = await window.app.subreddit.getNew({ 'limit': 30 });
     console.log(posts);
-    ui.pushPost(posts[0]);
+    for (var post of posts) {
+        ui.pushPost(post);
+    }
+    //
     console.log('starting!');
 }

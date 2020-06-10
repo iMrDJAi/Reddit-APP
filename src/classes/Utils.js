@@ -31,6 +31,11 @@ module.exports = class Utils {
             var data = await fetch(`https://www.reddit.com/user/${userName}/about.json?raw_json=1`);
             if (data.status === 200) {
                 return (await data.json()).data;
+            } else if (data.status === 404) {
+                return {
+                    name: 'DELETED',
+                    icon_img: ''
+                };
             } else {
                 return await this.userData(userName);
             }
