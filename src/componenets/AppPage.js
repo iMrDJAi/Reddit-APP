@@ -10,16 +10,15 @@ export class AppPage extends Component {
         this.state = {
             posts: []
         }
-        this.push = this.push.bind(this)
+        this.update = this.update.bind(this)
     }
     componentDidMount() {
-        var push = this.push;
-        var state = this.state;
+        var update = this.update;
+        var posts = [];
         window.app.events.on('PostPush', data => {
-            //console.log(data);
-            push(data, 'posts');
-            console.log(this.state.posts);
-
+            posts.push(data.element)
+            update(posts, 'posts')
+            console.log(posts)
         });
     }
     render = () => (
@@ -38,10 +37,10 @@ export class AppPage extends Component {
             <Fab />
         </div>
     )
-    push = (data, key) => this.setState(oldState => {
-        var newState = oldState
-        newState = newState[key].push(data)
-        return newState
+    update = (data, key) => this.setState(oldState => {
+        var newState = oldState;
+        newState[key] = data;
+        return newState;
     })
 }
 
