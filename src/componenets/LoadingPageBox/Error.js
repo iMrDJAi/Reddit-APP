@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Icon from '@mdi/react'
 import { mdiAlertCircle } from '@mdi/js'
 import Strings from '../../classes/Strings'
-const strings = new Strings().strings
+const strings = Strings.strings
 
 export class Error extends Component {
     constructor() {

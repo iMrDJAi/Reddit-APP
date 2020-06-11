@@ -10,6 +10,9 @@ window.app = {}
 var EventEmitter = require('events')
 window.app.events = new EventEmitter()
 
+//Language
+window.app.language = 'EN';
+
 //Dependencies
 var Utils = require('./classes/Utils');
 var UI = require('./classes/UI');
@@ -74,11 +77,11 @@ async function app(r) {
     window.app.flairs = await r.oauthRequest({ uri: `r/${config.subreddit}/api/link_flair_v2` })
 
     await ui.appPage();
-    var posts = await window.app.subreddit.getNew({ 'limit': 30 });
+    var posts = await window.app.subreddit.getNew({ 'limit': 1000 });
+    posts = await Promise.all(posts.map(async post => {
+        post.author = await Utils.userData(post.author.name);
+        return post;
+    }))
     console.log(posts);
-    for (var post of posts) {
-        ui.pushPost(post);
-    }
-    //
-    console.log('starting!');
+    ui.pushPosts(posts);
 }

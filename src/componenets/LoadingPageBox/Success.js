@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Strings from '../../classes/Strings'
-const strings = new Strings().strings
+const strings = Strings.strings
 
 export class Success extends Component {
     constructor() {

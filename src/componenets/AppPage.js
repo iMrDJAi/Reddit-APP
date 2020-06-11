@@ -3,10 +3,11 @@ import { TopAppBar } from './AppPageParts/TopAppBar'
 import { TabBar } from './AppPageParts/TabBar'
 import { Drawer } from './AppPageParts/Drawer'
 import { Fab } from './AppPageParts/Fab'
+import { PostsWrapper } from './AppPageParts/PostsWrapper'
 
 export class AppPage extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
             posts: []
         }
@@ -26,21 +27,13 @@ export class AppPage extends Component {
             <TopAppBar />
             <Drawer />
             <div className="mdc-drawer-scrim"></div>
-
-
-            <div className="mdc-layout-grid PostsContainer">
-                <div className="mdc-layout-grid__inner">
-                    {this.state.posts}
-                </div>
-            </div>
-
+            <PostsWrapper />
             <Fab />
         </div>
     )
     update = (data, key) => this.setState(oldState => {
-        var newState = oldState;
-        newState[key] = data;
-        return newState;
+        oldState[key] = data;
+        return oldState;
     })
 }
 

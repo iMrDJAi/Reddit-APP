@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Icon from '@mdi/react'
 import { mdiLoading } from '@mdi/js'
 import Strings from '../../classes/Strings'
-const strings = new Strings().strings
+const strings = Strings.strings
 
 export class Loading extends Component {
     constructor() {

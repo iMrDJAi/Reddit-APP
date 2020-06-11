@@ -14,11 +14,20 @@
         .UserAvatar:hover {
             border-radius: 5px;
         }
-        .UserName {
-            @extend .mdc-typography--subtitle1;
-        }
-        .UserName:hover {
-            text-decoration: underline;
+        .Container {
+            * {
+                line-height: inherit !important;
+            }
+            .UserName {
+                @extend .mdc-typography--subtitle1;
+            }
+            .UserName:hover {
+                text-decoration: underline;
+            }
+            .Date {
+                color: rgba(0, 0, 0, 0.6);
+                @extend .mdc-typography--caption;
+            }
         }
     }
     .Content {

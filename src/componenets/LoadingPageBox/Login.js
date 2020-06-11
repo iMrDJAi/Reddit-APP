@@ -3,7 +3,7 @@ import Icon from '@mdi/react'
 import { mdiReddit } from '@mdi/js'
 import { MDCRipple } from '@material/ripple'
 import Strings from '../../classes/Strings'
-const strings = new Strings().strings
+const strings = Strings.strings
 
 export class Login extends Component {
     constructor() {

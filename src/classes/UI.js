@@ -4,12 +4,10 @@ var Strings = require('./Strings');
 var Utils = require('./Utils');
 import { LoadingPage } from '../componenets/LoadingPage';
 import { AppPage } from '../componenets/AppPage'
-import { Text } from '../componenets/Post/Text'
-import { Link } from '../componenets/Post/Link'
-import { Cross } from '../componenets/Post/Cross'
+
 module.exports = class UI {
     constructor() {
-        this.strings = new Strings().strings;
+        this.strings = Strings.strings;
         this.utils = new Utils();
     }
     error(id) {
@@ -46,14 +44,19 @@ module.exports = class UI {
             resolve(true);
         });
     }
-    async pushPost(postObj) {
-        if (!postObj.crosspost_parent) { //regular post
+    async pushPosts(postsObj) {
+        window.app.events.emit("PostsPush", {
+            postsObj: postsObj
+        });
+    }
+}
+
+/*
+if (!postObj.crosspost_parent) { //regular post
             var authorObj = await this.utils.userData(postObj.author.name);
             //console.log([postObj, authorObj]);
             if (postObj.is_self) { //self post (text)
-                window.app.events.emit("PostPush", {
-                    element: <Text postData={postObj} authorData={authorObj} key={postObj.id} />
-                });
+
             } else {
                 window.app.events.emit("PostPush", {
                     element: <Link postData={postObj} authorData={authorObj} key={postObj.id} />
@@ -61,6 +64,4 @@ module.exports = class UI {
             }
         } else {
 
-        }
-    }
-}
+        }*/

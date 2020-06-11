@@ -26,7 +26,7 @@ module.exports = class Utils {
     urlStateReplace(url) {
         window.history.replaceState("", "", url);
     }
-    async userData(userName) {
+    static async userData(userName) {
         try {
             var data = await fetch(`https://www.reddit.com/user/${userName}/about.json?raw_json=1`);
             if (data.status === 200) {
@@ -34,7 +34,7 @@ module.exports = class Utils {
             } else if (data.status === 404) {
                 return {
                     name: 'DELETED',
-                    icon_img: ''
+                    icon_img: window.app.subreddit.community_icon.split('?')[0]
                 };
             } else {
                 return await this.userData(userName);
