@@ -115,6 +115,18 @@ export class RegularPost extends Component {
             console.log(tries, current, blocked)
         })
     }
+    handleMarkdown(postObj) {
+        if (postObj.is_self) {
+            return renderMarkdown(this.state.postData.selftext)
+        } else {
+            if (postObj.post_hint === "image") {
+                var url = postObj.preview.images[0].source.url
+            } else {
+                var url = postObj.url
+            }
+            return `<p align="center"><img src="${url}" style="display: block;" onerror="mrdjaEmbeds(this)" /></p>`
+        }
+    }
     render = () => (
         <div ref={elm => this.element = elm} className="PostCard mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12 ">
 
@@ -122,8 +134,8 @@ export class RegularPost extends Component {
                 <div className="mdc-card__action-buttons">
                     <img className="UserAvatar mdc-card__action" src={this.state.postData.author.icon_img.split('?')[0]}></img>
                     <div className="Container">
-                        <div className="UserName mdc-card__action">{this.state.postData.author.name}</div>
-                        <div className="Date">{Strings.timeSince(new Date(this.state.postData.created_utc * 1000))}</div>
+                        <div className="Name mdc-card__action">{this.state.postData.author.name}</div>
+                        <div className="Info">{Strings.timeSince(new Date(this.state.postData.created_utc * 1000))}</div>
                     </div>
                 </div>
                 <div className="mdc-card__action-icons">
@@ -133,9 +145,9 @@ export class RegularPost extends Component {
                 </div>
             </header>
 
-            <div className="mdc-card__primary-action Content Markdown" tabIndex="0">
+            <div className="mdc-card__primary-action Main Markdown" tabIndex="0">
                 <title>{this.state.postData.title}</title>
-                <div dangerouslySetInnerHTML={{__html: renderMarkdown(this.state.postData.selftext)}} />
+                <div className='Content' dangerouslySetInnerHTML={{__html: this.handleMarkdown(this.state.postData)}} />
             </div>
 
             <footer className="mdc-card__actions">

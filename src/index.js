@@ -77,7 +77,7 @@ async function app(r) {
     window.app.flairs = await r.oauthRequest({ uri: `r/${config.subreddit}/api/link_flair_v2` })
 
     await ui.appPage();
-    var posts = await window.app.subreddit.getNew({ 'limit': 1000 });
+    var posts = await window.app.subreddit.getNew({ 'limit': 10 });
     posts = await Promise.all(posts.map(async post => {
         post.author = await Utils.userData(post.author.name);
         return post;

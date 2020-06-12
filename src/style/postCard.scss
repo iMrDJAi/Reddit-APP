@@ -1,6 +1,7 @@
 .PostCard {
     width: 100%;
     max-width: 700px;
+    max-height: 550px;
     margin: auto;
     header {
         .UserAvatar {
@@ -16,21 +17,21 @@
         }
         .Container {
             * {
-                line-height: inherit !important;
+                line-height: initial !important;
             }
-            .UserName {
+            .Name {
                 @extend .mdc-typography--subtitle1;
             }
-            .UserName:hover {
+            .Name:hover {
                 text-decoration: underline;
             }
-            .Date {
+            .Info {
                 color: rgba(0, 0, 0, 0.6);
                 @extend .mdc-typography--caption;
             }
         }
     }
-    .Content {
+    .Main {
         max-width: inherit;
         padding: 5px;
         title {
@@ -40,19 +41,16 @@
             text-align: center;
             @extend .mdc-typography--subtitle1;
         }
-        div {
+        .Content {
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            max-height: 500px;
             overflow: hidden;
         }
-        div:empty { 
+        .Content:empty { 
             display: none;
+        }
+        .ContentCrossPost {
+            padding: 1em;
         }
     }
     //footer {}
-}
-
-.demo-cell {
-    background: rgba(0,0,0,.2);
-    height: 100px;
 }

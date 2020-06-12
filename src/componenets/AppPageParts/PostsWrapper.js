@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { RegularPost } from '../Post/RegularPost'
+import { CrossPost } from '../Post/CrossPost'
 import Utils from '../../classes/Utils'
 
 export class PostsWrapper extends Component {
@@ -8,20 +9,19 @@ export class PostsWrapper extends Component {
         this.state = {
             posts: []
         }
-        this.update = this.update.bind(this)
+        this.push = this.push.bind(this)
     }
     componentDidMount() {
-        var update = this.update;
+        var push = this.push;
         window.app.events.on('PostsPush', data => {
             var posts = data.postsObj.map(postObj => {
                 if (!postObj.crosspost_parent) { //regular post
                     return <RegularPost postData={postObj} key={postObj.id} />;
                 } else { //cross post
-        
+                    return <CrossPost postData={postObj} key={postObj.id} />;
                 }
             });
-            update(posts, 'posts')
-            console.log(posts)
+            push(posts, 'posts')
         });
     }
     render = () => (
@@ -31,8 +31,8 @@ export class PostsWrapper extends Component {
             </div>
         </div>
     )
-    update = (data, key) => this.setState(oldState => {
-        oldState[key] = data;
+    push = (data, key) => this.setState(oldState => {
+        oldState[key].push(data);
         return oldState;
     })
 }
