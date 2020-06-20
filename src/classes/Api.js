@@ -3,7 +3,7 @@ var UI = require('./UI');
 var config = require('../config.json');
 var snoowrap = require('snoowrap');
 
-module.exports = class Login {
+module.exports = class Api {
     constructor() {
         this.refreshToken = window.localStorage.refreshToken || '';
         this.state = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
@@ -66,5 +66,14 @@ module.exports = class Login {
         } else if (!test && online) {
             return;
         }
+    }
+    async init(r) {
+        window.app.r = r
+        window.app.user = r._ownUserInfo
+        window.app.subreddit = await r.getSubreddit(config.subreddit).fetch().catch(console.error)
+        await window.app.subreddit.subscribe().catch(console.error)
+        window.app.flairs = await r.oauthRequest({ uri: `r/${config.subreddit}/api/link_flair_v2` })
+        window.app.isLoggedIn = true;
+        return;
     }
 }

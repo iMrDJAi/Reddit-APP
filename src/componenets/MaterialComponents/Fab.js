@@ -13,7 +13,7 @@ export class Fab extends Component {
     render = () => (
         <button ref={elem => this.element = elem} className="mdc-fab" aria-label="Favorite">
             <div className="mdc-fab__ripple"></div>
-            <span className="mdc-fab__icon"><Icon path={mdiPlus} /></span>
+            <span className="mdc-fab__icon"><Icon path={mdiPlus} size="24px" /></span>
         </button>
     )
 }

@@ -5,7 +5,6 @@
     margin: auto;
     header {
         .UserAvatar {
-            border: 1px solid #fff;
             border-radius: 50%;
             transition: 0.5s;
             width: 36px;
@@ -53,4 +52,11 @@
         }
     }
     //footer {}
+}
+
+
+.PostPage {
+    position: absolute;
+    top: 0;
+    bottom: 0;
 }

@@ -1,4 +1,4 @@
-@use "@material/theme" with (
+/*@use "@material/theme" with (
     $primary: #101d55,
     $on-primary: #ffffff,
     $secondary: #29e3ee,
@@ -8,8 +8,9 @@
     $surface: #ffffff,
     $on-surface: #000000,
     $background: #e5e5e5,
-);
+);*/
 
+@use "@material/theme";
 @use "@material/typography" with (
     $styles-headline1: (font-size: 38px),
     $styles-headline2: (font-size: 28px),
@@ -32,6 +33,8 @@
 @use "@material/tab/mdc-tab";
 @use "@material/fab/mdc-fab";
 @use "@material/card";
+@use "@material/linear-progress";
+@use "@material/linear-progress/mdc-linear-progress";
 @include card.core-styles;
 @include button.core-styles;
 @include icon-button.core-styles;
@@ -41,7 +44,7 @@
 @import "@material/layout-grid/mdc-layout-grid";
 
 //Link other files
-@import "./postCard.scss";
+@import "./post.scss";
 @import "./markdown.scss";
 
 $mdc-shape-small-component-radius: 4px;
@@ -64,6 +67,17 @@ $mdc-shape-large-component-radius: 0px;
         @content;
     }
 }
+
+:root {
+    --mdc-theme-primary: #101d55;
+    --mdc-theme-on-primary: #ffffff;
+    --mdc-theme-secondary: #29e3ee;
+    --mdc-theme-on-secondary: #000000;
+    --mdc-theme-surface: #ffffff;
+    --mdc-theme-on-surface: #000000;
+    --mdc-theme-background: #e5e5e5;
+}
+
 
 //For debugging
 .App * {
@@ -99,14 +113,41 @@ body * {
     font-size: 2.6vw;
 }*/
 
+.Stent {
+    width: 100vw;
+}
 
 .LoadingPage {
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    .Card {
+        width: 100%;
+        max-width: 500px;
+        overflow: hidden;
+        .mdc-linear-progress {
+            @include linear-progress.bar-color(secondary);
+        }
+        .Content {
+            padding: 0.5rem 1rem;
+            .Title {
+                @extend .mdc-typography--headline4;
+            }
+            .Text {
+                color: rgba(0,0,0,.54);
+                @extend .mdc-typography--body2;
+            }
+        }
+        footer {
+            .Button {
+                height: 36px;
+                --mdc-theme-primary: #FF4500;
+            }
+        }
+    }
 
-    .LoginBox {
+    /*.LoginBox {
         width: 540px;
         height: 300px;
 
@@ -241,7 +282,7 @@ body * {
                     }
             }
         }
-    }
+    }*/
 
 }
 
@@ -337,11 +378,6 @@ $barsHeight: 55px;
     position: fixed;
     bottom: 1rem;
     right: 1rem;
-}
-
-svg {
-    width: 1.5rem;
-    /* 24px */
 }
 
 .mdc-tab-indicator .mdc-tab-indicator__content--underline {

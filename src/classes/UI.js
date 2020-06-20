@@ -3,7 +3,7 @@ var ReactDOM = require('react-dom');
 var Strings = require('./Strings');
 var Utils = require('./Utils');
 import { LoadingPage } from '../componenets/LoadingPage';
-import { AppPage } from '../componenets/AppPage'
+import { App } from '../componenets/App'
 
 module.exports = class UI {
     constructor() {
@@ -39,7 +39,7 @@ module.exports = class UI {
     }
     appPage() {
         return new Promise(async (resolve) => {
-            ReactDOM.render(<AppPage />, document.querySelector('.App'));
+            ReactDOM.render(<App />, document.querySelector('.App'));
             await new Promise(res => setTimeout(() => res(), 500));
             resolve(true);
         });
@@ -50,18 +50,3 @@ module.exports = class UI {
         });
     }
 }
-
-/*
-if (!postObj.crosspost_parent) { //regular post
-            var authorObj = await this.utils.userData(postObj.author.name);
-            //console.log([postObj, authorObj]);
-            if (postObj.is_self) { //self post (text)
-
-            } else {
-                window.app.events.emit("PostPush", {
-                    element: <Link postData={postObj} authorData={authorObj} key={postObj.id} />
-                });            
-            }
-        } else {
-
-        }*/

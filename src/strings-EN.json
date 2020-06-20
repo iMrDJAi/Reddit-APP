@@ -4,10 +4,14 @@
     "LOGIN_STATE_ERROR": "LOGIN_STATE_ERROR",
     "LOGIN_ACCESS_DENIED": "LOGIN_ACCESS_DENIED",
     "LOGIN_CODE_ERROR": "LOGIN_CODE_ERROR",
-    "LOGINBOX_TITLE_LOADING": "LOADING...",
-    "LOGINBOX_TITLE_LOGIN": "LOGIN",
-    "LOGINBOX_TITLE_ERROR": "ERROR!",
-    "LOGINBOX_TITLE_SUCCESS": "WELCOME!",
-    "LOGINBOX_PARAGRAPH": "Hey there! Welcome\nto our community app!\nPlease login with\nyour Reddit account\nto continue.",
-    "LOGINBOX_BUTTON": "LOGIN WITH REDDIT" 
+
+    "LOADING_TITLE_LOADING": "Loading...",
+    "LOADING_TEXT_LOADING": "Loading in progress! Please wait...",
+    "LOADING_TITLE_LOGIN": "Login",
+    "LOADING_TEXT_LOGIN": "Hey there! Please login with your Reddit account to continue.",
+    "LOADING_BUTTON_LOGIN": "LOGIN WITH REDDIT",
+    "LOADING_TITLE_SUCCESS": "Welcome!",
+    "LOADING_TEXT_SUCCESS": "Hello user! Have a nice time here.",
+    "LOADING_TITLE_ERROR": "Error!",
+    "LOADING_TEXT_ERROR": "Ehh.. Something went wrong! Please try again."
 }

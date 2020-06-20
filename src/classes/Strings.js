@@ -1,6 +1,6 @@
 module.exports = class Strings {
     static get strings() {
-        return require(`../strings-${window.app.language}.json`);
+        return require(`../strings-${'EN'}.json`);
     }
     static timeSince(timeStamp) {
         var now = new Date(),

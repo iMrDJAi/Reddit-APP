@@ -9,7 +9,7 @@ export class TopAppBar extends Component {
     }
     componentDidMount() {
         this.MDCTopAppBar = new MDCTopAppBar(this.element);
-        this.MDCTopAppBar.listen('MDCTopAppBar:nav', () => window.app.events.emit("DrawerToggle"));
+        //this.MDCTopAppBar.listen('MDCTopAppBar:nav', () => window.app.events.emit("DrawerToggle"));
     }
     render = () => (
         <header ref={elem => this.element = elem} className="mdc-top-app-bar">

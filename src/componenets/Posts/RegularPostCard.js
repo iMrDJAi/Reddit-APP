@@ -6,7 +6,7 @@ import { MDCIconButtonToggle } from '@material/icon-button';
 var Strings = require('../../classes/Strings');
 var renderMarkdown = require('imrdjai-mdr');
 
-export class RegularPost extends Component {
+export class RegularPostCard extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -23,12 +23,7 @@ export class RegularPost extends Component {
         var saveBtn = new MDCIconButtonToggle(this.save)
         this.handleSave(saveBtn)
 
-        var update = this.update
-
-        /*window.app.events.on('PostUpdate', data => {
-            update(data.postData, 'postData')
-            update(data.authorData, 'authorData')
-        });*/
+        var main = new MDCRipple(this.main)
 
     }
     handleVotes(likeBtn, dislikeBtn) {
@@ -127,6 +122,12 @@ export class RegularPost extends Component {
             return `<p align="center"><img src="${url}" style="display: block;" onerror="mrdjaEmbeds(this)" /></p>`
         }
     }
+    handleClick() {
+        window.app.events.emit('PostPage', {
+            content: this.content,
+            postData: this.state.postData
+        });
+    }
     render = () => (
         <div ref={elm => this.element = elm} className="PostCard mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12 ">
 
@@ -145,9 +146,9 @@ export class RegularPost extends Component {
                 </div>
             </header>
 
-            <div className="mdc-card__primary-action Main Markdown" tabIndex="0">
+            <div ref={elm => this.main = elm} onClick={this.handleClick.bind(this)} className="mdc-card__primary-action Main Markdown" tabIndex="0">
                 <title>{this.state.postData.title}</title>
-                <div className='Content' dangerouslySetInnerHTML={{__html: this.handleMarkdown(this.state.postData)}} />
+                <div ref={elm => this.content = elm} className='Content' dangerouslySetInnerHTML={{__html: this.handleMarkdown(this.state.postData)}} />
             </div>
 
             <footer className="mdc-card__actions">
