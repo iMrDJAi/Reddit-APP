@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { RegularPostCard } from './Posts/RegularPostCard'
 import { CrossPostCard } from './Posts/CrossPostCard'
-import Utils from '../classes/Utils'
+import System from '../classes/System'
 
 export class PostsWrapper extends Component {
     constructor(props) {
@@ -14,7 +14,7 @@ export class PostsWrapper extends Component {
     async componentDidMount() {
         var postsObj = await window.app.subreddit.getNew({ 'limit': 10 });
         postsObj = await Promise.all(postsObj.map(async post => {
-            post.author = await Utils.userData(post.author.name);
+            post.author = await System.userData(post.author.name);
             return post;
         }))
         console.log(posts);

@@ -8,7 +8,6 @@ import { Fab } from './MaterialComponents/Fab'
 
 import { LoadingPage } from './LoadingPage' 
 import { PostsWrapper } from './PostsWrapper'
-import { PostPage } from './Routes/PostPage'
 
 export class App extends Component {
     constructor(props) {
@@ -17,15 +16,6 @@ export class App extends Component {
             posts: []
         }
         this.update = this.update.bind(this)
-    }
-    componentDidMount() {
-        var update = this.update;
-        var posts = [];
-        /*window.app.events.on('PostPush', data => {
-            posts.push(data.element)
-            update(posts, 'posts')
-            console.log(posts)
-        });*/
     }
     render = () => (
         <Router>
@@ -38,14 +28,17 @@ export class App extends Component {
                 <Route exact path="/login" component={(props)=> (
                    <LoadingPage {...props} />
                 )}/>
-                <Route path="/posts">
-                    <TopAppBar />
-                    <Drawer />
-                    <div className="mdc-drawer-scrim" />
-                    <PostsWrapper />
-                    <PostPage />
-                    <Fab />
-                </Route>
+                <Route path="/posts"  component={(props) => (
+                    window.app.isLoggedIn ? 
+                    <>
+                        <TopAppBar />
+                        <Drawer />
+                        <div className="mdc-drawer-scrim" />
+                        <PostsWrapper />
+                        <Fab />
+                    </>
+                    : <Redirect to="/login" />
+                )}/>
                 <Route component={()=> (
                    <Redirect to="/login" />
                 )}/>

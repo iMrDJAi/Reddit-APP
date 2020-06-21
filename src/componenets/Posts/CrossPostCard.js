@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import { MDCRipple } from '@material/ripple';
+import { MDCRipple } from '@material/ripple'
 import Icon from '@mdi/react'
 import { mdiThumbUp, mdiThumbDown, mdiThumbUpOutline, mdiThumbDownOutline, mdiDotsVertical, mdiBookmark, mdiBookmarkOutline } from '@mdi/js'
-import { MDCIconButtonToggle } from '@material/icon-button';
-var Strings = require('../../classes/Strings');
+import { MDCIconButtonToggle } from '@material/icon-button'
+import System from '../../classes/System'
 var renderMarkdown = require('imrdjai-mdr');
 
 export class CrossPostCard extends Component {
@@ -135,7 +135,7 @@ export class CrossPostCard extends Component {
                     <img className="UserAvatar mdc-card__action" src={this.state.postData.author.icon_img.split('?')[0]}></img>
                     <div className="Container">
                         <div className="Name mdc-card__action">{this.state.postData.author.name}</div>
-                        <div className="Info">{Strings.timeSince(new Date(this.state.postData.created_utc * 1000))}</div>
+                        <div className="Info">{System.timeSince(new Date(this.state.postData.created_utc * 1000))}</div>
                     </div>
                 </div>
                 <div className="mdc-card__action-icons">
@@ -155,7 +155,7 @@ export class CrossPostCard extends Component {
                             <div className="mdc-card__action-buttons">
                                 <div className="Container">
                                     <div className="Name mdc-card__action">{this.state.postData.crosspost_parent_list[0].subreddit_name_prefixed}</div>
-                                    <div className="Info">Posted By {this.state.postData.crosspost_parent_list[0].author.name} • {Strings.timeSince(new Date(this.state.postData.crosspost_parent_list[0].created_utc * 1000))}</div>
+                                    <div className="Info">Posted By {this.state.postData.crosspost_parent_list[0].author.name} • {System.timeSince(new Date(this.state.postData.crosspost_parent_list[0].created_utc * 1000))}</div>
                                 </div>
                             </div>
                         </header>
