@@ -133,7 +133,7 @@ export class RegularPostCard extends Component {
 
             <header className="mdc-card__actions">
                 <div className="mdc-card__action-buttons">
-                    <img className="UserAvatar mdc-card__action" src={this.state.postData.author.icon_img.split('?')[0]}></img>
+                    <img className="UserAvatar mdc-card__action" src={'no'/*this.state.postData.author.icon_img.split('?')[0]*/}></img>
                     <div className="Container">
                         <div className="Name mdc-card__action">{this.state.postData.author.name}</div>
                         <div className="Info">{System.timeSince(new Date(this.state.postData.created_utc * 1000))}</div>

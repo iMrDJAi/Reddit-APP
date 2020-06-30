@@ -4,7 +4,7 @@
         "modflair", "modlog", "modmail", "modothers", "modposts", "modself", "modtraffic", "modwiki", "mysubreddits", "privatemessages",
         "read", "report", "save", "structuredstyles", "submit", "subscribe", "vote", "wikiedit", "wikiread"],
     "redirectUri": "http://localhost/login",
-    "subreddit": "ps4homebrew",
+    "subreddit": "Dz_Gamers_Community",
     "subreddit2": "Dz_Gamers_Community",
     "pingURL": "https://www.googleapis.com",
     "name": "Dz Gamers Community",

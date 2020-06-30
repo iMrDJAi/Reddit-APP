@@ -22,7 +22,7 @@ export class Drawer extends Component {
         //window.app.events.on("DrawerToggle", () => drawer.open = !drawer.open);
         for (var ele of this.element.querySelectorAll('.mdc-list')) new MDCList(ele);
         for (var ele of this.element.querySelectorAll('.mdc-list-item')) new MDCRipple(ele);
-        //+drawer.open = true;
+        drawer.open = true;
     }
     handleScroll() {
         if (this.scrollable.scrollTop >= this.banner.clientHeight - this.header.offsetHeight) {

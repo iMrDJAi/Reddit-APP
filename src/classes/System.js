@@ -11,7 +11,6 @@ export default class System {
             clientSecret: '',
             refreshToken: this.refreshToken
         })
-        console.log(requester)
         try {
             var test = await requester.getMe().name.catch(console.error)
         } catch {
@@ -73,7 +72,6 @@ export default class System {
         window.app.subreddit = await r.getSubreddit(config.subreddit).fetch().catch(console.error)
         await window.app.subreddit.subscribe().catch(console.error)
         window.app.flairs = await r.oauthRequest({ uri: `r/${config.subreddit}/api/link_flair_v2` })
-        window.app.isLoggedIn = true
         return
     }
     static async userData(userName) {

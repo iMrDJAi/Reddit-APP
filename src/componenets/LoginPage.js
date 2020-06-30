@@ -1,24 +1,19 @@
 import React, { Component } from 'react'
-import { MDCRipple } from '@material/ripple';
-import Icon from '@mdi/react'
-import { mdiReddit } from '@mdi/js'
 import { banner } from '../config.json'
-import config from '../config.json'
 import { LinearProgress } from './MaterialComponents/LinearProgress'
+import { LoginButton } from './MaterialComponents/LoginButton'
 import System from '../classes/System'
-//console.log(System)
 
-export class LoadingPage extends Component {
+export class LoginPage extends Component {
     constructor(props) {
         super(props)
-        //console.log(props)
+        console.log(props)
         this.state = {
             condition: 'loading'
         }
         this.update = this.update.bind(this)
     }
     async componentDidMount() {
-        //new MDCRipple(this.loginBtn)
         /*await new Promise(res => setTimeout(() => res(), 5000))
         this.update('login', 'condition')
         await new Promise(res => setTimeout(() => res(), 5000))
@@ -37,11 +32,12 @@ export class LoadingPage extends Component {
                         await System.init(r)
                         this.update('success', 'condition')
                         await new Promise(res => setTimeout(() => res(), 3000))
-                        this.props.history.push('posts')
+                        this.props.history.push(window.sessionStorage.referrer)
                     } else {
                         console.log("❌")
                         this.update('error', 'condition')
                         await new Promise(res => setTimeout(() => res(), 3000))
+                        window.sessionStorage.referrer = window.sessionStorage.referrer || '/posts'
                         this.update(System.loginRequest(), 'loginURL')
                         this.update('login', 'condition')
                     }
@@ -56,8 +52,9 @@ export class LoadingPage extends Component {
                 await System.init(r)
                 this.update('success', 'condition')
                 await new Promise(res => setTimeout(() => res(), 3000))
-                this.props.history.push('posts')
+                this.props.history.push(this.props.location.state.referrer || '/posts')
             } else {
+                window.sessionStorage.referrer = this.props.location.state.referrer || '/posts'
                 this.update(System.loginRequest(), 'loginURL')
                 this.update('login', 'condition')
             }
@@ -73,7 +70,6 @@ export class LoadingPage extends Component {
                         this.state.condition === 'loading' &&
                         <LinearProgress />
                     }
-
                     <div className="Content">
                         {
                             this.state.condition === 'loading' &&
@@ -108,11 +104,7 @@ export class LoadingPage extends Component {
                         this.state.condition === 'login' &&
                         <footer className="mdc-card__actions">
                             <div className="mdc-card__action-buttons">
-                                <a ref={elem => this.loginBtn = elem} href={this.state.loginURL} className="Button mdc-button mdc-button--outlined mdc-card__action mdc-card__action--button" title="Login">
-                                    <Icon className="mdc-button__icon" path={mdiReddit} size="24px"/>
-                                    <span className="mdc-button__label">{System.strings.LOADING_BUTTON_LOGIN}</span>
-                                    <div className="mdc-button__ripple"></div>
-                                </a>
+                                <LoginButton loginURL={this.state.loginURL} />
                             </div>
                         </footer>
                     }

@@ -6,7 +6,7 @@ import { TabBar } from './MaterialComponents/TabBar'
 import { Drawer } from './MaterialComponents/Drawer'
 import { Fab } from './MaterialComponents/Fab'
 
-import { LoadingPage } from './LoadingPage' 
+import { LoginPage } from './LoginPage' 
 import { PostsWrapper } from './PostsWrapper'
 
 export class App extends Component {
@@ -25,23 +25,28 @@ export class App extends Component {
                 <Link to="/login">Login </Link>
             </nav>
             <Switch>
-                <Route exact path="/login" component={(props)=> (
-                   <LoadingPage {...props} />
-                )}/>
-                <Route path="/posts"  component={(props) => (
-                    window.app.isLoggedIn ? 
+                <Route exact path="/login" component={props => {
+                    if (!props.location.state) props.location.state = {}
+                    return !window.app.r ? <LoginPage {...props} /> : <Redirect to="/posts" />
+                }}/>
+                <Route exact path={["/posts", "/posts/:sort"]} component={props => (
+                    window.app.r ? 
                     <>
                         <TopAppBar />
                         <Drawer />
                         <div className="mdc-drawer-scrim" />
-                        <PostsWrapper />
+                        <PostsWrapper {...props} />
                         <Fab />
                     </>
-                    : <Redirect to="/login" />
+                    : <Redirect to={{
+                        pathname: "/login",
+                        state: { referrer: props.location.pathname + props.location.search }
+                      }} />
                 )}/>
-                <Route component={()=> (
-                   <Redirect to="/login" />
-                )}/>
+                {/*404*/}
+                <Route>
+                    <Redirect to="/login" />
+                </Route>
             </Switch>
         </Router>
     )

@@ -2,9 +2,6 @@ import React, { Component } from 'react'
 import { MDCLinearProgress } from '@material/linear-progress';
 
 export class LinearProgress extends Component {
-    constructor() {
-        super()
-    }
     componentDidMount() {
         new MDCLinearProgress(this.element);
     }

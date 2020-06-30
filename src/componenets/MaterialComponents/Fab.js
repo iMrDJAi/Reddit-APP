@@ -4,9 +4,6 @@ import { mdiPlus } from '@mdi/js'
 import { MDCRipple } from '@material/ripple'
 
 export class Fab extends Component {
-    constructor() {
-        super()
-    }
     componentDidMount() {
         new MDCRipple(this.element);
     }
