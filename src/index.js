@@ -1,5 +1,5 @@
 //ASSETS
-require('./assets/logo.png')
+require('./assets/cyberpunk-2077.jpg')
 //STYLE
 require('./style/index.scss')
 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";  
+import EventEmitter from 'events'
 
 import { TopAppBar } from './MaterialComponents/TopAppBar'
 import { TabBar } from './MaterialComponents/TabBar'
@@ -17,6 +18,7 @@ export class App extends Component {
         }
         this.update = this.update.bind(this)
     }
+    events = new EventEmitter()
     render = () => (
         <Router>
             <nav>
@@ -32,8 +34,8 @@ export class App extends Component {
                 <Route exact path={["/posts", "/posts/:sort"]} component={props => (
                     window.app.r ? 
                     <>
-                        <TopAppBar />
-                        <Drawer />
+                        <TopAppBar events={this.events} />
+                        <Drawer events={this.events} />
                         <div className="mdc-drawer-scrim" />
                         <PostsWrapper {...props} />
                         <Fab />
@@ -55,9 +57,3 @@ export class App extends Component {
         return oldState;
     })
 }
-
-/*
-    <PostsWrapper />
-
-
-*/

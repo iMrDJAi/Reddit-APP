@@ -35,6 +35,7 @@
 @use "@material/card";
 @use "@material/linear-progress";
 @use "@material/linear-progress/mdc-linear-progress";
+@use "@material/animation";
 @include card.core-styles;
 @include button.core-styles;
 @include icon-button.core-styles;

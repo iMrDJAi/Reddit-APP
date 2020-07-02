@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { MDCDrawer } from '@material/drawer'
-import { MDCRipple } from '@material/ripple';
-import { MDCList } from '@material/list';
+import { MDCRipple } from '@material/ripple'
+import { MDCList } from '@material/list'
 
 export class Drawer extends Component {
     constructor() {
@@ -19,10 +19,9 @@ export class Drawer extends Component {
     async componentDidMount() {
         var drawer = new MDCDrawer(this.element);
         drawer.list.destroy();
-        //window.app.events.on("DrawerToggle", () => drawer.open = !drawer.open);
+        this.props.events.on("DrawerToggle", () => drawer.open = !drawer.open);
         for (var ele of this.element.querySelectorAll('.mdc-list')) new MDCList(ele);
         for (var ele of this.element.querySelectorAll('.mdc-list-item')) new MDCRipple(ele);
-        drawer.open = true;
     }
     handleScroll() {
         if (this.scrollable.scrollTop >= this.banner.clientHeight - this.header.offsetHeight) {

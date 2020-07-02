@@ -16,8 +16,8 @@ module.exports = {
         minimizer: [
           new OptimizeCssAssetsPlugin(),
           new TerserPlugin()
-        ]/*,
-        splitChunks: {
+        ],
+        /*splitChunks: {
             // include all types of chunks
             chunks: 'all',
             maxSize: 249856

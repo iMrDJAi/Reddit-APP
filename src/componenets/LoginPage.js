@@ -14,12 +14,12 @@ export class LoginPage extends Component {
         this.update = this.update.bind(this)
     }
     async componentDidMount() {
-        /*await new Promise(res => setTimeout(() => res(), 5000))
+        await new Promise(res => setTimeout(() => res(), 5000))
         this.update('login', 'condition')
         await new Promise(res => setTimeout(() => res(), 5000))
         this.update('success', 'condition')
         await new Promise(res => setTimeout(() => res(), 5000))
-        this.update('error', 'condition')*/
+        this.update('error', 'condition')
         const query = new URLSearchParams(this.props.location.search)
         if (query.get('state') && (query.get('code') || query.get('error'))) {
             if (query.get('state') === window.sessionStorage.state) { //State Check
