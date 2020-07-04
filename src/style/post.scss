@@ -1,7 +1,9 @@
+.PostCardPreview {
+    max-height: 550px;
+}
 .PostCard {
     width: 100%;
     max-width: 700px;
-    max-height: 550px;
     margin: auto;
     header {
         .UserAvatar {
@@ -52,11 +54,4 @@
         }
     }
     //footer {}
-}
-
-
-.PostPage {
-    position: absolute;
-    top: 0;
-    bottom: 0;
 }

@@ -31,12 +31,12 @@ export class LoginPage extends Component {
                         console.log("✅")
                         await System.init(r)
                         this.update('success', 'condition')
-                        await new Promise(res => setTimeout(() => res(), 3000))
+                        await new Promise(res => setTimeout(() => res(), 1500))
                         this.props.history.push(window.sessionStorage.referrer)
                     } else {
                         console.log("❌")
                         this.update('error', 'condition')
-                        await new Promise(res => setTimeout(() => res(), 3000))
+                        await new Promise(res => setTimeout(() => res(), 1500))
                         window.sessionStorage.referrer = window.sessionStorage.referrer || '/home'
                         this.update(System.loginRequest(), 'loginURL')
                         this.update('login', 'condition')
@@ -51,10 +51,10 @@ export class LoginPage extends Component {
             if (r) {
                 await System.init(r)
                 this.update('success', 'condition')
-                await new Promise(res => setTimeout(() => res(), 3000))
-                this.props.history.push(this.props.location.state.referrer || '/home')
+                await new Promise(res => setTimeout(() => res(), 1500))
+                this.props.history.push(this.props.location.state || '/home')
             } else {
-                window.sessionStorage.referrer = this.props.location.state.referrer || '/home'
+                window.sessionStorage.referrer = this.props.location.state || '/home'
                 this.update(System.loginRequest(), 'loginURL')
                 this.update('login', 'condition')
             }

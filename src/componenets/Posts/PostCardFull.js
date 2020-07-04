@@ -14,7 +14,8 @@ export class PostCardFull extends Component {
         }
         this.update = this.update.bind(this)
     }
-    componentDidMount() {
+    async componentDidMount() {
+        
         var likeBtn = new MDCIconButtonToggle(this.like)
         var dislikeBtn = new MDCIconButtonToggle(this.dislike)
         this.handleVotes(likeBtn, dislikeBtn)
@@ -118,7 +119,7 @@ export class PostCardFull extends Component {
         }
     }
     render = () => (
-        <div ref={elm => this.element = elm} className="PostCard mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12 ">
+        <div ref={elm => this.element = elm} className="PostCard mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
 
             <header className="mdc-card__actions">
                 <div className="mdc-card__action-buttons">
@@ -135,10 +136,32 @@ export class PostCardFull extends Component {
                 </div>
             </header>
 
-            <div className="mdc-card__primary-action Main Markdown" tabIndex="0">
-                <title>{this.state.postData.title}</title>
-                <div ref={elm => this.content = elm} className='Content' dangerouslySetInnerHTML={{__html: this.handleMarkdown(this.state.postData)}} />
-            </div>
+            {
+                    this.props.postData.crosspost_parent ?
+                    <div ref={elm => this.main = elm} className="Main Markdown" tabIndex="0">
+                        <title>{this.state.postData.title}</title>
+                        <div ref={elm => this.content = elm} className='Content ContentCrossPost'>
+                            <div className="mdc-card mdc-card--outlined">
+                                <header className="mdc-card__actions">
+                                    <div className="mdc-card__action-buttons">
+                                        <div className="Container">
+                                            <div className="Name mdc-card__action">{this.state.postData.crosspost_parent_list[0].subreddit_name_prefixed}</div>
+                                            <div className="Info">Posted By {this.state.postData.crosspost_parent_list[0].author.name} • {System.timeSince(new Date(this.state.postData.crosspost_parent_list[0].created_utc * 1000))}</div>
+                                        </div>
+                                    </div>
+                                </header>
+                                <div className="Main Markdown" tabIndex="0">
+                                    <title>{this.state.postData.crosspost_parent_list[0].title}</title>
+                                    <div dangerouslySetInnerHTML={{__html: this.handleMarkdown(this.state.postData)}} />
+                                </div>
+                            </div>
+                        </div>
+                    </div> :
+                    <div ref={elm => this.main = elm} className="Main Markdown" tabIndex="0">
+                        <title>{this.state.postData.title}</title>
+                        <div ref={elm => this.content = elm} className='Content' dangerouslySetInnerHTML={{__html: this.handleMarkdown(this.state.postData)}} />           
+                    </div>
+                }
 
             <footer className="mdc-card__actions">
                 <div className="mdc-card__action-buttons">

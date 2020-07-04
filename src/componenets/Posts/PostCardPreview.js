@@ -124,7 +124,7 @@ export class PostCardPreview extends Component {
     }
     render = () => (
         <>
-            <div ref={elm => this.element = elm} className="PostCard mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12 ">
+            <div ref={elm => this.element = elm} className="PostCard PostCardPreview mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12 ">
                 <header className="mdc-card__actions">
                     <div className="mdc-card__action-buttons">
                         <img className="UserAvatar mdc-card__action" src={'no' /*this.state.postData.author.icon_img.split('?')[0]*/}></img>

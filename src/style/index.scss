@@ -148,143 +148,6 @@ body * {
         }
     }
 
-    /*.LoginBox {
-        width: 540px;
-        height: 300px;
-
-        @include s {
-            width: 90vw;
-            height: calc(90vw/1.8);
-        }
-
-        display: grid;
-        grid-template-columns: 45% 55%;
-        overflow: hidden;
-        user-select: none;
-        -moz-user-select: none;
-        @include theme.prop(background-color, surface);
-        @include theme.prop(color, on-surface);
-        @include radius.radius($mdc-shape-medium-component-radius);
-        @extend .mdc-elevation--z8;
-
-        .BrandPart {
-            height: inherit;
-            display: grid;
-            grid-template-columns: auto 90% auto;
-            grid-template-rows: auto 60% 1rem min-content auto;
-            background-position: center !important;
-            background-size: contain !important;
-            background-repeat: no-repeat !important;
-            @include theme.prop(background-color, primary);
-            @include theme.prop(color, on-primary);
-
-            .BrandLogo {
-                grid-column-start: 2;
-                grid-row-start: 2;
-                background-position: center !important;
-                background-size: contain !important;
-                background-repeat: no-repeat !important;
-            }
-
-            .BrandName {
-                grid-column-start: 2;
-                grid-row-start: 4;
-                text-align: center;
-                @extend .mdc-typography--subtitle1;
-            }
-        }
-
-        .ButtonPart {
-            height: inherit;
-            display: grid;
-            grid-template-columns: auto 85% auto;
-            grid-template-rows: 1.5rem min-content 0.8rem auto 0.8rem min-content 1.5rem;
-
-            .Title {
-                grid-row-start: 2;
-                grid-column-start: 2;
-                text-decoration: underline;
-                text-align: center;
-                @extend .mdc-typography--headline6;
-            }
-
-            .LoadingIcon {
-                grid-column-start: 2;
-                grid-row-start: 4;
-                @include theme.prop(color, secondary);
-                margin: auto;
-                width: 95px;
-
-                @include s {
-                    width: 16vw;
-                }
-            }
-
-            .ErrorIcon {
-                grid-column-start: 2;
-                grid-row-start: 4;
-                @include theme.prop(color, error);
-                margin: auto;
-                width: 95px;
-
-                @include s {
-                    width: 16vw;
-                }
-            }
-
-            .Avatar {
-                grid-column-start: 2;
-                grid-row-start: 4;
-                max-height: 100%;
-                max-width: 100%;
-                margin: auto;
-                @include radius.radius($mdc-shape-medium-component-radius);
-            }
-
-            .Username {
-                grid-column-start: 2;
-                grid-row-start: 6;
-                text-align: center;
-                @extend .mdc-typography--subtitle1;
-            }
-
-            .Paragraph {
-                grid-column-start: 2;
-                grid-row-start: 4;
-                margin: auto;
-                text-align: center;
-                white-space: pre-wrap;
-                @extend .mdc-typography--body1;
-            }
-
-            .Error {
-                grid-column-start: 2;
-                grid-row-start: 6;
-                text-align: center;
-                @extend .mdc-typography--body1;
-            }
-
-            .Button {
-                grid-column-start: 2;
-                grid-row-start: 6;
-                padding: 0.3rem;
-                --mdc-theme-primary: #FF4500;
-                --mdc-theme-on-primary: hsl(20, 100%, 90%);
-                @include button.ink-color(#ffffff);
-
-                :first-child {
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        white-space: pre-wrap;
-                        svg {
-                            width: 2.5rem;
-                        }
-                    }
-            }
-        }
-    }*/
-
 }
 
 //Drawer
@@ -368,6 +231,14 @@ $barsHeight: 55px;
 
 //PostsPart
 .PostsContainer {
+    position: relative;
+    top: 64px;
+    @include s {
+        top: 56px;
+    }
+}
+
+.Submission {
     position: relative;
     top: 64px;
     @include s {

@@ -11,12 +11,14 @@ import { PostsWrapper } from '../Posts/PostsWrapper'
 
 export class HomePage extends Component {
     render = () => (
-        <>
-            <TopAppBar events={this.props.events} />
-            <Drawer events={this.props.events} />
-            <div className="mdc-drawer-scrim" />
-            <PostsWrapper {...this.props} />
-            <Fab />
+        <>  
+            <div className='Home'>
+                <TopAppBar events={this.props.events} />
+                <Drawer events={this.props.events} />
+                <div className="mdc-drawer-scrim" />
+                <PostsWrapper {...this.props} />
+                <Fab />
+            </div>
             <Route exact path={["/submission/:id"]} component={props => (
                 <Submission {...props} />
             )}/>
