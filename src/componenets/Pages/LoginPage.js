@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { banner } from '../config.json'
-import { LinearProgress } from './MaterialComponents/LinearProgress'
-import { LoginButton } from './MaterialComponents/LoginButton'
-import System from '../classes/System'
+import { banner } from '../../config.json'
+import { LinearProgress } from '../MaterialComponents/LinearProgress'
+import { LoginButton } from '../MaterialComponents/LoginButton'
+import System from '../../classes/System'
 
 export class LoginPage extends Component {
     constructor(props) {
@@ -14,12 +14,12 @@ export class LoginPage extends Component {
         this.update = this.update.bind(this)
     }
     async componentDidMount() {
-        await new Promise(res => setTimeout(() => res(), 5000))
+        /*await new Promise(res => setTimeout(() => res(), 5000))
         this.update('login', 'condition')
         await new Promise(res => setTimeout(() => res(), 5000))
         this.update('success', 'condition')
         await new Promise(res => setTimeout(() => res(), 5000))
-        this.update('error', 'condition')
+        this.update('error', 'condition')*/
         const query = new URLSearchParams(this.props.location.search)
         if (query.get('state') && (query.get('code') || query.get('error'))) {
             if (query.get('state') === window.sessionStorage.state) { //State Check
@@ -37,7 +37,7 @@ export class LoginPage extends Component {
                         console.log("❌")
                         this.update('error', 'condition')
                         await new Promise(res => setTimeout(() => res(), 3000))
-                        window.sessionStorage.referrer = window.sessionStorage.referrer || '/posts'
+                        window.sessionStorage.referrer = window.sessionStorage.referrer || '/home'
                         this.update(System.loginRequest(), 'loginURL')
                         this.update('login', 'condition')
                     }
@@ -52,9 +52,9 @@ export class LoginPage extends Component {
                 await System.init(r)
                 this.update('success', 'condition')
                 await new Promise(res => setTimeout(() => res(), 3000))
-                this.props.history.push(this.props.location.state.referrer || '/posts')
+                this.props.history.push(this.props.location.state.referrer || '/home')
             } else {
-                window.sessionStorage.referrer = this.props.location.state.referrer || '/posts'
+                window.sessionStorage.referrer = this.props.location.state.referrer || '/home'
                 this.update(System.loginRequest(), 'loginURL')
                 this.update('login', 'condition')
             }

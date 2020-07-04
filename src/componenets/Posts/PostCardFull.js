@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
-import { MDCRipple } from '@material/ripple'
 import Icon from '@mdi/react'
 import { mdiThumbUp, mdiThumbDown, mdiThumbUpOutline, mdiThumbDownOutline, mdiDotsVertical, mdiBookmark, mdiBookmarkOutline } from '@mdi/js'
 import { MDCIconButtonToggle } from '@material/icon-button'
 import System from '../../classes/System'
 var renderMarkdown = require('imrdjai-mdr');
 
-export class RegularPostCard extends Component {
+export class PostCardFull extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -19,12 +18,8 @@ export class RegularPostCard extends Component {
         var likeBtn = new MDCIconButtonToggle(this.like)
         var dislikeBtn = new MDCIconButtonToggle(this.dislike)
         this.handleVotes(likeBtn, dislikeBtn)
-
         var saveBtn = new MDCIconButtonToggle(this.save)
         this.handleSave(saveBtn)
-
-        var main = new MDCRipple(this.main)
-
     }
     handleVotes(likeBtn, dislikeBtn) {
         var tries = 0
@@ -122,12 +117,6 @@ export class RegularPostCard extends Component {
             return `<p align="center"><img src="${url}" style="display: block;" onerror="mrdjaEmbeds(this)" /></p>`
         }
     }
-    handleClick() {
-        window.app.events.emit('PostPage', {
-            content: this.content,
-            postData: this.state.postData
-        });
-    }
     render = () => (
         <div ref={elm => this.element = elm} className="PostCard mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12 ">
 
@@ -146,7 +135,7 @@ export class RegularPostCard extends Component {
                 </div>
             </header>
 
-            <div ref={elm => this.main = elm} onClick={this.handleClick.bind(this)} className="mdc-card__primary-action Main Markdown" tabIndex="0">
+            <div className="mdc-card__primary-action Main Markdown" tabIndex="0">
                 <title>{this.state.postData.title}</title>
                 <div ref={elm => this.content = elm} className='Content' dangerouslySetInnerHTML={{__html: this.handleMarkdown(this.state.postData)}} />
             </div>
@@ -179,27 +168,3 @@ export class RegularPostCard extends Component {
         return oldState;
     })
 }
-
-/*
-
-                    <button className="mdc-icon-button mdc-card__action mdc-card__action--icon--unbounded" title="Share">
-                        <i className="mdc-icon-button__icon"><Icon path={mdiShare} /></i>
-                    </button>
-
-
-
-
-                    <button className="mdc-icon-button mdc-card__action mdc-card__action--icon--unbounded" title="Comments">
-                        <i className="mdc-icon-button__icon"><Icon path={mdiCommentOutline} /></i>
-                    </button>
-                    <div className="mdc-card__action mdc-typography mdc-typography--caption">200</div>
-
-
-
-
-
-
-
-
-
-*/

@@ -2,8 +2,14 @@ import React, { Component } from 'react'
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";  
 import EventEmitter from 'events'
 
-import { HomePage } from './Pages/HomePage'
+import { TopAppBar } from './MaterialComponents/TopAppBar'
+import { TabBar } from './MaterialComponents/TabBar'
+import { Drawer } from './MaterialComponents/Drawer'
+import { Fab } from './MaterialComponents/Fab'
+
 import { LoginPage } from './Pages/LoginPage' 
+import { PostsWrapper } from './Posts/PostsWrapper'
+import { Submission } from './Pages/Submission'
 
 export class App extends Component {
     events = new EventEmitter()
@@ -21,16 +27,17 @@ export class App extends Component {
                 <Link to="/privacypolity">Privacy-Polity </Link>
                 <Link to="/contactus">Contact-Us </Link>
                 <Link to="/aboutus">About-Us </Link>
+
             </nav>
             <Switch>
                 <Route exact path="/login" component={props => (
                     !window.app.r ?
-                    <LoginPage {...props} /> :
+                    <LOGIN {...props} /> :
                     <Redirect to="/home" />
                 )}/>
                 <Route exact path={["/home/:sort?/:flair?", "/submission/:id", "/submit", "/wiki"]} component={props => (
                     window.app.r ?
-                    <HomePage {...props} events={this.events} /> :
+                    <HOME {...props} /> :
                     <Redirect to={{
                         pathname: "/login",
                         state: props.location.pathname + props.location.search
