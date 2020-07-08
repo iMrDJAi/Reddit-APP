@@ -11,7 +11,9 @@ export class PostCardPreview extends Component {
         super(props)
         this.state = {
             postData: props.postData,
-            authorData: '',
+            authorData: {
+                icon_img: window.app.subreddit.community_icon
+            },
             likes: props.postData.score
         }
         this.update = this.update.bind(this)
@@ -25,9 +27,10 @@ export class PostCardPreview extends Component {
         var options = new MDCRipple(this.optionsBtnElm)
         options.unbounded = true
         new MDCRipple(this.mainElm)
-        const authorData = await this.state.postData.author.fetch()
+        window.app.cache.posts[this.state.postData.id] = this.state.postData
+        if (!window.app.cache.users[this.state.postData.author.name]) window.app.cache.users[this.state.postData.author.name] = await this.state.postData.author.fetch()
         this.setState(async oldState => {     
-            oldState.authorData = authorData
+            oldState.authorData = window.app.cache.users[this.state.postData.author.name]
             return oldState
         })
     }
@@ -128,27 +131,20 @@ export class PostCardPreview extends Component {
         }
     }
     handleClick() {
-        const element = this.mainElm.cloneNode(true)
+        /*const element = this.mainElm.cloneNode(true)
         element.className = "Main Markdown"
         window.app.cache[this.state.postData.id] = {
             postData: this.state.postData,
             element: element
-        }
+        }*/
         this.props.history.push('/submission/' + this.state.postData.id)
-    }
-    handleUserAvatar(authorData) {
-        if (authorData) {
-            return authorData.icon_img.split('?')[0]
-        } else {
-            return 'https://styles.redditmedia.com/t5_240vb0/styles/communityIcon_20ox4v0w48u41.png'
-        }
     }
     render = () => (
         <>
             <div className="PostCard PostCardPreview mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                 <header className="mdc-card__actions">
                     <div className="mdc-card__action-buttons">
-                        <img className="UserAvatar mdc-card__action" src={this.handleUserAvatar(this.state.authorData)} ></img>
+                        <img className="UserAvatar mdc-card__action" src={this.state.authorData.icon_img.split('?')[0]} ></img>
                         <div className="Container">
                             <div className="Name mdc-card__action">{this.state.postData.author.name}</div>
                             <div className="Info">{System.timeSince(new Date(this.state.postData.created_utc * 1000))}</div>
@@ -183,7 +179,7 @@ export class PostCardPreview extends Component {
                         </div>
                     </div> :
 
-                    <div ref={elm => this.mainElm = elm} onClick={this.handleClick.bind(this)} className="mdc-card__primary-action Main Markdown" tabIndex="0">
+                    <div ref={elm => this.mainElm = elm} onClick={this.handleClick.bind(this)} className="mdc-card__primary-action Main Markdown" id={this.state.postData.id} tabIndex="0">
                         <title>{this.state.postData.title}</title>
                         <div className='Content' dangerouslySetInnerHTML={{__html: this.handleMarkdown(this.state.postData)}} />           
                     </div>

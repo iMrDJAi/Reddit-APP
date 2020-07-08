@@ -11,13 +11,16 @@ export class PostCardFull extends Component {
         super(props)
         this.state = {
             postData: props.postData,
-            element: props.element,
+            authorData: {
+                icon_img: window.app.subreddit.community_icon
+            },
+            mainElement: props.mainElement,
             likes: props.postData.score
         }
         this.update = this.update.bind(this)
     }
     async componentDidMount() {
-        this.main.replaceWith(this.state.element)
+        if (this.state.mainElement) this.mainElm.replaceWith(this.state.mainElement)
         var likeBtn = new MDCIconButtonToggle(this.like)
         var dislikeBtn = new MDCIconButtonToggle(this.dislike)
         this.handleVotes(likeBtn, dislikeBtn)
@@ -25,6 +28,11 @@ export class PostCardFull extends Component {
         this.handleSave(saveBtn)
         var options = new MDCRipple(this.options)
         options.unbounded = true
+        if (!window.app.cache.users[this.state.postData.author.name]) window.app.cache.users[this.state.postData.author.name] = await this.state.postData.author.fetch()
+        this.setState(async oldState => {     
+            oldState.authorData = window.app.cache.users[this.state.postData.author.name]
+            return oldState
+        })
     }
     handleVotes(likeBtn, dislikeBtn) {
         var tries = 0
@@ -128,7 +136,7 @@ export class PostCardFull extends Component {
 
             <header className="mdc-card__actions">
                 <div className="mdc-card__action-buttons">
-                    <img className="UserAvatar mdc-card__action" src={this.state.postData.author.icon_img.split('?')[0]}></img>
+                    <img className="UserAvatar mdc-card__action" src={this.state.authorData.icon_img.split('?')[0]}></img>
                     <div className="Container">
                         <div className="Name mdc-card__action">{this.state.postData.author.name}</div>
                         <div className="Info">{System.timeSince(new Date(this.state.postData.created_utc * 1000))}</div>
@@ -142,34 +150,36 @@ export class PostCardFull extends Component {
             </header>
 
             {
-                !this.state.element ?
-            
-                    this.props.postData.crosspost_parent ?
-                    <div ref={elm => this.main = elm} className="Main Markdown" tabIndex="0">
-                        <title>{this.state.postData.title}</title>
-                        <div ref={elm => this.content = elm} className='Content ContentCrossPost'>
-                            <div className="mdc-card mdc-card--outlined">
-                                <header className="mdc-card__actions">
-                                    <div className="mdc-card__action-buttons">
-                                        <div className="Container">
-                                            <div className="Name mdc-card__action">{this.state.postData.crosspost_parent_list[0].subreddit_name_prefixed}</div>
-                                            <div className="Info">Posted By {this.state.postData.crosspost_parent_list[0].author.name} • {System.timeSince(new Date(this.state.postData.crosspost_parent_list[0].created_utc * 1000))}</div>
+                !this.state.mainElement ?
+                <>
+                    {
+                        this.props.postData.crosspost_parent ?
+                        <div className="Main Markdown" tabIndex="0">
+                            <title>{this.state.postData.title}</title>
+                            <div className='Content ContentCrossPost'>
+                                <div className="mdc-card mdc-card--outlined">
+                                    <header className="mdc-card__actions">
+                                        <div className="mdc-card__action-buttons">
+                                            <div className="Container">
+                                                <div className="Name mdc-card__action">{this.state.postData.crosspost_parent_list[0].subreddit_name_prefixed}</div>
+                                                <div className="Info">Posted By {this.state.postData.crosspost_parent_list[0].author.name} • {System.timeSince(new Date(this.state.postData.crosspost_parent_list[0].created_utc * 1000))}</div>
+                                            </div>
                                         </div>
+                                    </header>
+                                    <div className="Main Markdown" tabIndex="0">
+                                        <title>{this.state.postData.crosspost_parent_list[0].title}</title>
+                                        <div dangerouslySetInnerHTML={{__html: this.handleMarkdown(this.state.postData)}} />
                                     </div>
-                                </header>
-                                <div className="Main Markdown" tabIndex="0">
-                                    <title>{this.state.postData.crosspost_parent_list[0].title}</title>
-                                    <div dangerouslySetInnerHTML={{__html: this.handleMarkdown(this.state.postData)}} />
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    : <div ref={elm => this.main = elm} className="Main Markdown" tabIndex="0">
-                        <title>{this.state.postData.title}</title>
-                        <div ref={elm => this.content = elm} className='Content' dangerouslySetInnerHTML={{__html: this.handleMarkdown(this.state.postData)}} />           
-                    </div>
-                    
-                : <div ref={ele => this.main = ele}/>
+                        : <div className="Main Markdown" tabIndex="0">
+                            <title>{this.state.postData.title}</title>
+                            <div className='Content' dangerouslySetInnerHTML={{__html: this.handleMarkdown(this.state.postData)}} />           
+                        </div>
+                    }
+                </>   
+                : <div ref={ele => this.mainElm = ele}/>
             }
 
             <footer className="mdc-card__actions">

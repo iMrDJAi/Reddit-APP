@@ -10,18 +10,17 @@ export class Submission extends Component {
         this.update = this.update.bind(this)
     }
     async componentDidMount() {
-        if (window.app.cache[this.props.match.params.id]) {
-            console.log(window.app.cache[this.props.match.params.id].postData)
+        if (window.app.cache.posts[this.props.match.params.id]) {
+            const element = document.getElementById(this.props.match.params.id).cloneNode(true)
+            element.className = "Main Markdown"
             this.update(<PostCardFull 
                 {...this.props} 
-                postData={window.app.cache[this.props.match.params.id].postData} 
-                element={window.app.cache[this.props.match.params.id].element} 
+                postData={window.app.cache.posts[this.props.match.params.id]} 
+                mainElement={element} 
             />, 'PostCardFull')
         } else {
             const postData = await window.app.r.getSubmission(this.props.match.params.id).fetch()
-            postData.author = await postData.author.fetch()
-            console.log(postData)
-            this.update(<PostCardFull {...this.props} postData={postData} element='' />, 'PostCardFull')
+            this.update(<PostCardFull {...this.props} postData={postData} mainElement='' />, 'PostCardFull')
         }
     }
     render = () => (

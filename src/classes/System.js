@@ -10,7 +10,7 @@ export default class System {
             subreddit: null,
             flairs: null,
             cache: {
-                submissions: {},
+                posts: {},
                 users: {}
             }
         }
