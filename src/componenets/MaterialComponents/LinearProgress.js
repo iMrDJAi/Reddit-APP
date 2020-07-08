@@ -3,7 +3,8 @@ import { MDCLinearProgress } from '@material/linear-progress';
 
 export class LinearProgress extends Component {
     componentDidMount() {
-        new MDCLinearProgress(this.element);
+        const ln = new MDCLinearProgress(this.element)
+        this.props.events.on('LoginLinearProgressToggle', (t) => t ? ln.open() : ln.close())
     }
     render = () => (
         <div ref={ele => this.element = ele} className="mdc-linear-progress mdc-linear-progress--indeterminate">

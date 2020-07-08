@@ -7,42 +7,36 @@ export class PostsWrapper extends Component {
     constructor() {
         super()
         this.state = {
-            postsObj: [],
-            posts: []      
+            postsData: [],
+            hasMore: true      
         }
-        this.push = this.push.bind(this)
         this.update = this.update.bind(this)
-        this.pushPosts = this.pushPosts.bind(this)
     }
     async pushPosts() {
-        if (!this.state.postsObj[0]) var postsObj = await window.app.subreddit.getNew({ 'limit': 15 })
-        else var postsObj = await this.state.postsObj.fetchMore({ 'amount': 15 }).catch()
-        /*postsObj = await Promise.all(postsObj.map(async post => {
-            post.author = await System.userData(post.author.name)
-            return post
-        }))*/
-        console.log(postsObj)
-        this.update(postsObj, 'postsObj')
+        if (!this.state.postsData[0]) var postsData = await window.app.subreddit.getNew({ 'limit': 15 })
+        else var postsData = await this.state.postsData.fetchMore({ 'amount': 15 })
+        if (postsData.length === this.state.postsData.length) this.update(false, 'hasMore')
+        else this.update(postsData, 'postsData')
+        /*for (let postData of postsData) {
+            postData.author = await postData.author.fetch()
+        }*/
+        console.log(postsData)
     }
     render = () => {
-        var posts = this.state.postsObj.map(postObj =>
+        var posts = this.state.postsData.map(postObj =>
             <PostCardPreview {...this.props} postData={postObj} key={postObj.id} />
         )
-        return <div className="mdc-layout-grid PostsContainer">
+        return <div className="mdc-layout-grid ContentContainer">
             <InfiniteScroll
                 className="mdc-layout-grid__inner"
-                loadMore={this.pushPosts}
-                hasMore={true}
+                loadMore={this.pushPosts.bind(this)}
+                hasMore={this.state.hasMore}
                 loader={<div key={0}>Loading ...</div>}
             >
                 {posts}
             </InfiniteScroll>
         </div>
     }
-    push = (data, key) => this.setState(oldState => {
-        oldState[key].push(data);
-        return oldState;
-    })
     update = (data, key) => this.setState(oldState => {
         oldState[key] = data;
         return oldState;

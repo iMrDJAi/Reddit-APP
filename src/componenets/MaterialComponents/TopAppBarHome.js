@@ -3,7 +3,7 @@ import { MDCTopAppBar } from '@material/top-app-bar';
 import Icon from '@mdi/react'
 import { mdiMenu, mdiBell, mdiDotsVertical, mdiMagnify } from '@mdi/js'
 
-export class TopAppBar extends Component {
+export class TopAppBarHome extends Component {
     constructor() {
         super()
     }
@@ -16,7 +16,7 @@ export class TopAppBar extends Component {
             <div className="mdc-top-app-bar__row">
                 <section className="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
                     <button className="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button" aria-label="Open navigation menu"><Icon path={mdiMenu} /></button>
-                    <span className="mdc-top-app-bar__title"></span>
+                    <span className="mdc-top-app-bar__title">Home</span>
                 </section>
                 <section className="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
                     {/*<button className="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Search"><Icon path={mdiMagnify} /></button>*/}

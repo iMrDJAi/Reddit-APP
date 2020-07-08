@@ -1,15 +1,3 @@
-/*@use "@material/theme" with (
-    $primary: #101d55,
-    $on-primary: #ffffff,
-    $secondary: #29e3ee,
-    $on-secondary: #000000,
-    $error: #b00020,
-    $on-error: #ffffff,
-    $surface: #ffffff,
-    $on-surface: #000000,
-    $background: #e5e5e5,
-);*/
-
 @use "@material/theme";
 @use "@material/typography" with (
     $styles-headline1: (font-size: 38px),
@@ -19,9 +7,8 @@
     $styles-headline5: (font-size: 16px),
     $styles-headline6: (font-size: 13px)
 );
-
-@use "@material/elevation"as elevation;
-@use "@material/shape"as radius;
+@use "@material/elevation" as elevation;
+@use "@material/shape" as radius;
 @use "@material/button";
 @use "@material/icon-button";
 @use "@material/top-app-bar/mdc-top-app-bar";
@@ -39,7 +26,6 @@
 @include card.core-styles;
 @include button.core-styles;
 @include icon-button.core-styles;
-
 @import "@material/typography/mdc-typography";
 @import "@material/elevation/mdc-elevation";
 @import "@material/layout-grid/mdc-layout-grid";
@@ -51,7 +37,6 @@
 $mdc-shape-small-component-radius: 4px;
 $mdc-shape-medium-component-radius: 8px;
 $mdc-shape-large-component-radius: 0px;
-
 
 //Responsive Layouts!
 //Default is large devices
@@ -70,49 +55,23 @@ $mdc-shape-large-component-radius: 0px;
 }
 
 :root {
-    --mdc-theme-primary: #101d55;
-    --mdc-theme-on-primary: #ffffff;
-    --mdc-theme-secondary: #29e3ee;
-    --mdc-theme-on-secondary: #000000;
-    --mdc-theme-surface: #ffffff;
-    --mdc-theme-on-surface: #000000;
-    --mdc-theme-background: #e5e5e5;
+    --mdc-theme-primary: rgb(16, 29, 85);
+    --mdc-theme-on-primary: rgb(255, 255, 255);
+    --mdc-theme-secondary: rgb(41, 227, 238);
+    --mdc-theme-on-secondary: rgb(0, 0, 0);
+    --mdc-theme-surface: rgb(255, 255, 255);
+    --mdc-theme-on-surface: rgb(0, 0, 0);
+    --mdc-theme-background: rgb(229, 229, 229);
 }
-
-
-//For debugging
-.App * {
-    //border: white dashed 2px;
-    box-sizing: border-box;
-}
-
 
 body {
-    /*@include s {
-        background-color: #121212;
-    }
-
-    @include m {
-        background-color: #242424;
-    }*/
-
     @include theme.prop(background-color, background);
-}
-
-
-//The hard work starts here
-
-body {
     margin: 0;
 }
 
 body * {
     unicode-bidi: plaintext;
 }
-
-/*@include s {
-    font-size: 2.6vw;
-}*/
 
 .Stent {
     width: 100vw;
@@ -130,6 +89,7 @@ body * {
         .mdc-linear-progress {
             @include linear-progress.bar-color(secondary);
         }
+        transition: all .5s linear;
         .Content {
             padding: 0.5rem 1rem;
             .Title {
@@ -229,8 +189,7 @@ $barsHeight: 55px;
     }
 }
 
-//PostsPart
-.PostsContainer {
+.ContentContainer {
     position: relative;
     top: 64px;
     @include s {
@@ -238,12 +197,8 @@ $barsHeight: 55px;
     }
 }
 
-.Submission {
-    position: relative;
-    top: 64px;
-    @include s {
-        top: 56px;
-    }
+.mdc-card__primary-action * {
+    pointer-events: none;
 }
 
 .mdc-fab {
@@ -252,29 +207,14 @@ $barsHeight: 55px;
     right: 1rem;
 }
 
-.mdc-tab-indicator .mdc-tab-indicator__content--underline {
-    @include theme.prop(border-color, on-primary);
-}
-
-.mdc-tab--active .mdc-tab__icon {
-    @include theme.prop(color, on-primary);
-}
-
-.mdc-tab--active .mdc-tab__text-label {
-    @include theme.prop(color, on-primary);
+.mdc-top-app-bar__title {
+    font-size: 20px !important;
 }
 
 .Posts {
     margin-top: 50px;
 }
 
-/*.mdc-tab .mdc-tab__icon {
-    color: rgba(0, 0, 0, 0.54);
-}
-
-.mdc-tab .mdc-tab__text-label {
-    color: rgba(0, 0, 0, 0.6);
-}*/
 
 /*.mdc-elevation--z0 {
     background-image: linear-gradient(to top, #121212eb, #121212eb);

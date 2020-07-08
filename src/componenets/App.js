@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";  
-import EventEmitter from 'events'
-
 import { HomePage } from './Pages/HomePage'
 import { LoginPage } from './Pages/LoginPage' 
+import EventEmitter from 'events'
 
 export class App extends Component {
     events = new EventEmitter()
@@ -25,7 +24,7 @@ export class App extends Component {
             <Switch>
                 <Route exact path="/login" component={props => (
                     !window.app.r ?
-                    <LoginPage {...props} /> :
+                    <LoginPage {...props} events={this.events} /> :
                     <Redirect to="/home" />
                 )}/>
                 <Route exact path={["/home/:sort?/:flair?", "/submission/:id", "/submit", "/wiki"]} component={props => (
@@ -39,10 +38,10 @@ export class App extends Component {
                 <Route exact path="/privacypolity" component={props => (
                     <h1>PRAVACY POLITY</h1>
                 )}/>
-                <Route exact path="/aboutus" component={props => (
+                <Route exact path="/about" component={props => (
                     <h1>ABOUT US</h1>
                 )}/>
-                <Route exact path="/contactus" component={props => (
+                <Route exact path="/contact" component={props => (
                     <h1>CONTACT US</h1>
                 )}/>
                 {/*404*/}
@@ -54,66 +53,18 @@ export class App extends Component {
     )
 }
 
-function LOGIN(props) {
-    setTimeout(() => {
-        window.app.r = {}
-        props.history.push(props.location.state || '/home')
-        console.log("FAKE LOGIN")
-    }, 2000)
-    console.log(props)
-    return <h1>LOGIN</h1>
-}
-
-function HOME(props) {
-    console.log(props)
-    return (
-        <>
-            <h1>HOME</h1>
-            <Route exact path={["/submission/:id"]} component={props => (
-                <h1>SUBMISSION</h1>
-            )}/>
-            <Route exact path={["/submit"]} component={props => (
-                <h1>SUBMIT</h1>
-            )}/>
-        </>
-    )
-}
 /*
-export class App extends Component {
-    events = new EventEmitter()
-    render = () => (
-        <Router>
             <nav>
-                <Link to="/">/ </Link>
-                <Link to="/home">Home </Link>
-                <Link to="/submission/2np694">Submission </Link>
+                <Link to="/">Root </Link>
                 <Link to="/login">Login </Link>
+                <Link to="/home">Home </Link>
+                <Link to="/home/new">Home-New </Link>
+                <Link to="/home/new/news">Home-New-News </Link>
+                <Link to="/submission/2np694">Submission </Link>
+                <Link to="/submit">Submit </Link>
+                <Link to="/wiki">Wiki </Link>
+                <Link to="/privacypolity">Privacy-Polity </Link>
+                <Link to="/contactus">Contact-Us </Link>
+                <Link to="/aboutus">About-Us </Link>
             </nav>
-            <Switch>
-                <Route exact path="/login" component={props => (
-                    !window.app.r ? <LoginPage {...props} /> : <Redirect to="/home" />
-                )}/>
-                <Route exact path={["/home", "/home/:sort", "/home/:sort/:flair", "/submission/:id"]} component={props => (
-                    window.app.r ? 
-                    <>
-                        <TopAppBar events={this.events} />
-                        <Drawer events={this.events} />
-                        <div className="mdc-drawer-scrim" />
-                        <PostsWrapper {...props} />
-                        <Fab />
-                        <Route exact path={["/submission/:id"]} component={props => (
-                            <Submission {...props} />
-                        )}/>
-                    </>
-                    : <Redirect to={{
-                        pathname: "/login",
-                        state: { referrer: props.location.pathname + props.location.search }
-                      }} />
-                )}/>
-                <Route>
-                    <Redirect to="/login" />
-                </Route>
-            </Switch>
-        </Router>
-    )
-}*/
+*/

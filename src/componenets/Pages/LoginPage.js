@@ -15,50 +15,67 @@ export class LoginPage extends Component {
     }
     async componentDidMount() {
         /*await new Promise(res => setTimeout(() => res(), 5000))
-        this.update('login', 'condition')
-        await new Promise(res => setTimeout(() => res(), 5000))
+        this.props.events.emit("LoginLinearProgressToggle", false)
         this.update('success', 'condition')
+        await new Promise(res => setTimeout(() => res(), 5000))
+        this.props.events.emit("LoginLinearProgressToggle", true)
+        this.update('login', 'condition')
         await new Promise(res => setTimeout(() => res(), 5000))
         this.update('error', 'condition')*/
         const query = new URLSearchParams(this.props.location.search)
         if (query.get('state') && (query.get('code') || query.get('error'))) {
-            if (query.get('state') === window.sessionStorage.state) { //State Check
+
+
+            if (query.get('state') === window.localStorage.state) { //State Check
                 if (query.get('error')) { //Access Denied Check
-                    this.update('error', 'condition')
+                    this.error()
                 } else {
                     var r = await System.oAuth(query.get('code'))
                     if (r) {
                         console.log("✅")
-                        await System.init(r)
-                        this.update('success', 'condition')
-                        await new Promise(res => setTimeout(() => res(), 1500))
-                        this.props.history.push(window.sessionStorage.referrer)
+                        this.success(r)
                     } else {
                         console.log("❌")
-                        this.update('error', 'condition')
-                        await new Promise(res => setTimeout(() => res(), 1500))
-                        window.sessionStorage.referrer = window.sessionStorage.referrer || '/home'
-                        this.update(System.loginRequest(), 'loginURL')
-                        this.update('login', 'condition')
+                        this.error()
                     }
                 }
             } else {
-                this.update('error', 'condition')
+                console.log("❌")
+                this.error()
             }
+
+
+
         } else {
-            const r = await System.r();
-            console.log(r);
+            const r = await System.r()
+            console.log(r)
             if (r) {
-                await System.init(r)
-                this.update('success', 'condition')
-                await new Promise(res => setTimeout(() => res(), 1500))
-                this.props.history.push(this.props.location.state || '/home')
+                this.success(r)
             } else {
-                window.sessionStorage.referrer = this.props.location.state || '/home'
-                this.update(System.loginRequest(), 'loginURL')
-                this.update('login', 'condition')
+                this.login()
             }
         }
+    }
+    login() {
+        if (this.props.location.state) window.localStorage.referrer = this.props.location.state
+        this.update(System.loginRequest(), 'loginURL')
+        this.props.events.emit("LoginLinearProgressToggle", false)
+        this.update('login', 'condition')
+    }
+    async success(r) {
+        await System.init(r)
+        this.props.events.emit("LoginLinearProgressToggle", false)
+        this.update('success', 'condition')
+        await new Promise(res => setTimeout(() => res(), 1500))
+        this.props.history.push(window.localStorage.referrer || this.props.location.state || '/home')
+        window.localStorage.state = ''
+        window.localStorage.referrer = ''
+    }
+    async error() {
+        this.props.events.emit("LoginLinearProgressToggle", false)
+        this.update('error', 'condition')
+        await new Promise(res => setTimeout(() => res(), 1500))
+        this.props.history.push(window.localStorage.referrer || this.props.location.state || '/home')
     }
     render = () => (
         <div className="mdc-layout-grid LoadingPage">
@@ -66,10 +83,7 @@ export class LoginPage extends Component {
                 <div className="Card mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                     <div className="Stent" />
                     <div className="mdc-card__media mdc-card__media--16-9" style={{backgroundImage: `url('${banner}')`}} />
-                    {
-                        this.state.condition === 'loading' &&
-                        <LinearProgress />
-                    }
+                    <LinearProgress events={this.props.events} />
                     <div className="Content">
                         {
                             this.state.condition === 'loading' &&

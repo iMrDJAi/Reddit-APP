@@ -11,7 +11,7 @@
     "LOADING_TEXT_LOGIN": "Hey there! Please login with your Reddit account to continue.",
     "LOADING_BUTTON_LOGIN": "LOGIN WITH REDDIT",
     "LOADING_TITLE_SUCCESS": "Welcome!",
-    "LOADING_TEXT_SUCCESS": "Hello user! Have a nice time here.",
+    "LOADING_TEXT_SUCCESS": "Hello! Have a nice time here.",
     "LOADING_TITLE_ERROR": "Error!",
-    "LOADING_TEXT_ERROR": "Ehh.. Something went wrong! Please try again."
+    "LOADING_TEXT_ERROR": "Ehh.. Something went wrong!"
 }

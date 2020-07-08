@@ -2,17 +2,35 @@ var snoowrap = require('snoowrap')
 var config = require('../config.json')
 
 export default class System {
-    static get refreshToken() {
-        return window.localStorage.refreshToken || ''
+    static async startup() {
+        if (!window.localStorage.language) window.localStorage.language = config.defaultLanguage
+        window.app = {
+            r: null,
+            user: null,
+            subreddit: null,
+            flairs: null,
+            cache: {
+                submissions: {},
+                users: {}
+            }
+        }
+    }
+    static async init(r) {
+        window.app.r = r
+        window.app.user = r._ownUserInfo
+        window.app.subreddit = await r.getSubreddit(config.subreddit).fetch().catch(console.error)
+        if (!window.app.subreddit.user_is_subscriber) await window.app.subreddit.subscribe().catch(console.error)
+        window.app.flairs = await r.oauthRequest({ uri: `r/${config.subreddit}/api/link_flair_v2` })
+        return
     }
     static async r() {
         var requester = new snoowrap({
             clientId: config.clientId,
             clientSecret: '',
-            refreshToken: this.refreshToken
+            refreshToken: window.localStorage.refreshToken || ''
         })
         try {
-            var test = await requester.getMe().name.catch(console.error)
+            var test = await requester.getMe().name
         } catch {
             var test = false
         }
@@ -30,7 +48,7 @@ export default class System {
     }
     static loginRequest() {
         const state = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2)
-        window.sessionStorage.state = state
+        window.localStorage.state = state
         var authenticationUrl = snoowrap.getAuthUrl({
             clientId: config.clientId,
             scope: config.scope,
@@ -54,7 +72,6 @@ export default class System {
         }
         if (test) {
             window.localStorage.refreshToken = requester.refreshToken
-            window.sessionStorage.state = ''
             return requester
         } else {
             const online = await this.clientOnline
@@ -65,14 +82,6 @@ export default class System {
                 return this.oAuth(code)
             }
         }
-    }
-    static async init(r) {
-        window.app.r = r
-        window.app.user = r._ownUserInfo
-        window.app.subreddit = await r.getSubreddit(config.subreddit).fetch().catch(console.error)
-        await window.app.subreddit.subscribe().catch(console.error)
-        window.app.flairs = await r.oauthRequest({ uri: `r/${config.subreddit}/api/link_flair_v2` })
-        return
     }
     static async userData(userName) {
         try {
@@ -104,7 +113,7 @@ export default class System {
         });
     }
     static get strings() {
-        return require(`../strings-${window.app.language}.json`)
+        return require(`../strings-${window.localStorage.language}.json`)
     }
     static timeSince(timeStamp) {
         var now = new Date(),
@@ -123,6 +132,20 @@ export default class System {
             month = timeStamp.toDateString().match(/ [a-zA-Z]*/)[0].replace(" ", ""),
             year = timeStamp.getFullYear() == now.getFullYear() ? "" : " " + timeStamp.getFullYear()
             return day + " " + month + year
+        }
+    }
+    static async request(method) {
+        try {
+            await method
+            return method
+        } catch(e) {
+            console.error('[Error]: Request Error!', e)
+            window.err = e
+            //e.message
+            //"snoowrap refused to continue because reddit's ratelimit was exceeded. For more information about reddit's ratelimit, please consult reddit's API rules at https://github.com/reddit/reddit/wiki/API."
+            //"404"
+            await new Promise(res => setTimeout(() => res(), 10000))
+            return await this.request(method)
         }
     }
 }

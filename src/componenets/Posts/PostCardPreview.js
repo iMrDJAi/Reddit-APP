@@ -1,34 +1,42 @@
 import React, { Component } from 'react'
-import { MDCRipple } from '@material/ripple'
 import Icon from '@mdi/react'
 import { mdiThumbUp, mdiThumbDown, mdiThumbUpOutline, mdiThumbDownOutline, mdiDotsVertical, mdiBookmark, mdiBookmarkOutline } from '@mdi/js'
+import { MDCRipple } from '@material/ripple'
 import { MDCIconButtonToggle } from '@material/icon-button'
 import System from '../../classes/System'
-var renderMarkdown = require('imrdjai-mdr');
+import renderMarkdown from 'imrdjai-mdr'
 
 export class PostCardPreview extends Component {
     constructor(props) {
         super(props)
         this.state = {
             postData: props.postData,
+            authorData: '',
             likes: props.postData.score
         }
         this.update = this.update.bind(this)
     }
-    componentDidMount() {
-        var likeBtn = new MDCIconButtonToggle(this.like)
-        var dislikeBtn = new MDCIconButtonToggle(this.dislike)
+    async componentDidMount() {
+        var likeBtn = new MDCIconButtonToggle(this.likeBtnElm)
+        var dislikeBtn = new MDCIconButtonToggle(this.dislikeBtnElm)
         this.handleVotes(likeBtn, dislikeBtn)
-        var saveBtn = new MDCIconButtonToggle(this.save)
+        var saveBtn = new MDCIconButtonToggle(this.saveBtnElm)
         this.handleSave(saveBtn)
-        new MDCRipple(this.main)
+        var options = new MDCRipple(this.optionsBtnElm)
+        options.unbounded = true
+        new MDCRipple(this.mainElm)
+        const authorData = await this.state.postData.author.fetch()
+        this.setState(async oldState => {     
+            oldState.authorData = authorData
+            return oldState
+        })
     }
     handleVotes(likeBtn, dislikeBtn) {
         var tries = 0
         var current = ''
         var blocked = false
-        if (this.props.postData.likes === true) likeBtn.on = true
-        if (this.props.postData.likes === false) dislikeBtn.on = true
+        if (this.state.postData.likes === true) likeBtn.on = true
+        if (this.state.postData.likes === false) dislikeBtn.on = true
         likeBtn.listen("MDCIconButtonToggle:change", async (e) => {
             if (e.detail.isOn) {
                 if (dislikeBtn.on) {
@@ -45,12 +53,12 @@ export class PostCardPreview extends Component {
             if (tries < 3) {
                 tries++
                 await new Promise(res => setTimeout(() => res(), tries * 1750));
-                this.props.postData[current]()
+                this.state.postData[current]()
             } else {
                 if (!blocked) blocked = true, setTimeout(() => {
                     blocked = false
                     tries = 1
-                    this.props.postData[current]()
+                    this.state.postData[current]()
                 }, 30000)
             }
             console.log(tries, current, blocked)
@@ -71,19 +79,19 @@ export class PostCardPreview extends Component {
             if (tries < 3) {
                 tries++
                 await new Promise(res => setTimeout(() => res(), tries * 1750));
-                this.props.postData[current]()
+                this.state.postData[current]()
             } else {
                 if (!blocked) blocked = true, setTimeout(() => {
                     blocked = false
                     tries = 1
-                    this.props.postData[current]()
+                    this.state.postData[current]()
                 }, 30000)
             }
             console.log(tries, current, blocked)
         })
     }
     handleSave(saveBtn) {
-        if (this.props.postData.saved === true) saveBtn.on = true; else saveBtn.on = false
+        if (this.state.postData.saved === true) saveBtn.on = true; else saveBtn.on = false
         var tries = 0
         var current = ''
         var blocked = false
@@ -96,12 +104,12 @@ export class PostCardPreview extends Component {
             if (tries < 3) {
                 tries++
                 await new Promise(res => setTimeout(() => res(), tries * 1000))
-                this.props.postData[current]()
+                this.state.postData[current]()
             } else {
                 if (!blocked) blocked = true, setTimeout(() => {
                     blocked = false
                     tries = 1
-                    this.props.postData[current]()
+                    this.state.postData[current]()
                 }, 30000)
             }
             console.log(tries, current, blocked)
@@ -120,30 +128,44 @@ export class PostCardPreview extends Component {
         }
     }
     handleClick() {
+        const element = this.mainElm.cloneNode(true)
+        element.className = "Main Markdown"
+        window.app.cache[this.state.postData.id] = {
+            postData: this.state.postData,
+            element: element
+        }
         this.props.history.push('/submission/' + this.state.postData.id)
+    }
+    handleUserAvatar(authorData) {
+        if (authorData) {
+            return authorData.icon_img.split('?')[0]
+        } else {
+            return 'https://styles.redditmedia.com/t5_240vb0/styles/communityIcon_20ox4v0w48u41.png'
+        }
     }
     render = () => (
         <>
-            <div ref={elm => this.element = elm} className="PostCard PostCardPreview mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12 ">
+            <div className="PostCard PostCardPreview mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
                 <header className="mdc-card__actions">
                     <div className="mdc-card__action-buttons">
-                        <img className="UserAvatar mdc-card__action" src={'no' /*this.state.postData.author.icon_img.split('?')[0]*/}></img>
+                        <img className="UserAvatar mdc-card__action" src={this.handleUserAvatar(this.state.authorData)} ></img>
                         <div className="Container">
                             <div className="Name mdc-card__action">{this.state.postData.author.name}</div>
                             <div className="Info">{System.timeSince(new Date(this.state.postData.created_utc * 1000))}</div>
                         </div>
                     </div>
                     <div className="mdc-card__action-icons">
-                        <button className="mdc-icon-button mdc-card__action mdc-card__action--icon--unbounded" title="Options">
+                        <button ref={elm => this.optionsBtnElm = elm} className="mdc-icon-button mdc-card__action mdc-card__action--icon--unbounded" title="Options">
                             <i className="mdc-icon-button__icon"><Icon path={mdiDotsVertical} /></i>
                         </button>
                     </div>
                 </header>
                 {
-                    this.props.postData.crosspost_parent ?
-                    <div ref={elm => this.main = elm} onClick={this.handleClick.bind(this)} className="mdc-card__primary-action Main Markdown" tabIndex="0">
+                    this.state.postData.crosspost_parent ?
+
+                    <div ref={elm => this.mainElm = elm} onClick={this.handleClick.bind(this)} className="mdc-card__primary-action Main Markdown" id={this.state.postData.id} tabIndex="0">
                         <title>{this.state.postData.title}</title>
-                        <div ref={elm => this.content = elm} className='Content ContentCrossPost'>
+                        <div className='Content ContentCrossPost'>
                             <div className="mdc-card mdc-card--outlined">
                                 <header className="mdc-card__actions">
                                     <div className="mdc-card__action-buttons">
@@ -160,36 +182,37 @@ export class PostCardPreview extends Component {
                             </div>
                         </div>
                     </div> :
-                    <div ref={elm => this.main = elm} onClick={this.handleClick.bind(this)} className="mdc-card__primary-action Main Markdown" tabIndex="0">
+
+                    <div ref={elm => this.mainElm = elm} onClick={this.handleClick.bind(this)} className="mdc-card__primary-action Main Markdown" tabIndex="0">
                         <title>{this.state.postData.title}</title>
-                        <div ref={elm => this.content = elm} className='Content' dangerouslySetInnerHTML={{__html: this.handleMarkdown(this.state.postData)}} />           
+                        <div className='Content' dangerouslySetInnerHTML={{__html: this.handleMarkdown(this.state.postData)}} />           
                     </div>
                 }
                 <footer className="mdc-card__actions">
                     <div className="mdc-card__action-buttons">
-                        <button ref={elm => this.like = elm} className="mdc-icon-button mdc-card__action mdc-card__action--icon--unbounded toggle" title="Like">
+                        <button ref={elm => this.likeBtnElm = elm} className="mdc-icon-button mdc-card__action mdc-card__action--icon--unbounded toggle" title="Like">
                             <i className="mdc-icon-button__icon mdc-icon-button__icon--on"><Icon path={mdiThumbUp} /></i>
                             <i className="mdc-icon-button__icon"><Icon path={mdiThumbUpOutline} /></i>
                         </button>
                         <div className="mdc-typography mdc-typography--caption">{this.state.likes}</div>
-                        <button ref={elm => this.dislike = elm} className="mdc-icon-button mdc-card__action mdc-card__action--icon--unbounded toggle" title="Dislike">
+                        <button ref={elm => this.dislikeBtnElm = elm} className="mdc-icon-button mdc-card__action mdc-card__action--icon--unbounded toggle" title="Dislike">
                             <i className="mdc-icon-button__icon mdc-icon-button__icon--on"><Icon path={mdiThumbDown} /></i>
                             <i className="mdc-icon-button__icon"><Icon path={mdiThumbDownOutline} /></i>
                         </button>
                     </div>
-                    <div className="mdc-card__action-icons">
+                   <div className="mdc-card__action-icons">
                         <div className="mdc-typography mdc-typography--caption">{this.state.postData.num_comments} Comments</div>
-                        <button ref={elm => this.save = elm} className="mdc-icon-button mdc-card__action mdc-card__action--icon--unbounded toggle" title="Save">
+                        <button ref={elm => this.saveBtnElm = elm} className="mdc-icon-button mdc-card__action mdc-card__action--icon--unbounded toggle" title="Save">
                             <i className="mdc-icon-button__icon mdc-icon-button__icon--on"><Icon path={mdiBookmark} /></i>
                             <i className="mdc-icon-button__icon"><Icon path={mdiBookmarkOutline} /></i>
                         </button>
-                    </div>
+                    </div> 
                 </footer>
             </div>
         </>
     )
     update = (data, key) => this.setState(oldState => {
-        oldState[key] = data;
-        return oldState;
+        oldState[key] = data
+        return oldState
     })
 }

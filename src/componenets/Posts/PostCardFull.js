@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Icon from '@mdi/react'
 import { mdiThumbUp, mdiThumbDown, mdiThumbUpOutline, mdiThumbDownOutline, mdiDotsVertical, mdiBookmark, mdiBookmarkOutline } from '@mdi/js'
 import { MDCIconButtonToggle } from '@material/icon-button'
+import { MDCRipple } from '@material/ripple'
 import System from '../../classes/System'
 var renderMarkdown = require('imrdjai-mdr');
 
@@ -10,17 +11,20 @@ export class PostCardFull extends Component {
         super(props)
         this.state = {
             postData: props.postData,
+            element: props.element,
             likes: props.postData.score
         }
         this.update = this.update.bind(this)
     }
     async componentDidMount() {
-        
+        this.main.replaceWith(this.state.element)
         var likeBtn = new MDCIconButtonToggle(this.like)
         var dislikeBtn = new MDCIconButtonToggle(this.dislike)
         this.handleVotes(likeBtn, dislikeBtn)
         var saveBtn = new MDCIconButtonToggle(this.save)
         this.handleSave(saveBtn)
+        var options = new MDCRipple(this.options)
+        options.unbounded = true
     }
     handleVotes(likeBtn, dislikeBtn) {
         var tries = 0
@@ -107,6 +111,7 @@ export class PostCardFull extends Component {
         })
     }
     handleMarkdown(postObj) {
+        console.log("MD!!!!!")
         if (postObj.is_self) {
             return renderMarkdown(this.state.postData.selftext)
         } else {
@@ -123,20 +128,22 @@ export class PostCardFull extends Component {
 
             <header className="mdc-card__actions">
                 <div className="mdc-card__action-buttons">
-                    <img className="UserAvatar mdc-card__action" src={'no'/*this.state.postData.author.icon_img.split('?')[0]*/}></img>
+                    <img className="UserAvatar mdc-card__action" src={this.state.postData.author.icon_img.split('?')[0]}></img>
                     <div className="Container">
                         <div className="Name mdc-card__action">{this.state.postData.author.name}</div>
                         <div className="Info">{System.timeSince(new Date(this.state.postData.created_utc * 1000))}</div>
                     </div>
                 </div>
                 <div className="mdc-card__action-icons">
-                    <button className="mdc-icon-button mdc-card__action mdc-card__action--icon--unbounded" title="Options">
+                    <button ref={elm => this.options = elm} className="mdc-icon-button mdc-card__action mdc-card__action--icon--unbounded" title="Options">
                         <i className="mdc-icon-button__icon"><Icon path={mdiDotsVertical} /></i>
                     </button>
                 </div>
             </header>
 
             {
+                !this.state.element ?
+            
                     this.props.postData.crosspost_parent ?
                     <div ref={elm => this.main = elm} className="Main Markdown" tabIndex="0">
                         <title>{this.state.postData.title}</title>
@@ -156,12 +163,14 @@ export class PostCardFull extends Component {
                                 </div>
                             </div>
                         </div>
-                    </div> :
-                    <div ref={elm => this.main = elm} className="Main Markdown" tabIndex="0">
+                    </div>
+                    : <div ref={elm => this.main = elm} className="Main Markdown" tabIndex="0">
                         <title>{this.state.postData.title}</title>
                         <div ref={elm => this.content = elm} className='Content' dangerouslySetInnerHTML={{__html: this.handleMarkdown(this.state.postData)}} />           
                     </div>
-                }
+                    
+                : <div ref={ele => this.main = ele}/>
+            }
 
             <footer className="mdc-card__actions">
                 <div className="mdc-card__action-buttons">
