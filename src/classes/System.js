@@ -4,6 +4,7 @@ var config = require('../config.json')
 export default class System {
     static async startup() {
         if (!window.localStorage.language) window.localStorage.language = config.defaultLanguage
+        window.submissions = {}
         window.app = {
             r: null,
             user: null,
@@ -12,6 +13,10 @@ export default class System {
             cache: {
                 posts: {},
                 users: {}
+            },
+            submissions: {
+                sort: 'new',
+                flair: 'all'
             }
         }
     }
@@ -99,6 +104,11 @@ export default class System {
         } catch {
             return await this.userData(userName)
         }
+    }
+    static async fetchPosts(sort, flair) {
+        if (flair === 'all') flair = ''
+        const posts = await window.app.r.oauthRequest({uri: `r/${window.app.subreddit.display_name}/${sort}/`, method: 'get', qs: {f: `flair_name='${flair}'`}})
+        return posts
     }
     static get clientOnline() {
         return new Promise(async (resolve) => {

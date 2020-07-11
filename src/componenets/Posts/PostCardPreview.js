@@ -137,7 +137,7 @@ export class PostCardPreview extends Component {
             postData: this.state.postData,
             element: element
         }*/
-        this.props.history.push('/submission/' + this.state.postData.id)
+        this.props.history.push('/comments/' + this.state.postData.id)
     }
     render = () => (
         <>

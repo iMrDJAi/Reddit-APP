@@ -11,7 +11,7 @@ export class TopAppBarSubmission extends Component {
         <header ref={elem => this.element = elem} className="mdc-top-app-bar">
             <div className="mdc-top-app-bar__row">
                 <section className="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-                    <button className="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button" aria-label="Back"><Icon path={mdiArrowLeft} /></button>
+                    <a href='/home' className="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button" aria-label="Back"><Icon path={mdiArrowLeft} /></a>
                     <span className="mdc-top-app-bar__title">Submission</span>
                 </section>
                 <section className="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">

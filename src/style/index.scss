@@ -189,6 +189,15 @@ $barsHeight: 55px;
     }
 }
 
+.PostsContainer {
+    position: relative;
+    top: 64px;
+    @include s {
+        top: 56px;
+    }
+    display: none;
+}
+
 .ContentContainer {
     position: relative;
     top: 64px;

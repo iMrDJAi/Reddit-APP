@@ -119,7 +119,6 @@ export class PostCardFull extends Component {
         })
     }
     handleMarkdown(postObj) {
-        console.log("MD!!!!!")
         if (postObj.is_self) {
             return renderMarkdown(this.state.postData.selftext)
         } else {
@@ -206,7 +205,7 @@ export class PostCardFull extends Component {
         </div>
     )
     update = (data, key) => this.setState(oldState => {
-        oldState[key] = data;
-        return oldState;
+        oldState[key] = data
+        return oldState
     })
 }

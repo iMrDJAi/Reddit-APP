@@ -9,17 +9,13 @@ export class App extends Component {
     render = () => (
         <Router>
             <nav>
-                <Link to="/">Root </Link>
-                <Link to="/login">Login </Link>
                 <Link to="/home">Home </Link>
                 <Link to="/home/new">Home-New </Link>
+                <Link to="/home/new/all">Home-New-All </Link>
                 <Link to="/home/new/news">Home-New-News </Link>
-                <Link to="/submission/2np694">Submission </Link>
-                <Link to="/submit">Submit </Link>
-                <Link to="/wiki">Wiki </Link>
-                <Link to="/privacypolity">Privacy-Polity </Link>
-                <Link to="/contactus">Contact-Us </Link>
-                <Link to="/aboutus">About-Us </Link>
+                <Link to="/home/new/videos">Home-New-Videos </Link>
+                <Link to="/home/hot/videos">Home-Hot-Videos </Link>
+                <Link to="/comments/2np694">Submission </Link>
             </nav>
             <Switch>
                 <Route exact path="/login" component={props => (
@@ -27,7 +23,7 @@ export class App extends Component {
                     <LoginPage {...props} events={this.events} /> :
                     <Redirect to="/home" />
                 )}/>
-                <Route exact path={["/home/:sort?/:flair?", "/submission/:id", "/submit", "/wiki"]} component={props => (
+                <Route exact path={["/home/:sort/:flair", "/comments/:id", "/submit", "/wiki"]} component={props => (
                     window.app.r ?
                     <HomePage {...props} events={this.events} /> :
                     <Redirect to={{

@@ -7,7 +7,6 @@ import System from '../../classes/System'
 export class LoginPage extends Component {
     constructor(props) {
         super(props)
-        console.log(props)
         this.state = {
             condition: 'loading'
         }
@@ -44,11 +43,8 @@ export class LoginPage extends Component {
                 this.error()
             }
 
-
-
         } else {
             const r = await System.r()
-            console.log(r)
             if (r) {
                 this.success(r)
             } else {
