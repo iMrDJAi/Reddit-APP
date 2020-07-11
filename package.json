@@ -20,7 +20,9 @@
     "react-dom": "^16.13.1",
     "react-infinite-scroller": "^1.2.4",
     "react-router-dom": "^5.2.0",
-    "snoowrap": "^1.21.0"
+    "slug": "^3.3.0",
+    "snoowrap": "^1.21.0",
+    "string-hash": "^1.1.3"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",

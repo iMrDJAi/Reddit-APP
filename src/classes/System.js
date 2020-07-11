@@ -1,5 +1,7 @@
 var snoowrap = require('snoowrap')
 var config = require('../config.json')
+var slug = require('slug')
+var stringHash = require("string-hash")
 
 export default class System {
     static async startup() {
@@ -16,7 +18,7 @@ export default class System {
             },
             submissions: {
                 sort: 'new',
-                flair: 'all'
+                flair: ''
             }
         }
     }
@@ -25,7 +27,10 @@ export default class System {
         window.app.user = r._ownUserInfo
         window.app.subreddit = await r.getSubreddit(config.subreddit).fetch().catch(console.error)
         if (!window.app.subreddit.user_is_subscriber) await window.app.subreddit.subscribe().catch(console.error)
-        window.app.flairs = await r.oauthRequest({ uri: `r/${config.subreddit}/api/link_flair_v2` })
+        window.app.flairs = (await r.oauthRequest({ uri: `r/${config.subreddit}/api/link_flair_v2` })).map(flair => {
+            flair.name = slug(flair.text) + '-' + stringHash(flair.text).toString(36)
+            return flair
+        })
         return
     }
     static async r() {
@@ -106,9 +111,18 @@ export default class System {
         }
     }
     static async fetchPosts(sort, flair) {
-        if (flair === 'all') flair = ''
-        const posts = await window.app.r.oauthRequest({uri: `r/${window.app.subreddit.display_name}/${sort}/`, method: 'get', qs: {f: `flair_name='${flair}'`}})
-        return posts
+        console.log(sort, flair)
+        if (!flair) {
+            const posts = await window.app.r.oauthRequest({uri: `r/${window.app.subreddit.display_name}/${sort}/`, method: 'get'})
+            return posts
+        } else {
+            const posts = await window.app.r.search({
+                query: `flair_name:"${flair}"`,
+                subreddit: window.app.subreddit.display_name,
+                sort: sort
+            })
+            return posts
+        }
     }
     static get clientOnline() {
         return new Promise(async (resolve) => {

@@ -23,7 +23,7 @@ export class App extends Component {
                     <LoginPage {...props} events={this.events} /> :
                     <Redirect to="/home" />
                 )}/>
-                <Route exact path={["/home/:sort/:flair", "/comments/:id", "/submit", "/wiki"]} component={props => (
+                <Route path={["/home/", "/comments/", "/submit", "/wiki"]} component={props => (
                     window.app.r ?
                     <HomePage {...props} events={this.events} /> :
                     <Redirect to={{

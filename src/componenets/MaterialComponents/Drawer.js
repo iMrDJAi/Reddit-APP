@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from "react-router-dom"
 import { MDCDrawer } from '@material/drawer'
 import { MDCRipple } from '@material/ripple'
 import { MDCList } from '@material/list'
@@ -10,9 +11,11 @@ export class Drawer extends Component {
             if (flair === window.app.flairs[0]) var i = 0, cls = "mdc-list-item mdc-list-item--activated"; 
             else var i = -1, cls = "mdc-list-item";
             return (
-                <li className={cls} key={flair.id} tabIndex={i}>
-                    <span className="mdc-list-item__text" role="option" aria-selected="false">{flair.text}</span>
-                </li>
+                <Link to={`/home/${encodeURIComponent(window.app.submissions.sort)}/${encodeURIComponent(flair.name)}`} key={flair.id}>
+                    <li className={cls} tabIndex={i}>
+                        <span className="mdc-list-item__text" role="option" aria-selected="false">{flair.text}</span>
+                    </li>
+                </Link>
             )
         })
     }

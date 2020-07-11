@@ -35,12 +35,12 @@ export class HomePage extends Component {
             //console.log(this.props)
             //console.log(location)
             //console.log(match)
-            if (match.params.sort) window.app.submissions.sort = match.params.sort
-            if (match.params.flair) window.app.submissions.flair = match.params.flair
+            if (!match.params.flair || !window.app.flairs.find(flair => flair.name === match.params.flair)) window.app.submissions.flair = ''
+            else window.app.submissions.flair = match.params.flair
             window.history.pushState('', '', `/home/${window.app.submissions.sort}/${window.app.submissions.flair}`)
             if (!document.getElementById(`${window.app.submissions.sort}-${window.app.submissions.flair}`)) {
-                console.log(`${window.app.submissions.sort}-${window.app.submissions.flair}`)
-                this.push(`${window.app.submissions.sort}-${window.app.submissions.flair}`, 'postsWrappers')
+                //console.log(`${window.app.submissions.sort}-${window.app.submissions.flair}`)
+                this.push({sort: window.app.submissions.sort, flair: window.app.submissions.flair}, 'postsWrappers')
             }
             this.update(<style>{`
                 #${window.app.submissions.sort}-${window.app.submissions.flair} {
@@ -50,9 +50,9 @@ export class HomePage extends Component {
         }
     }
     render = () => {
-        var wrappers = this.state.postsWrappers.map(p => {
-            //console.log(this.props)
-            return <PostsWrapper {...this.props} p={p} sort={window.app.submissions.sort} flair={window.app.submissions.flair} key={p} />
+        var wrappers = this.state.postsWrappers.map(config => {
+            console.log(config)
+            return <PostsWrapper {...this.props} config={config} key={`${config.sort}-${config.flair}`} />
         })
         return <> 
             <div className='Home'>
@@ -77,6 +77,8 @@ export class HomePage extends Component {
         return oldState
     })
     /*
+
+
     
     shouldComponentUpdate(nextProps, nextState) {
         const match = matchPath(this.props.location.pathname, {
