@@ -8,27 +8,23 @@ export class PostsWrapper extends Component {
         super(props)
         this.state = {
             postsData: [],
-            hasMore: true      
+            hasMore: true
         }
         this.update = this.update.bind(this)
         console.log(props)
     }
     async pushPosts() {
-        //if (!this.state.postsData[0]) var postsData = await System.fetchPosts(this.props.match.params.sort, this.props.match.params.flair)
-        if (!this.state.postsData[0]) var postsData = await System.fetchPosts(this.props.config.sort, window.app.flairs.find(flair => flair.name === this.props.config.flair).text)
+        if (!this.state.postsData[0]) var postsData = await System.fetchPosts(this.props.config.sort, this.props.config.flair)
         else var postsData = await this.state.postsData.fetchMore({ 'amount': 15 })
         if (postsData.length === this.state.postsData.length) this.update(false, 'hasMore')
         else this.update(postsData, 'postsData')
-        /*for (let postData of postsData) {
-            postData.author = await postData.author.fetch()
-        }*/
         console.log(postsData)
     }
     render = () => {
         var posts = this.state.postsData.map(postObj =>
             <PostCardPreview {...this.props} postData={postObj} key={postObj.id} />
         )
-        return <div className="mdc-layout-grid PostsContainer" id={`${this.props.config.sort}-${this.props.config.flair}`}>
+        return <div className="mdc-layout-grid PostsContainer" id={`${this.props.config.id || ''}`}>
             <InfiniteScroll
                 className="mdc-layout-grid__inner"
                 loadMore={this.pushPosts.bind(this)}

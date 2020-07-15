@@ -77,6 +77,36 @@ body * {
     width: 100vw;
 }
 
+
+.PostsContainer {
+    position: relative;
+    top: 112px;
+    @include s {
+        top: 104px;
+    }
+    display: none;
+}
+
+.ContentContainer {
+    position: relative;
+    top: 64px;
+    @include s {
+        top: 56px;
+    }
+}
+
+.mdc-card__primary-action * {
+    pointer-events: none;
+}
+
+.Posts {
+    margin-top: 50px;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////LOGIN PAGE//////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
+
 .LoadingPage {
     min-height: 100vh;
     display: flex;
@@ -89,7 +119,7 @@ body * {
         .mdc-linear-progress {
             @include linear-progress.bar-color(secondary);
         }
-        transition: all .5s linear;
+        transition: all 0.5s linear;
         .Content {
             padding: 0.5rem 1rem;
             .Title {
@@ -110,9 +140,14 @@ body * {
 
 }
 
-//Drawer
+///////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////DRAWER////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
+
 $barsHeight: 55px;
 .Drawer {
+    border: none;
+    @include theme.prop(background, surface);
     .CommunityBar {
         position: fixed;
         display: flex;
@@ -146,16 +181,13 @@ $barsHeight: 55px;
         @include theme.prop(background, primary);
     }
     .mdc-drawer__content {
-        width: inherit;
-        overflow-x: hidden;
-
+        height: calc(100% - #{$barsHeight});
         .CommunityBanner {
             width: 100%;
             display: block;
         }
         div {
             height: calc(100% - #{$barsHeight});
-            box-sizing: border-box;
         }
     }
     .ProfileBar {
@@ -189,39 +221,49 @@ $barsHeight: 55px;
     }
 }
 
-.PostsContainer {
-    position: relative;
-    top: 64px;
-    @include s {
-        top: 56px;
-    }
-    display: none;
-}
-
-.ContentContainer {
-    position: relative;
-    top: 64px;
-    @include s {
-        top: 56px;
-    }
-}
-
-.mdc-card__primary-action * {
-    pointer-events: none;
-}
-
-.mdc-fab {
-    position: fixed;
-    bottom: 1rem;
-    right: 1rem;
-}
+///////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////TOP APP BAR//////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
 
 .mdc-top-app-bar__title {
     font-size: 20px !important;
 }
 
-.Posts {
-    margin-top: 50px;
+///////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////TAB BAR////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
+
+.mdc-tab .mdc-tab__text-label {
+    color: var(--mdc-theme-on-primary);
+    opacity: 0.6;
+}
+
+.mdc-tab .mdc-tab__icon {
+    color: var(--mdc-theme-on-primary);
+    opacity: 0.54;
+}
+
+.mdc-tab--active .mdc-tab__text-label, .mdc-tab--active .mdc-tab__icon {
+    color: var(--mdc-theme-on-primary);
+    opacity: 1;
+}
+
+.mdc-tab-indicator .mdc-tab-indicator__content--underline {
+    border-color: var(--mdc-theme-on-primary);
+}
+
+.mdc-tab__ripple::before, .mdc-tab__ripple::after {
+    background-color: var(--mdc-theme-on-primary);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////FAB//////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
+
+.mdc-fab {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
 }
 
 

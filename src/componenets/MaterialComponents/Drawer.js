@@ -8,13 +8,9 @@ export class Drawer extends Component {
     constructor() {
         super()
         this.items = window.app.flairs.map(flair => {
-            if (flair === window.app.flairs[0]) var i = 0, cls = "mdc-list-item mdc-list-item--activated"; 
-            else var i = -1, cls = "mdc-list-item";
             return (
-                <Link to={`/home/${encodeURIComponent(window.app.submissions.sort)}/${encodeURIComponent(flair.name)}`} key={flair.id}>
-                    <li className={cls} tabIndex={i}>
-                        <span className="mdc-list-item__text" role="option" aria-selected="false">{flair.text}</span>
-                    </li>
+                <Link to={`/home/${window.app.submissions.sorts[0]}/${flair.name}`} className={"mdc-list-item mdc-ripple-surface--accent"} tabIndex={-1} key={Math.random()}>
+                    <span className="mdc-list-item__text">{flair.text}</span>
                 </Link>
             )
         })
@@ -43,13 +39,13 @@ export class Drawer extends Component {
                 <img className="CommunityBanner" src={window.app.subreddit.mobile_banner_image.split('?')[0] || window.app.subreddit.banner_background_image.split('?')[0]} alt="banner" ref={elem => this.banner = elem}></img>
                 <div>
                     <nav className="mdc-list">
-                        <div className="mdc-list-group">
                             <h3 className="mdc-list-group__subheader">FLAIRS</h3>
-                            {this.items}
-                        </div>
+                                <Link to={`/home/${window.app.submissions.sorts[0]}`} className="mdc-list-item mdc-list-item--activated mdc-ripple-surface--accent" tabIndex={0}>
+                                    <span className="mdc-list-item__text">ALL</span>
+                                </Link>
+                                {this.items}
                     </nav>
                     <nav className="mdc-list">
-                        <div className="mdc-list-group">
                             <h3 className="mdc-list-group__subheader">LINKS</h3>
                             <li className="mdc-list-item" tabIndex="0">
                                 <span className="mdc-list-item__text" role="option" aria-selected="false">DISCORD</span>
@@ -57,7 +53,6 @@ export class Drawer extends Component {
                             <li className="mdc-list-item" tabIndex="1">
                                 <span className="mdc-list-item__text" role="option" aria-selected="false">FACEBOOK</span>
                             </li>
-                        </div>
                     </nav>
                 </div>
             </div>

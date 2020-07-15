@@ -8,6 +8,8 @@ import { Fab } from '../MaterialComponents/Fab'
 
 import { Submission } from './Submission'
 import { PostsWrapper } from '../Posts/PostsWrapper'
+import { Div } from '../Posts/Div'
+
 
 export class HomePage extends Component {
     constructor() {
@@ -20,39 +22,43 @@ export class HomePage extends Component {
         this.update = this.update.bind(this)
     }
     componentDidMount() {
-        this.handleHistoryUpdates(this.props.location)
+        this.handleHistoryUpdates(this.props.location.pathname)
         this.props.history.listen(location => {
-            this.handleHistoryUpdates(location)
+            this.handleHistoryUpdates(location.pathname)
         })
     }
-    handleHistoryUpdates(location) {
-        const match = matchPath(location.pathname, {
+    async handleHistoryUpdates(pathname) {
+        const match = matchPath(pathname, {
             path: "/home/:sort?/:flair?",
-            exact: true,
-            strict: false
+            exact: true
         })
         if (match) {
-            //console.log(this.props)
-            //console.log(location)
-            //console.log(match)
-            if (!match.params.flair || !window.app.flairs.find(flair => flair.name === match.params.flair)) window.app.submissions.flair = ''
-            else window.app.submissions.flair = match.params.flair
-            window.history.pushState('', '', `/home/${window.app.submissions.sort}/${window.app.submissions.flair}`)
-            if (!document.getElementById(`${window.app.submissions.sort}-${window.app.submissions.flair}`)) {
-                //console.log(`${window.app.submissions.sort}-${window.app.submissions.flair}`)
-                this.push({sort: window.app.submissions.sort, flair: window.app.submissions.flair}, 'postsWrappers')
-            }
-            this.update(<style>{`
-                #${window.app.submissions.sort}-${window.app.submissions.flair} {
-                    display: block !important;
+            console.log(pathname, match, match.params.sort, match.params.flair) 
+            if (!window.app.submissions.sorts.find(sort => sort === match.params.sort) || (match.params.flair && !window.app.flairs.find(flair => flair.name === match.params.flair))) {
+                await new Promise(res => setTimeout(() => res(), 0))
+                this.props.history.replace('/home/new')
+            } else {
+                if (match.params.flair) {
+                    var flair = window.app.flairs.find(flair => flair.name === match.params.flair).text
+                } else {
+                    match.params.flair = ''
+                    var flair = ''
                 }
-            `}</style>, 'style')         
+                if (!document.getElementById(`${match.params.sort}_${match.params.flair}`)) {
+                    this.push({sort: match.params.sort, flair: flair, id: `${match.params.sort}_${match.params.flair}`}, 'postsWrappers')
+                }
+                this.update(`
+                    #${match.params.sort}_${match.params.flair} {
+                        display: block !important;
+                    }
+                `, 'style')
+            }
         }
     }
     render = () => {
         var wrappers = this.state.postsWrappers.map(config => {
-            console.log(config)
-            return <PostsWrapper {...this.props} config={config} key={`${config.sort}-${config.flair}`} />
+            return <PostsWrapper {...this.props} config={config} key={`${config.sort}_${config.flair}`} />
+            //return <Div config={config} key={config.id} />
         })
         return <> 
             <div className='Home'>
@@ -60,9 +66,9 @@ export class HomePage extends Component {
                 <Drawer events={this.props.events} />
                 <div className="mdc-drawer-scrim" />
                 {wrappers}
-                {this.state.style}
                 <Fab />
             </div>
+            <style>{this.state.style}</style>
             <Route exact path={["/comments/:id"]} component={props => (
                 <Submission {...props} />
             )}/>
@@ -76,44 +82,4 @@ export class HomePage extends Component {
         oldState[key] = data
         return oldState
     })
-    /*
-
-
-    
-    shouldComponentUpdate(nextProps, nextState) {
-        const match = matchPath(this.props.location.pathname, {
-            path: "/home/:sort?/:flair?",
-            exact: true,
-            strict: false
-        })
-        console.log(this.props.location.pathname, !match)
-        if (match) return false
-        else return true
-    }*/
 }
-
-
-
-/*
-
-            <Route exact path={["/home/:sort?/:flair?"]} component={props => {
-                if (props.match.params.sort) window.app.submissions.sort = props.match.params.sort
-                if (props.match.params.flair) window.app.submissions.flair = props.match.params.flair
-                //window.history.pushState('', '', `/home/${window.app.submissions.sort}/${window.app.submissions.flair}`)
-                console.log(`${window.app.submissions.sort}-${window.app.submissions.flair}`)
-                return <style>{`
-                    #${window.app.submissions.sort}-${window.app.submissions.flair} {
-                        display: block;
-                    }
-                `}</style>
-            }}/>
-
-
-
-
-
-
-
-
-
-*/

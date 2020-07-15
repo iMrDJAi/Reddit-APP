@@ -7,20 +7,62 @@ export default class System {
     static async startup() {
         if (!window.localStorage.language) window.localStorage.language = config.defaultLanguage
         window.submissions = {}
-        window.app = {
-            r: null,
-            user: null,
-            subreddit: null,
-            flairs: null,
+        /*window.app = {
+            r: {},
+            user: {
+                icon_img: 'assets/cyberpunk-2077.807ced6bdeab5763d15c780643808bbc.jpg'
+            },
+            subreddit: {
+                community_icon: 'subreddit',
+                mobile_banner_image: 'assets/cyberpunk-2077.807ced6bdeab5763d15c780643808bbc.jpg'
+            },
+            flairs: [
+                {
+                    text: 'Announcments - إعلامات'
+                },
+                {
+                    text: 'General - عام'
+                },
+                {
+                    text: 'News - أخبار'
+                },
+                {
+                    text: 'Memes - ميمز'
+                },
+                {
+                    text: 'Videos - فيديوهات'
+                },
+                {
+                    text: 'Meta - ميتا'
+                }
+            ],
             cache: {
                 posts: {},
                 users: {}
             },
             submissions: {
-                sort: 'new',
-                flair: ''
+                sorts: ['new', 'hot', 'top'],
+                flairs: []
+            }
+        }*/
+        window.app = {
+            r: null,
+            user: null,
+            subreddit: null,
+            flairs: [],
+            cache: {
+                posts: {},
+                users: {}
+            },
+            submissions: {
+                sorts: ['new', 'hot', 'top'],
+                flairs: []
             }
         }
+        window.app.flairs = window.app.flairs.map(flair => {
+            flair.name = slug(flair.text) + '-' + stringHash(flair.text).toString(16)
+            return flair
+        })
     }
     static async init(r) {
         window.app.r = r
@@ -28,7 +70,7 @@ export default class System {
         window.app.subreddit = await r.getSubreddit(config.subreddit).fetch().catch(console.error)
         if (!window.app.subreddit.user_is_subscriber) await window.app.subreddit.subscribe().catch(console.error)
         window.app.flairs = (await r.oauthRequest({ uri: `r/${config.subreddit}/api/link_flair_v2` })).map(flair => {
-            flair.name = slug(flair.text) + '-' + stringHash(flair.text).toString(36)
+            flair.name = slug(flair.text) + '-' + stringHash(flair.text).toString(16)
             return flair
         })
         return
