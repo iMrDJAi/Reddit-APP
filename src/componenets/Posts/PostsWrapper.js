@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import InfiniteScroll from 'react-infinite-scroller'
 import { PostCardPreview } from './PostCardPreview'
+import { CircularProgress } from '../MaterialComponents/CircularProgress'
 import System from '../../classes/System'
 
 export class PostsWrapper extends Component {
@@ -29,7 +30,7 @@ export class PostsWrapper extends Component {
                 className="mdc-layout-grid__inner"
                 loadMore={this.pushPosts.bind(this)}
                 hasMore={this.state.hasMore}
-                loader={<div key={0}>Loading ...</div>}
+                loader={<CircularProgress key={0} />}
             >
                 {posts}
             </InfiniteScroll>

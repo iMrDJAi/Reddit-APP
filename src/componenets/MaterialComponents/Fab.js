@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from "react-router-dom"
 import Icon from '@mdi/react'
 import { mdiPlus } from '@mdi/js'
 import { MDCRipple } from '@material/ripple'
@@ -8,9 +9,9 @@ export class Fab extends Component {
         new MDCRipple(this.element);
     }
     render = () => (
-        <button ref={elem => this.element = elem} className="mdc-fab" aria-label="Favorite">
+        <Link to={`/submit`} ref={elem => this.element = elem} className="mdc-fab">
             <div className="mdc-fab__ripple"></div>
             <span className="mdc-fab__icon"><Icon path={mdiPlus} size="24px" /></span>
-        </button>
+        </Link>
     )
 }

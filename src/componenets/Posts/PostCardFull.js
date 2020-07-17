@@ -29,7 +29,7 @@ export class PostCardFull extends Component {
         var options = new MDCRipple(this.options)
         options.unbounded = true
         if (!window.app.cache.users[this.state.postData.author.name]) window.app.cache.users[this.state.postData.author.name] = await this.state.postData.author.fetch()
-        this.setState(async oldState => {     
+        if (!window.app.cache.users[this.state.postData.author.name].is_suspended) this.setState(async oldState => {     
             oldState.authorData = window.app.cache.users[this.state.postData.author.name]
             return oldState
         })

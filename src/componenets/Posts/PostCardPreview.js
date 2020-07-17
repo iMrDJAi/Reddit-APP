@@ -29,7 +29,7 @@ export class PostCardPreview extends Component {
         new MDCRipple(this.mainElm)
         window.app.cache.posts[this.state.postData.id] = this.state.postData
         if (!window.app.cache.users[this.state.postData.author.name]) window.app.cache.users[this.state.postData.author.name] = await this.state.postData.author.fetch()
-        this.setState(async oldState => {     
+        if (!window.app.cache.users[this.state.postData.author.name].is_suspended) this.setState(async oldState => {     
             oldState.authorData = window.app.cache.users[this.state.postData.author.name]
             return oldState
         })
@@ -137,7 +137,7 @@ export class PostCardPreview extends Component {
             postData: this.state.postData,
             element: element
         }*/
-        this.props.history.push('/comments/' + this.state.postData.id)
+        this.props.history.push(`/comments/${this.state.postData.id}`)
     }
     render = () => (
         <>

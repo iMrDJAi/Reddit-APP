@@ -16,7 +16,7 @@ export class TopAppBarHome extends Component {
         <header ref={elem => this.element = elem} className="mdc-top-app-bar">
             <div className="mdc-top-app-bar__row">
                 <section className="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-                    <button className="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button" aria-label="Open navigation menu"><Icon path={mdiMenu} /></button>
+                    <button className="mdc-top-app-bar__navigation-icon mdc-icon-button"><Icon path={mdiMenu} /></button>
                     <span className="mdc-top-app-bar__title">Home</span>
                 </section>
                 <section className="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">

@@ -7,6 +7,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import System from './classes/System'
 import { App } from './componenets/App'
+import './main'
 
 System.startup()
 ReactDOM.render(<App />, document.querySelector('.App'))

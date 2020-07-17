@@ -1,4 +1,10 @@
-@use "@material/theme";
+@use '@material/theme' with (
+  $primary: rgb(16, 29, 85),
+  $secondary: rgb(41, 227, 238),
+  $surface: rgb(255, 255, 255),
+  $background: rgb(229, 229, 229)
+);
+//@use '@material/theme';
 @use "@material/typography" with (
     $styles-headline1: (font-size: 38px),
     $styles-headline2: (font-size: 28px),
@@ -22,14 +28,20 @@
 @use "@material/card";
 @use "@material/linear-progress";
 @use "@material/linear-progress/mdc-linear-progress";
+@use '@material/circular-progress';
+@use "@material/circular-progress/mdc-circular-progress";
 @use "@material/animation";
+@use "@material/floating-label/mdc-floating-label";
+@use "@material/line-ripple/mdc-line-ripple";
+@use "@material/notched-outline/mdc-notched-outline";
+@use "@material/textfield";
 @include card.core-styles;
 @include button.core-styles;
 @include icon-button.core-styles;
+@include textfield.core-styles;
 @import "@material/typography/mdc-typography";
 @import "@material/elevation/mdc-elevation";
 @import "@material/layout-grid/mdc-layout-grid";
-
 //Link other files
 @import "./post.scss";
 @import "./markdown.scss";
@@ -185,9 +197,10 @@ $barsHeight: 55px;
         .CommunityBanner {
             width: 100%;
             display: block;
+            min-height: #{$barsHeight};
         }
         div {
-            height: calc(100% - #{$barsHeight});
+            height: calc(100% + #{$barsHeight});
         }
     }
     .ProfileBar {
@@ -222,11 +235,30 @@ $barsHeight: 55px;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////DRAWER LISTS/////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
+
+:not(.mdc-list-item--disabled).mdc-list-item--activated .mdc-list-item__ripple::before, :not(.mdc-list-item--disabled).mdc-list-item--activated .mdc-list-item__ripple::after {
+    @include theme.prop(background-color, secondary);
+}
+
+.mdc-drawer .mdc-list-item {
+    color: var(--mdc-theme-on-surface);
+    opacity: 0.87;
+}
+
+.mdc-drawer .mdc-list-item--activated {
+    @include theme.prop(color, secondary);
+    opacity: 1;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////TOP APP BAR//////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////
 
 .mdc-top-app-bar__title {
     font-size: 20px !important;
+    @include theme.prop(color, on-primary);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -266,6 +298,21 @@ $barsHeight: 55px;
     right: 1rem;
 }
 
+.mdc-circular-progress {
+    @include circular-progress.color(secondary);
+    margin: auto;
+    display: block;
+}
+
+
+.InputsContainer {
+    width: 100%;
+    max-width: 700px;
+    margin: auto;
+    .mdc-text-field {
+        width: 100%;
+    }
+}
 
 /*.mdc-elevation--z0 {
     background-image: linear-gradient(to top, #121212eb, #121212eb);

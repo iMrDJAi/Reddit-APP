@@ -8,6 +8,7 @@ import { Fab } from '../MaterialComponents/Fab'
 
 import { Submission } from './Submission'
 import { PostsWrapper } from '../Posts/PostsWrapper'
+import { SubmitPage } from './SubmitPage'
 import { Div } from '../Posts/Div'
 
 
@@ -71,6 +72,9 @@ export class HomePage extends Component {
             <style>{this.state.style}</style>
             <Route exact path={["/comments/:id"]} component={props => (
                 <Submission {...props} />
+            )}/>
+            <Route exact path={["/submit"]} component={props => (
+                <SubmitPage {...props} />
             )}/>
         </>
     }

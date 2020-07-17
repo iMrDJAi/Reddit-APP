@@ -5,7 +5,7 @@
         "read", "report", "save", "structuredstyles", "submit", "subscribe", "vote", "wikiedit", "wikiread"],
     "redirectUri": "http://localhost/login",
     "defaultLanguage": "EN",
-    "subreddit": "dankmemes",
+    "subreddit": "ps4homebrew",
     "subreddit2": "Dz_Gamers_Community",
     "pingURL": "https://www.googleapis.com",
     "name": "Dz Gamers Community",

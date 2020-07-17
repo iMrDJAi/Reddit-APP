@@ -9,21 +9,24 @@ export class Drawer extends Component {
         super()
         this.items = window.app.flairs.map(flair => {
             return (
-                <Link to={`/home/${window.app.submissions.sorts[0]}/${flair.name}`} className={"mdc-list-item mdc-ripple-surface--accent"} tabIndex={-1} key={Math.random()}>
+                <Link to={`/home/${window.app.submissions.sorts[0]}/${flair.name}`} className="mdc-list-item" tabIndex={-1} key={Math.random()}>
+                    <span className="mdc-list-item__ripple mdc-ripple-surface--accent"></span>
                     <span className="mdc-list-item__text">{flair.text}</span>
                 </Link>
             )
         })
     }
     async componentDidMount() {
-        var drawer = new MDCDrawer(this.element);
-        drawer.list.destroy();
-        this.props.events.on("DrawerToggle", () => drawer.open = !drawer.open);
-        for (var ele of this.element.querySelectorAll('.mdc-list')) new MDCList(ele);
-        for (var ele of this.element.querySelectorAll('.mdc-list-item')) new MDCRipple(ele);
+        var drawer = new MDCDrawer(this.element)
+        drawer.list.destroy()
+        this.props.events.on("DrawerToggle", () => drawer.open = !drawer.open)
+        for (var ele of this.element.querySelectorAll('.mdc-list')) {
+            var list = new MDCList(ele)
+            list.listElements.map(listItemEl => new MDCRipple(listItemEl))
+        }
     }
     handleScroll() {
-        if (this.scrollable.scrollTop >= this.banner.clientHeight - this.header.offsetHeight) {
+        if (this.scrollable.scrollTop >= this.banner.clientHeight - this.header.offsetHeight + 1) {
             this.header.classList.add('CommunityBar2'); 
         } else {
             this.header.classList.remove('CommunityBar2');
@@ -39,20 +42,23 @@ export class Drawer extends Component {
                 <img className="CommunityBanner" src={window.app.subreddit.mobile_banner_image.split('?')[0] || window.app.subreddit.banner_background_image.split('?')[0]} alt="banner" ref={elem => this.banner = elem}></img>
                 <div>
                     <nav className="mdc-list">
-                            <h3 className="mdc-list-group__subheader">FLAIRS</h3>
-                                <Link to={`/home/${window.app.submissions.sorts[0]}`} className="mdc-list-item mdc-list-item--activated mdc-ripple-surface--accent" tabIndex={0}>
-                                    <span className="mdc-list-item__text">ALL</span>
-                                </Link>
-                                {this.items}
+                        <h3 className="mdc-list-group__subheader">FLAIRS</h3>
+                        <Link to={`/home/${window.app.submissions.sorts[0]}`} className="mdc-list-item mdc-list-item--activated" tabIndex={0}>
+                            <span className="mdc-list-item__ripple mdc-ripple-surface--accent"></span>
+                            <span className="mdc-list-item__text">ALL</span>
+                        </Link>
+                        {this.items}
                     </nav>
                     <nav className="mdc-list">
-                            <h3 className="mdc-list-group__subheader">LINKS</h3>
-                            <li className="mdc-list-item" tabIndex="0">
-                                <span className="mdc-list-item__text" role="option" aria-selected="false">DISCORD</span>
-                            </li>
-                            <li className="mdc-list-item" tabIndex="1">
-                                <span className="mdc-list-item__text" role="option" aria-selected="false">FACEBOOK</span>
-                            </li>
+                        <h3 className="mdc-list-group__subheader">LINKS</h3>
+                        <li className="mdc-list-item" tabIndex="0">
+                            <span class="mdc-list-item__ripple"></span>
+                            <span className="mdc-list-item__text" role="option" aria-selected="false">DISCORD</span>
+                        </li>
+                        <li className="mdc-list-item" tabIndex="1">
+                            <span class="mdc-list-item__ripple"></span>
+                            <span className="mdc-list-item__text" role="option" aria-selected="false">FACEBOOK</span>
+                        </li>
                     </nav>
                 </div>
             </div>
