@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { TopAppBarSubmit } from '../MaterialComponents/TopAppBarSubmit'
-import {MDCTextField} from '@material/textfield';
+import {MDCTextField} from '@material/textfield'
+import {MDCTextFieldCharacterCounter} from '@material/textfield/character-counter'
+import MDEUltimate from 'mde-ultimate'
 export class SubmitPage extends Component {
     constructor(props) {
         super(props)
@@ -9,7 +11,10 @@ export class SubmitPage extends Component {
         this.update = this.update.bind(this)
     }
     async componentDidMount() {
-        new MDCTextField(this.textField);
+        new MDCTextField(this.textField)
+        new MDEUltimate(this.ta)
+        const characterCounter = new MDCTextFieldCharacterCounter(this.counter)
+        console.log(characterCounter)
     }
     render = () => (
         <>
@@ -18,7 +23,7 @@ export class SubmitPage extends Component {
                 <div className="mdc-layout-grid__inner">
                     <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12 InputsContainer">
                         <label ref={ele => this.textField = ele} class="mdc-text-field mdc-text-field--outlined"> 
-                            <input type="text" class="mdc-text-field__input" maxlength="100" />
+                            <input type="text" class="mdc-text-field__input" maxLength="300" />
                             <span class="mdc-notched-outline">
                                 <span class="mdc-notched-outline__leading"></span>
                                 <span class="mdc-notched-outline__notch">
@@ -29,6 +34,10 @@ export class SubmitPage extends Component {
                         </label>
                         <div class="mdc-text-field-helper-line">
                             <div class="mdc-text-field-character-counter"></div>
+                        </div>
+                        <textarea ref={ele => this.ta = ele} maxLength="3000"></textarea>
+                        <div ref={ele => this.counter = ele} class="mdc-text-field-helper-line">
+                            <div class="mdc-text-field-character-counter">0 / 3000</div>
                         </div>
                     </div>
                 </div>

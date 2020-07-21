@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Icon from '@mdi/react'
-import { mdiThumbUp, mdiThumbDown, mdiThumbUpOutline, mdiThumbDownOutline, mdiDotsVertical, mdiBookmark, mdiBookmarkOutline } from '@mdi/js'
+import { mdiThumbUp, mdiThumbDown, mdiThumbUpOutline, mdiThumbDownOutline, mdiDotsVertical, mdiBookmark, mdiBookmarkOutline } from '@mdi/js' //
 import { MDCRipple } from '@material/ripple'
 import { MDCIconButtonToggle } from '@material/icon-button'
 import System from '../../classes/System'
@@ -124,6 +124,8 @@ export class PostCardPreview extends Component {
         } else {
             if (postObj.post_hint === "image") {
                 var url = postObj.preview.images[0].source.url
+            } else if (postObj.post_hint === "hosted:video") {
+                var url = `https://www.reddit.com/mediaembed/${postObj.id}`
             } else {
                 var url = postObj.url
             }

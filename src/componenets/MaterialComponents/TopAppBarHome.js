@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { MDCTopAppBar } from '@material/top-app-bar';
 import Icon from '@mdi/react'
-import { mdiMenu, mdiBell, mdiDotsVertical, mdiMagnify } from '@mdi/js'
+import { mdiMenu, mdiBell, mdiDotsVertical } from '@mdi/js' //
 import { TabBar } from './TabBar'
 
 export class TopAppBarHome extends Component {

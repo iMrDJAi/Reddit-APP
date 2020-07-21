@@ -1,7 +1,7 @@
-var snoowrap = require('snoowrap')
-var config = require('../config.json')
-var slug = require('slug')
-var stringHash = require("string-hash")
+import snoowrap from 'snoowrap'
+import config from '../config.json'
+import slug from 'slug'
+import stringHash from 'string-hash'
 
 export default class System {
     static async startup() {

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from "react-router-dom"
 import { MDCTopAppBar } from '@material/top-app-bar';
 import Icon from '@mdi/react'
-import { mdiArrowLeft, mdiReload } from '@mdi/js'
+import { mdiArrowLeft } from '@mdi/js' //
 
 export class TopAppBarSubmit extends Component {
     componentDidMount() {

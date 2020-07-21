@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { MDCRipple } from '@material/ripple';
 import Icon from '@mdi/react'
-import { mdiReddit } from '@mdi/js'
+import { mdiReddit } from '@mdi/js' //
 import System from '../../classes/System'
 
 export class LoginButton extends Component {

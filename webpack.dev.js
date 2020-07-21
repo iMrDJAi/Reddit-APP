@@ -1,9 +1,10 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const autoprefixer = require('autoprefixer');
-const path = require('path');
 module.exports = {
     mode: 'development',
-    entry: './src/index.js',
+    entry: {
+        index: './src/index.js'
+    },
     output: {
         filename: '[name].[hash].js',
         publicPath: '/',
@@ -27,11 +28,10 @@ module.exports = {
                 }
             },
             {
-                test: /\.scss$/,
+                test: /\.(scss|css)$/,
                 use: [
-                    "style-loader", //3. Inject styles into DOM
-                    "css-loader", //2. Turns css into commonjs
-                    //"sass-loader" //1. Turns sass into css
+                    "style-loader", //2. Inject styles into DOM
+                    "css-loader", //1. Turns css into commonjs
                     { 
                         loader: 'postcss-loader',
                         options: {

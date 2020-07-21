@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import Icon from '@mdi/react'
-import { mdiThumbUp, mdiThumbDown, mdiThumbUpOutline, mdiThumbDownOutline, mdiDotsVertical, mdiBookmark, mdiBookmarkOutline } from '@mdi/js'
+import { mdiThumbUp, mdiThumbDown, mdiThumbUpOutline, mdiThumbDownOutline, mdiDotsVertical, mdiBookmark, mdiBookmarkOutline } from '@mdi/js' //
 import { MDCIconButtonToggle } from '@material/icon-button'
 import { MDCRipple } from '@material/ripple'
 import System from '../../classes/System'
-var renderMarkdown = require('imrdjai-mdr');
+import renderMarkdown from 'imrdjai-mdr'
 
 export class PostCardFull extends Component {
     constructor(props) {

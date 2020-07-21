@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Icon from '@mdi/react'
-import { mdiDecagram, mdiFire, mdiTrendingUp } from '@mdi/js'
+import { mdiDecagram, mdiFire, mdiTrendingUp } from '@mdi/js' //
 import { MDCTabBar } from '@material/tab-bar'
 
 export class TabBar extends Component {
