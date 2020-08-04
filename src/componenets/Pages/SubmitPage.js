@@ -17,8 +17,8 @@ export class SubmitPage extends Component {
         console.log(characterCounter)
     }
     render = () => (
-        <>
-            <TopAppBarSubmit />
+        <div>
+            <TopAppBarSubmit {...this.props} />
             <div className="mdc-layout-grid ContentContainer">
                 <div className="mdc-layout-grid__inner">
                     <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12 InputsContainer">
@@ -35,7 +35,7 @@ export class SubmitPage extends Component {
                         <div class="mdc-text-field-helper-line">
                             <div class="mdc-text-field-character-counter"></div>
                         </div>
-                        <textarea ref={ele => this.ta = ele} maxLength="3000"></textarea>
+                        <textarea ref={ele => this.ta = ele} placeholder="Text" maxLength="3000"></textarea>
                         <div ref={ele => this.counter = ele} class="mdc-text-field-helper-line">
                             <div class="mdc-text-field-character-counter">0 / 3000</div>
                         </div>
@@ -47,7 +47,7 @@ export class SubmitPage extends Component {
                     display: none;
                 }
             `}</style>           
-        </>
+        </div>
     )
     update = (data, key) => this.setState(oldState => {
         oldState[key] = data;

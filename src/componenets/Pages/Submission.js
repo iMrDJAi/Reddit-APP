@@ -25,7 +25,7 @@ export class Submission extends Component {
     }
     render = () => (
         <>
-            <TopAppBarSubmission />
+            <TopAppBarSubmission {...this.props} />
             <div className="mdc-layout-grid ContentContainer">
                 <div className="mdc-layout-grid__inner">
                     {this.state.PostCardFull}

@@ -14,7 +14,22 @@ export class App extends Component {
                     <LoginPage {...props} events={this.events} /> :
                     <Redirect to="/home" />
                 )}/>
-                <Route exact path={["/home/:sort?/:flair?", "/comments/:id", "/submit"]} component={props => (
+                <Route exact path={["/home"]} component={props => (
+                    window.app.r ?
+                    <>
+                        <br/>
+                        <br/>
+                        <h1>NEWS??</h1>
+                        <Link to={`/home/${window.app.submissions.sorts[0]}`}>
+                            SKIP TO FEED
+                        </Link>
+                    </> :
+                    <Redirect to={{
+                        pathname: "/login",
+                        state: props.location.pathname + props.location.search
+                    }} />
+                )}/>
+                <Route exact path={["/home/:sort?/:flair?/:name?", "/comments/:id/:title?", "/submit"]} component={props => (
                     window.app.r ?
                     <HomePage {...props} events={this.events} /> :
                     <Redirect to={{

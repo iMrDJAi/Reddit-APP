@@ -23,7 +23,7 @@ module.exports = {
                 test: /\.(png|jpe?g|gif)$/,
                 loader: 'file-loader',
                 options: {
-                    name: '[name].[hash].[ext]',
+                    name: '[name].[ext]',
                     outputPath: 'assets'
                 }
             },

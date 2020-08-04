@@ -1,5 +1,6 @@
 //ASSETS
 import './assets/cyberpunk-2077.jpg'
+import './assets/logo.png'
 //STYLE
 import './style/index.scss'
 import 'mde-ultimate/dist/bundle.css'

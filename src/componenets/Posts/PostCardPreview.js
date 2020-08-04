@@ -133,12 +133,6 @@ export class PostCardPreview extends Component {
         }
     }
     handleClick() {
-        /*const element = this.mainElm.cloneNode(true)
-        element.className = "Main Markdown"
-        window.app.cache[this.state.postData.id] = {
-            postData: this.state.postData,
-            element: element
-        }*/
         this.props.history.push(`/comments/${this.state.postData.id}`)
     }
     render = () => (

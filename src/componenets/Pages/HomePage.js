@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Route, matchPath, Redirect } from "react-router-dom"
 
 import { TopAppBarHome } from '../MaterialComponents/TopAppBarHome'
-import { TabBar } from '../MaterialComponents/TabBar'
 import { Drawer } from '../MaterialComponents/Drawer'
 import { Fab } from '../MaterialComponents/Fab'
 
@@ -27,29 +26,31 @@ export class HomePage extends Component {
             this.handleHistoryUpdates(location.pathname)
         })
     }
-    async handleHistoryUpdates(pathname) {
+    handleHistoryUpdates(pathname) {
         const match = matchPath(pathname, {
-            path: "/home/:sort?/:flair?",
+            path: "/home/:sort?/:flair?/:name?",
             exact: true
         })
         if (match) {
             console.log(pathname, match, match.params.sort, match.params.flair) 
-            if (!window.app.submissions.sorts.find(sort => sort === match.params.sort) || (match.params.flair && !window.app.flairs.find(flair => flair.name === match.params.flair))) {
-                await new Promise(res => setTimeout(() => res(), 0))
-                this.props.history.replace('/home/new')
+            if ((match.params.sort && !window.app.submissions.sorts.some(sort => sort === match.params.sort)) || (match.params.flair && !window.app.flairs.some(flair => flair.hash === match.params.flair))) {
+                this.props.history.push(`/home/${window.app.submissions.sorts[0]}`)
             } else {
                 if (match.params.flair) {
-                    var flair = window.app.flairs.find(flair => flair.name === match.params.flair).text
+                    const flair = window.app.flairs.find(flair => flair.hash === match.params.flair)
+                    window.history.replaceState('', '', `/home/${match.params.sort}/${match.params.flair}/${flair.name}`)
+                    var flairTxt = flair.text
                 } else {
                     match.params.flair = ''
-                    var flair = ''
+                    var flairTxt = ''
                 }
-                if (!document.getElementById(`${match.params.sort}_${match.params.flair}`)) {
-                    this.push({sort: match.params.sort, flair: flair, id: `${match.params.sort}_${match.params.flair}`}, 'postsWrappers')
+                if (!document.getElementById(`${match.params.sort}-${match.params.flair}`)) {
+                    this.push({sort: match.params.sort, flair: flairTxt, id: `${match.params.sort}-${match.params.flair}`}, 'postsWrappers')
                 }
                 this.update(`
-                    #${match.params.sort}_${match.params.flair} {
+                    #${match.params.sort}-${match.params.flair} {
                         display: block !important;
+                        height: 110vh;
                     }
                 `, 'style')
             }
@@ -58,17 +59,16 @@ export class HomePage extends Component {
     render = () => {
         var wrappers = this.state.postsWrappers.map(config => {
             return <PostsWrapper {...this.props} config={config} key={`${config.sort}_${config.flair}`} />
-            //return <Div config={config} key={config.id} />
         })
         return <> 
             <div className='Home'>
-                <TopAppBarHome events={this.props.events} />
-                <Drawer events={this.props.events} />
+                <TopAppBarHome {...this.props} />
+                <Drawer {...this.props} />
                 <div className="mdc-drawer-scrim" />
                 {wrappers}
                 <Fab />
+                <style>{this.state.style}</style>
             </div>
-            <style>{this.state.style}</style>
             <Route exact path={["/comments/:id"]} component={props => (
                 <Submission {...props} />
             )}/>

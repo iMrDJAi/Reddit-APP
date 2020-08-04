@@ -10,7 +10,7 @@ export class TopAppBarHome extends Component {
     }
     componentDidMount() {
         this.MDCTopAppBar = new MDCTopAppBar(this.element)
-        this.MDCTopAppBar.listen('MDCTopAppBar:nav', () => this.props.events.emit("DrawerToggle"));
+        this.MDCTopAppBar.listen('MDCTopAppBar:nav', () => this.props.events.emit("DrawerToggle"))
     }
     render = () => (
         <header ref={elem => this.element = elem} className="mdc-top-app-bar">
@@ -25,7 +25,7 @@ export class TopAppBarHome extends Component {
                     <button className="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Options"><Icon path={mdiDotsVertical} /></button>
                 </section>
             </div>
-            <TabBar/>
+            <TabBar {...this.props} />
         </header>
     )
 }

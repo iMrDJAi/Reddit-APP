@@ -7,14 +7,16 @@ export default class System {
     static async startup() {
         if (!window.localStorage.language) window.localStorage.language = config.defaultLanguage
         window.submissions = {}
-        /*window.app = {
+        window.app = {
             r: {},
             user: {
-                icon_img: 'assets/cyberpunk-2077.807ced6bdeab5763d15c780643808bbc.jpg'
+                icon_img: '/assets/logo.png',
+                name: 'iMrDJAi'
             },
             subreddit: {
-                community_icon: 'subreddit',
-                mobile_banner_image: 'assets/cyberpunk-2077.807ced6bdeab5763d15c780643808bbc.jpg'
+                community_icon: '/assets/logo.png',
+                mobile_banner_image: '/assets/cyberpunk-2077.jpg',
+                title: 'Dz Gamers Community'
             },
             flairs: [
                 {
@@ -44,8 +46,8 @@ export default class System {
                 sorts: ['new', 'hot', 'top'],
                 flairs: []
             }
-        }*/
-        window.app = {
+        }
+        /*window.app = {
             r: null,
             user: null,
             subreddit: null,
@@ -58,9 +60,10 @@ export default class System {
                 sorts: ['new', 'hot', 'top'],
                 flairs: []
             }
-        }
+        }*/
         window.app.flairs = window.app.flairs.map(flair => {
-            flair.name = slug(flair.text) + '-' + stringHash(flair.text).toString(16)
+            flair.name = slug(flair.text)
+            flair.hash = stringHash(flair.text).toString(36)
             return flair
         })
     }
