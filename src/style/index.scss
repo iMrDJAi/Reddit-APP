@@ -156,6 +156,21 @@ body * {
 /////////////////////////////////////////DRAWER////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////
 
+mwc-drawer {
+    mwc-list-item {
+        margin: 8px;
+        border-radius: 4px;
+    }
+    
+    mwc-list-item:first-of-type {
+        margin-top: 4px;
+    }
+    
+    mwc-list-item:last-of-type {
+        margin-bottom: 4px;
+    }    
+}
+
 $barsHeight: 55px;
 .Drawer {
     border: none;
@@ -200,7 +215,7 @@ $barsHeight: 55px;
             min-height: #{$barsHeight};
         }
         div {
-            height: calc(100% + #{$barsHeight});
+            height: calc(100% - #{$barsHeight});
         }
     }
     .ProfileBar {

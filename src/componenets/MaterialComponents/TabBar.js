@@ -27,7 +27,6 @@ export class TabBar extends Component {
     }
     render = () => (
         <div ref={elm => this.element = elm} className="mdc-tab-bar">
-
             <div className="mdc-tab-scroller">
                 <div className="mdc-tab-scroller__scroll-area">
                     <div className="mdc-tab-scroller__scroll-content">

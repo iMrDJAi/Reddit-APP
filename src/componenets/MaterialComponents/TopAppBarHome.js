@@ -1,13 +1,10 @@
 import React, { Component } from 'react'
-import { MDCTopAppBar } from '@material/top-app-bar';
+import { MDCTopAppBar } from '@material/top-app-bar'
 import Icon from '@mdi/react'
-import { mdiMenu, mdiBell, mdiDotsVertical } from '@mdi/js' //
+import { mdiMenu, mdiBell, mdiDotsVertical } from '@mdi/js'
 import { TabBar } from './TabBar'
 
 export class TopAppBarHome extends Component {
-    constructor() {
-        super()
-    }
     componentDidMount() {
         this.MDCTopAppBar = new MDCTopAppBar(this.element)
         this.MDCTopAppBar.listen('MDCTopAppBar:nav', () => this.props.events.emit("DrawerToggle"))
@@ -29,3 +26,18 @@ export class TopAppBarHome extends Component {
         </header>
     )
 }
+
+
+/* Waiting for an update
+    <mwc-top-app-bar>
+        <mwc-icon-button slot="navigationIcon" onClick={this.handleClick.bind(this)}><Icon path={mdiMenu} /></mwc-icon-button>
+        <div slot="title">Title</div>
+        <mwc-icon-button slot="actionItems"><Icon path={mdiBell} /></mwc-icon-button>
+        <mwc-icon-button slot="actionItems"><Icon path={mdiDotsVertical} /></mwc-icon-button>
+        <mwc-tab-bar>
+            <mwc-tab label="New" hasImageIcon></mwc-tab>
+            <mwc-tab label="Hot" hasImageIcon></mwc-tab>
+            <mwc-tab label="Top" hasImageIcon></mwc-tab>
+        </mwc-tab-bar>
+    </mwc-top-app-bar>
+*/

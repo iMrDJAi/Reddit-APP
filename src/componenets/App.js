@@ -4,6 +4,14 @@ import { HomePage } from './Pages/HomePage'
 import { LoginPage } from './Pages/LoginPage' 
 import EventEmitter from 'events'
 
+import '@material/mwc-top-app-bar'
+import '@material/mwc-icon-button'
+import '@material/mwc-tab-bar'
+import '@material/mwc-tab'
+import '@material/mwc-drawer'
+import '@material/mwc-list/mwc-list.js'
+import '@material/mwc-list/mwc-list-item.js'
+
 export class App extends Component {
     events = new EventEmitter()
     render = () => (

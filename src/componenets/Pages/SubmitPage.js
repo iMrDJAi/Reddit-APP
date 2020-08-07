@@ -22,22 +22,22 @@ export class SubmitPage extends Component {
             <div className="mdc-layout-grid ContentContainer">
                 <div className="mdc-layout-grid__inner">
                     <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-12 InputsContainer">
-                        <label ref={ele => this.textField = ele} class="mdc-text-field mdc-text-field--outlined"> 
-                            <input type="text" class="mdc-text-field__input" maxLength="300" />
-                            <span class="mdc-notched-outline">
-                                <span class="mdc-notched-outline__leading"></span>
-                                <span class="mdc-notched-outline__notch">
-                                    <span class="mdc-floating-label" id="my-label-id">Title</span>
+                        <label ref={ele => this.textField = ele} className="mdc-text-field mdc-text-field--outlined"> 
+                            <input type="text" className="mdc-text-field__input" maxLength="300" />
+                            <span className="mdc-notched-outline">
+                                <span className="mdc-notched-outline__leading"></span>
+                                <span className="mdc-notched-outline__notch">
+                                    <span className="mdc-floating-label" id="my-label-id">Title</span>
                                 </span>
-                                <span class="mdc-notched-outline__trailing"></span>
+                                <span className="mdc-notched-outline__trailing"></span>
                             </span>
                         </label>
-                        <div class="mdc-text-field-helper-line">
-                            <div class="mdc-text-field-character-counter"></div>
+                        <div className="mdc-text-field-helper-line">
+                            <div className="mdc-text-field-character-counter"></div>
                         </div>
-                        <textarea ref={ele => this.ta = ele} placeholder="Text" maxLength="3000"></textarea>
-                        <div ref={ele => this.counter = ele} class="mdc-text-field-helper-line">
-                            <div class="mdc-text-field-character-counter">0 / 3000</div>
+                        <textarea ref={ele => this.ta = ele} placeholder="Text" maxLength="300000"></textarea>
+                        <div ref={ele => this.counter = ele} className="mdc-text-field-helper-line">
+                            <div className="mdc-text-field-character-counter">0 / 3000</div>
                         </div>
                     </div>
                 </div>

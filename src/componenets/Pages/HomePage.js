@@ -50,7 +50,6 @@ export class HomePage extends Component {
                 this.update(`
                     #${match.params.sort}-${match.params.flair} {
                         display: block !important;
-                        height: 110vh;
                     }
                 `, 'style')
             }

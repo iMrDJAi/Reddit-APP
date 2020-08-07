@@ -11,6 +11,12 @@
   "author": "",
   "license": "PRIVATE",
   "dependencies": {
+    "@material/mwc-drawer": "^0.18.0",
+    "@material/mwc-icon-button": "^0.18.0",
+    "@material/mwc-list": "^0.18.0",
+    "@material/mwc-tab": "^0.18.0",
+    "@material/mwc-tab-bar": "^0.18.0",
+    "@material/mwc-top-app-bar": "^0.18.0",
     "@mdi/js": "^5.3.45",
     "@mdi/react": "^1.4.0",
     "imrdjai-mdr": "0.0.3",

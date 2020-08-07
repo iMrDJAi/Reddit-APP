@@ -7,7 +7,7 @@ export default class System {
     static async startup() {
         if (!window.localStorage.language) window.localStorage.language = config.defaultLanguage
         window.submissions = {}
-        window.app = {
+        /*window.app = {
             r: {},
             user: {
                 icon_img: '/assets/logo.png',
@@ -36,6 +36,18 @@ export default class System {
                 },
                 {
                     text: 'Meta - ميتا'
+                },
+                {
+                    text: 'Games - ألعاب'
+                },
+                {
+                    text: 'Community - المجتمع'
+                },
+                {
+                    text: 'Random - عشوائيات'
+                },
+                {
+                    text: 'Hardware - عتاد'
                 }
             ],
             cache: {
@@ -47,7 +59,13 @@ export default class System {
                 flairs: []
             }
         }
-        /*window.app = {
+        window.app.flairs = window.app.flairs.map(flair => {
+            flair.name = slug(flair.text)
+            flair.hash = stringHash(flair.text).toString(36)
+            console.log(flair)
+            return flair
+        })*/
+        window.app = {
             r: null,
             user: null,
             subreddit: null,
@@ -60,20 +78,17 @@ export default class System {
                 sorts: ['new', 'hot', 'top'],
                 flairs: []
             }
-        }*/
-        window.app.flairs = window.app.flairs.map(flair => {
-            flair.name = slug(flair.text)
-            flair.hash = stringHash(flair.text).toString(36)
-            return flair
-        })
+        }
     }
     static async init(r) {
         window.app.r = r
         window.app.user = r._ownUserInfo
         window.app.subreddit = await r.getSubreddit(config.subreddit).fetch().catch(console.error)
         if (!window.app.subreddit.user_is_subscriber) await window.app.subreddit.subscribe().catch(console.error)
-        window.app.flairs = (await r.oauthRequest({ uri: `r/${config.subreddit}/api/link_flair_v2` })).map(flair => {
-            flair.name = slug(flair.text) + '-' + stringHash(flair.text).toString(16)
+        window.app.flairs = await r.oauthRequest({ uri: `r/${config.subreddit}/api/link_flair_v2` })
+        window.app.flairs = window.app.flairs.map(flair => {
+            flair.name = slug(flair.text)
+            flair.hash = stringHash(flair.text).toString(36)
             return flair
         })
         return
@@ -156,7 +171,7 @@ export default class System {
         }
     }
     static async fetchPosts(sort, flair) {
-        console.log(sort, flair)
+        console.log('fetchPosts config:', sort, flair)
         if (!flair) {
             const posts = await window.app.r.oauthRequest({uri: `r/${window.app.subreddit.display_name}/${sort}/`, method: 'get'})
             return posts
