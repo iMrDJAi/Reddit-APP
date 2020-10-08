@@ -137,6 +137,7 @@ export class PostCardFull extends Component {
     }
     render = () => {
         var commentsArray = []
+        for (let comment of this.state.comments) commentsArray.push(renderComment(comment))
         function renderComment(object) {
             return <Comment key={object.id} commentData={object} replies={(() => {
                 if (object.replies) {
@@ -148,7 +149,6 @@ export class PostCardFull extends Component {
                 }
             })()}/>
         }
-        for (let comment of this.state.comments) commentsArray.push(renderComment(comment))
         return <div ref={elm => this.element = elm} className="PostCard mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
 
             <header className="mdc-card__actions">
