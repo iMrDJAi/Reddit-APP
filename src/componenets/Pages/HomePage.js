@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Route, matchPath, Redirect } from "react-router-dom"
+import { Route, matchPath } from "react-router-dom"
 
 import { TopAppBarHome } from '../MaterialComponents/TopAppBarHome'
 import { Drawer } from '../MaterialComponents/Drawer'
@@ -11,8 +11,8 @@ import { SubmitPage } from './SubmitPage'
 
 
 export class HomePage extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
             postsWrappers: [],
             style: ''
@@ -32,9 +32,10 @@ export class HomePage extends Component {
             exact: true
         })
         if (match) {
-            console.log(pathname, match, match.params.sort, match.params.flair) 
-            if ((match.params.sort && !window.app.submissions.sorts.some(sort => sort === match.params.sort)) || (match.params.flair && !window.app.flairs.some(flair => flair.hash === match.params.flair))) {
-                this.props.history.push(`/home/${window.app.submissions.sorts[0]}`)
+            if (match.params.sort && !window.app.sorts.some(sort => sort.id === match.params.sort)) {
+                setTimeout(() => this.props.history.push(`/home/${window.app.sorts[0].id}`), 0) //Redirect at the next tick
+            } else if (match.params.flair && !window.app.flairs.some(flair => flair.hash === match.params.flair)) {
+                setTimeout(() => this.props.history.push(`/home/${match.params.sort}`), 0) //Redirect at the next tick
             } else {
                 if (match.params.flair) {
                     const flair = window.app.flairs.find(flair => flair.hash === match.params.flair)

@@ -2,13 +2,18 @@ import snoowrap from 'snoowrap'
 import config from '../config.json'
 import slug from 'slug'
 import stringHash from 'string-hash'
+import { mdiDecagram, mdiFire, mdiTrendingUp } from '@mdi/js'
 
 export default class System {
-    static async startup() {
+    static async start() {
         if (!window.localStorage.language) window.localStorage.language = config.defaultLanguage
         window.submissions = {}
         /*window.app = {
-            r: {},
+            r: {
+                oauthRequest: () =>  [
+                    require("../assets/post.json")
+                ]
+            },
             user: {
                 icon_img: '/assets/logo.png',
                 name: 'iMrDJAi'
@@ -50,33 +55,60 @@ export default class System {
                     text: 'Hardware - عتاد'
                 }
             ],
+            sorts: [
+                {
+                    id: 'new',
+                    text: 'New',
+                    icon: mdiDecagram
+                },
+                {
+                    id: 'hot',
+                    text: 'Hot',
+                    icon: mdiFire
+                },
+                {
+                    id: 'top',
+                    text: 'Top',
+                    icon: mdiTrendingUp
+                }
+            ],
             cache: {
                 posts: {},
                 users: {}
-            },
-            submissions: {
-                sorts: ['new', 'hot', 'top'],
-                flairs: []
             }
         }
         window.app.flairs = window.app.flairs.map(flair => {
             flair.name = slug(flair.text)
             flair.hash = stringHash(flair.text).toString(36)
-            console.log(flair)
             return flair
-        })*/
+        })
+        window.app.flairs = [{ text: "All", name: "", hash: "" }, ...window.app.flairs]*/
+
         window.app = {
             r: null,
             user: null,
             subreddit: null,
             flairs: [],
+            sorts: [
+                {
+                    id: 'new',
+                    text: 'New',
+                    icon: mdiDecagram
+                },
+                {
+                    id: 'hot',
+                    text: 'Hot',
+                    icon: mdiFire
+                },
+                {
+                    id: 'top',
+                    text: 'Top',
+                    icon: mdiTrendingUp
+                }
+            ],
             cache: {
                 posts: {},
                 users: {}
-            },
-            submissions: {
-                sorts: ['new', 'hot', 'top'],
-                flairs: []
             }
         }
     }
@@ -91,6 +123,7 @@ export default class System {
             flair.hash = stringHash(flair.text).toString(36)
             return flair
         })
+        window.app.flairs = [{ text: "ALL", name: "", hash: "" }, ...window.app.flairs]
         return
     }
     static async r() {
@@ -153,35 +186,45 @@ export default class System {
             }
         }
     }
-    static async userData(userName) {
-        try {
-            var data = await fetch(`https://www.reddit.com/user/${userName}/about.json?raw_json=1`)
-            if (data.status === 200) {
-                return (await data.json()).data
-            } else if (data.status === 404) {
-                return {
-                    name: 'DELETED',
-                    icon_img: window.app.subreddit.community_icon.split('?')[0]
-                };
-            } else {
-                return await this.userData(userName)
-            }
-        } catch {
-            return await this.userData(userName)
-        }
-    }
     static async fetchPosts(sort, flair) {
-        console.log('fetchPosts config:', sort, flair)
         if (!flair) {
-            const posts = await window.app.r.oauthRequest({uri: `r/${window.app.subreddit.display_name}/${sort}/`, method: 'get'})
-            return posts
+            var posts = await this.request(window.app.r.oauthRequest({uri: `r/${window.app.subreddit.display_name}/${sort}/`, method: 'get'}))
         } else {
-            const posts = await window.app.r.search({
+            var posts = await this.request(window.app.r.search({
                 query: `flair_name:"${flair}"`,
                 subreddit: window.app.subreddit.display_name,
                 sort: sort
-            })
-            return posts
+            }))
+        }
+        for (let post of posts) window.app.cache.posts[post.id] = post
+        return posts
+    }
+    static async fetchMorePosts(obj, amount) {
+        var posts = await this.request(obj.fetchMore({ 'amount': amount }))
+        for (let post of posts) window.app.cache.posts[post.id] = post
+        return posts
+    }
+    static async fetchPostAuthor(author) {
+        try {
+            var user = await author.fetch()
+            window.app.cache.users[user.name] = user
+            return user
+        } catch(e) {
+            //console.error(e)
+            //console.log(author)
+        }
+    }
+    static async request(method) {
+        try {
+            await method
+            return method
+        } catch(e) {
+            console.error('[Error]: Request Error!', e)
+            //e.message
+            //"snoowrap refused to continue because reddit's ratelimit was exceeded. For more information about reddit's ratelimit, please consult reddit's API rules at https://github.com/reddit/reddit/wiki/API."
+            //"404"
+            await new Promise(res => setTimeout(() => res(), 10000))
+            return await this.request(method)
         }
     }
     static get clientOnline() {
@@ -216,20 +259,6 @@ export default class System {
             month = timeStamp.toDateString().match(/ [a-zA-Z]*/)[0].replace(" ", ""),
             year = timeStamp.getFullYear() == now.getFullYear() ? "" : " " + timeStamp.getFullYear()
             return day + " " + month + year
-        }
-    }
-    static async request(method) {
-        try {
-            await method
-            return method
-        } catch(e) {
-            console.error('[Error]: Request Error!', e)
-            window.err = e
-            //e.message
-            //"snoowrap refused to continue because reddit's ratelimit was exceeded. For more information about reddit's ratelimit, please consult reddit's API rules at https://github.com/reddit/reddit/wiki/API."
-            //"404"
-            await new Promise(res => setTimeout(() => res(), 10000))
-            return await this.request(method)
         }
     }
 }

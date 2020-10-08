@@ -4,7 +4,6 @@
   $surface: rgb(255, 255, 255),
   $background: rgb(229, 229, 229)
 );
-//@use '@material/theme';
 @use "@material/typography" with (
     $styles-headline1: (font-size: 38px),
     $styles-headline2: (font-size: 28px),
@@ -97,6 +96,7 @@ body * {
         top: 104px;
     }
     display: none;
+    height: 200vh;
 }
 
 .ContentContainer {
@@ -155,21 +155,6 @@ body * {
 ///////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////DRAWER////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////
-
-mwc-drawer {
-    mwc-list-item {
-        margin: 8px;
-        border-radius: 4px;
-    }
-    
-    mwc-list-item:first-of-type {
-        margin-top: 4px;
-    }
-    
-    mwc-list-item:last-of-type {
-        margin-bottom: 4px;
-    }    
-}
 
 $barsHeight: 55px;
 .Drawer {

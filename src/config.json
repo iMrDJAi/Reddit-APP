@@ -5,11 +5,12 @@
         "read", "report", "save", "structuredstyles", "submit", "subscribe", "vote", "wikiedit", "wikiread"],
     "redirectUri": "http://localhost/login",
     "defaultLanguage": "EN",
-    "subreddit": "redditmobile",
+    "subreddit": "ps4homebrew",
     "subreddit2": "Dz_Gamers_Community",
     "pingURL": "https://www.googleapis.com",
     "name": "Dz Gamers Community",
     "logo": "",
     "banner1": "https://metro.co.uk/wp-content/uploads/2019/06/cyberpunk-2077-84e5.jpg",
-    "banner": " assets/cyberpunk-2077.jpg"
+    "banner2": " assets/cyberpunk-2077.jpg",
+    "banner": " assets/banner.jpg"
 }

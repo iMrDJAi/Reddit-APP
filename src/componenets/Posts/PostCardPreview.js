@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Icon from '@mdi/react'
-import { mdiThumbUp, mdiThumbDown, mdiThumbUpOutline, mdiThumbDownOutline, mdiDotsVertical, mdiBookmark, mdiBookmarkOutline } from '@mdi/js' //
+import { mdiThumbUp, mdiThumbDown, mdiThumbUpOutline, mdiThumbDownOutline, mdiDotsVertical, mdiBookmark, mdiBookmarkOutline } from '@mdi/js'
 import { MDCRipple } from '@material/ripple'
 import { MDCIconButtonToggle } from '@material/icon-button'
 import System from '../../classes/System'
@@ -27,12 +27,14 @@ export class PostCardPreview extends Component {
         var options = new MDCRipple(this.optionsBtnElm)
         options.unbounded = true
         new MDCRipple(this.mainElm)
-        window.app.cache.posts[this.state.postData.id] = this.state.postData
-        if (!window.app.cache.users[this.state.postData.author.name]) window.app.cache.users[this.state.postData.author.name] = await this.state.postData.author.fetch()
-        if (!window.app.cache.users[this.state.postData.author.name].is_suspended) this.setState(async oldState => {     
-            oldState.authorData = window.app.cache.users[this.state.postData.author.name]
-            return oldState
-        })
+        if (this.state.postData.author.name !== '[deleted]') {
+            if (window.app.cache.users[this.state.postData.author.name]) {
+                var author = window.app.cache.users[this.state.postData.author.name]
+            } else {
+                var author = await System.fetchPostAuthor(this.state.postData.author)
+            }
+            if (!author.is_suspended) this.update(author, 'authorData')
+        }
     }
     handleVotes(likeBtn, dislikeBtn) {
         var tries = 0

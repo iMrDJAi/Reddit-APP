@@ -18,6 +18,7 @@ export class TopAppBarHome extends Component {
                 </section>
                 <section className="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
                     {/*<button className="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Search"><Icon path={mdiMagnify} /></button>*/}
+                    <mwc-icon-button slot="actionItems"><Icon path={mdiBell} /></mwc-icon-button>
                     <button className="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Notifications"><Icon path={mdiBell} /></button>
                     <button className="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Options"><Icon path={mdiDotsVertical} /></button>
                 </section>

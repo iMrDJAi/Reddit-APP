@@ -3,6 +3,7 @@ import Icon from '@mdi/react'
 import { mdiThumbUp, mdiThumbDown, mdiThumbUpOutline, mdiThumbDownOutline, mdiDotsVertical, mdiBookmark, mdiBookmarkOutline } from '@mdi/js' //
 import { MDCIconButtonToggle } from '@material/icon-button'
 import { MDCRipple } from '@material/ripple'
+import { Comment } from './Comment'
 import System from '../../classes/System'
 import renderMarkdown from 'imrdjai-mdr'
 
@@ -15,7 +16,8 @@ export class PostCardFull extends Component {
                 icon_img: window.app.subreddit.community_icon
             },
             mainElement: props.mainElement,
-            likes: props.postData.score
+            likes: props.postData.score,
+            comments: props.postData.comments
         }
         this.update = this.update.bind(this)
     }
@@ -28,11 +30,14 @@ export class PostCardFull extends Component {
         this.handleSave(saveBtn)
         var options = new MDCRipple(this.options)
         options.unbounded = true
-        if (!window.app.cache.users[this.state.postData.author.name]) window.app.cache.users[this.state.postData.author.name] = await this.state.postData.author.fetch()
-        if (!window.app.cache.users[this.state.postData.author.name].is_suspended) this.setState(async oldState => {     
-            oldState.authorData = window.app.cache.users[this.state.postData.author.name]
-            return oldState
-        })
+        if (this.state.postData.author.name !== '[deleted]') {
+            if (window.app.cache.users[this.state.postData.author.name]) {
+                var author = window.app.cache.users[this.state.postData.author.name]
+            } else {
+                var author = await System.fetchPostAuthor(this.state.postData.author)
+            }
+            if (!author.is_suspended) this.update(author, 'authorData')
+        }
     }
     handleVotes(likeBtn, dislikeBtn) {
         var tries = 0
@@ -130,8 +135,21 @@ export class PostCardFull extends Component {
             return `<p align="center"><img src="${url}" style="display: block;" onerror="mrdjaEmbeds(this)" /></p>`
         }
     }
-    render = () => (
-        <div ref={elm => this.element = elm} className="PostCard mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+    render = () => {
+        var commentsArray = []
+        function renderComment(object) {
+            return <Comment key={object.id} commentData={object} replies={(() => {
+                if (object.replies) {
+                    var replies = []
+                    for (let reply of object.replies) {
+                        replies.push(renderComment(reply))
+                    }
+                    return replies
+                }
+            })()}/>
+        }
+        for (let comment of this.state.comments) commentsArray.push(renderComment(comment))
+        return <div ref={elm => this.element = elm} className="PostCard mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
 
             <header className="mdc-card__actions">
                 <div className="mdc-card__action-buttons">
@@ -201,9 +219,11 @@ export class PostCardFull extends Component {
                     </button>
                 </div>
             </footer>
-
+            <ul>
+                {commentsArray}
+            </ul>
         </div>
-    )
+    }
     update = (data, key) => this.setState(oldState => {
         oldState[key] = data
         return oldState
