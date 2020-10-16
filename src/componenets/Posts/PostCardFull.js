@@ -21,34 +21,40 @@ export class PostCardFull extends Component {
         }
         this.update = this.update.bind(this)
     }
+    /*componentDidUpdate() {
+        var postData = this.state.postData
+        postData.score = this.state.likes
+        postData.comments = this.state.comments
+        window.app.cache.posts[postData.id] = postData
+    }*/
     async componentDidMount() {
         if (this.state.mainElement) this.mainElm.replaceWith(this.state.mainElement)
+
         var likeBtn = new MDCIconButtonToggle(this.like)
         var dislikeBtn = new MDCIconButtonToggle(this.dislike)
         this.handleVotes(likeBtn, dislikeBtn)
+
         var saveBtn = new MDCIconButtonToggle(this.save)
         this.handleSave(saveBtn)
+
         var options = new MDCRipple(this.options)
         options.unbounded = true
+
         if (this.state.postData.author.name !== '[deleted]') {
-            if (window.app.cache.users[this.state.postData.author.name]) {
-                var author = window.app.cache.users[this.state.postData.author.name]
-            } else {
-                var author = await System.fetchPostAuthor(this.state.postData.author)
-            }
-            if (!author.is_suspended) this.update(author, 'authorData')
+            var author = await System.fetchPostAuthor(this.state.postData.author)
+            if (author && !author.is_suspended) this.update(author, 'authorData')
         }
     }
     handleVotes(likeBtn, dislikeBtn) {
         var tries = 0
         var current = ''
         var blocked = false
-        if (this.props.postData.likes === true) likeBtn.on = true
-        if (this.props.postData.likes === false) dislikeBtn.on = true
+        if (this.state.postData.likes === true) likeBtn.on = true
+        if (this.state.postData.likes === false) dislikeBtn.on = true
         likeBtn.listen("MDCIconButtonToggle:change", async (e) => {
             if (e.detail.isOn) {
                 if (dislikeBtn.on) {
-                    dislikeBtn.on = false;
+                    dislikeBtn.on = false
                     this.update(this.state.likes + 2, 'likes')
                 } else {
                     this.update(this.state.likes + 1, 'likes')
@@ -60,16 +66,15 @@ export class PostCardFull extends Component {
             }
             if (tries < 3) {
                 tries++
-                await new Promise(res => setTimeout(() => res(), tries * 1750));
-                this.props.postData[current]()
+                await new Promise(res => setTimeout(() => res(), tries * 1750))
+                System.request(this.state.postData[current]())
             } else {
                 if (!blocked) blocked = true, setTimeout(() => {
                     blocked = false
                     tries = 1
-                    this.props.postData[current]()
+                    System.request(this.state.postData[current]())
                 }, 30000)
             }
-            console.log(tries, current, blocked)
         })
         dislikeBtn.listen("MDCIconButtonToggle:change", async (e) => {
             if (e.detail.isOn) {
@@ -87,19 +92,18 @@ export class PostCardFull extends Component {
             if (tries < 3) {
                 tries++
                 await new Promise(res => setTimeout(() => res(), tries * 1750));
-                this.props.postData[current]()
+                System.request(this.state.postData[current]())
             } else {
                 if (!blocked) blocked = true, setTimeout(() => {
                     blocked = false
                     tries = 1
-                    this.props.postData[current]()
+                    System.request(this.state.postData[current]())
                 }, 30000)
             }
-            console.log(tries, current, blocked)
         })
     }
     handleSave(saveBtn) {
-        if (this.props.postData.saved === true) saveBtn.on = true; else saveBtn.on = false
+        if (this.state.postData.saved === true) saveBtn.on = true; else saveBtn.on = false
         var tries = 0
         var current = ''
         var blocked = false
@@ -112,15 +116,14 @@ export class PostCardFull extends Component {
             if (tries < 3) {
                 tries++
                 await new Promise(res => setTimeout(() => res(), tries * 1000))
-                this.props.postData[current]()
+                System.request(this.state.postData[current]())
             } else {
                 if (!blocked) blocked = true, setTimeout(() => {
                     blocked = false
                     tries = 1
-                    this.props.postData[current]()
+                    System.request(this.state.postData[current]())
                 }, 30000)
             }
-            console.log(tries, current, blocked)
         })
     }
     handleMarkdown(postObj) {
@@ -137,7 +140,6 @@ export class PostCardFull extends Component {
     }
     render = () => {
         var commentsArray = []
-        for (let comment of this.state.comments) commentsArray.push(renderComment(comment))
         function renderComment(object) {
             return <Comment key={object.id} commentData={object} replies={(() => {
                 if (object.replies) {
@@ -149,6 +151,7 @@ export class PostCardFull extends Component {
                 }
             })()}/>
         }
+        for (let comment of this.state.comments) commentsArray.push(renderComment(comment))
         return <div ref={elm => this.element = elm} className="PostCard mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
 
             <header className="mdc-card__actions">

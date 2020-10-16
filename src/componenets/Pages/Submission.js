@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { PostCardFull } from '../Posts/PostCardFull'
 import { TopAppBarSubmission } from '../MaterialComponents/TopAppBarSubmission'
+import slug from 'slug'
+import System from '../../classes/System'
 export class Submission extends Component {
     constructor(props) {
         super(props)
@@ -8,19 +10,27 @@ export class Submission extends Component {
             PostCardFull: ''
         }
         this.update = this.update.bind(this)
-    }
+    } ///${slug(this.state.postData.title)}
     async componentDidMount() {
-        if (window.app.cache.posts[this.props.match.params.id]) {
-            const element = document.getElementById(this.props.match.params.id).cloneNode(true)
-            element.className = "Main Markdown"
+        const postData = await System.fetchPost(this.props.match.params.id)
+        window.history.replaceState('', '', `/comments/${postData.id}/${slug(postData.title)}`)
+        document.title = postData.title
+        if (postData && postData.subreddit.display_name === window.app.subreddit.display_name) {
+            var element = document.getElementById(this.props.match.params.id)
+            if (element) {
+                element = element.cloneNode(true)
+                element.className = "Main Markdown"
+                element.removeAttribute('tabindex')
+            } else {
+                element = ''
+            }
             this.update(<PostCardFull 
                 {...this.props} 
-                postData={window.app.cache.posts[this.props.match.params.id]} 
+                postData={postData} 
                 mainElement={element} 
             />, 'PostCardFull')
         } else {
-            const postData = await window.app.r.getSubmission(this.props.match.params.id).fetch()
-            this.update(<PostCardFull {...this.props} postData={postData} mainElement='' />, 'PostCardFull')
+            this.props.history.goBack()
         }
     }
     render = () => (

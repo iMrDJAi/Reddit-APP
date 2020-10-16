@@ -196,8 +196,21 @@ export default class System {
                 sort: sort
             }))
         }
-        for (let post of posts) window.app.cache.posts[post.id] = post
+        for (let post of posts) {
+            post.cached = Date.now()
+            window.app.cache.posts[post.id] = post
+        }
         return posts
+    }
+    static async fetchPost(id) {
+        if (window.app.cache.posts[id] && window.app.cache.posts[id].cached + 300000 > Date.now()) {
+            return window.app.cache.posts[id]
+        } else {
+            var postData = await this.request(window.app.r.getSubmission(id).fetch())
+            if (postData) postData.cached = Date.now()
+            window.app.cache.posts[id] = postData
+            return postData
+        }
     }
     static async fetchMorePosts(obj, amount) {
         var posts = await this.request(obj.fetchMore({ 'amount': amount }))
@@ -205,13 +218,13 @@ export default class System {
         return posts
     }
     static async fetchPostAuthor(author) {
-        try {
-            var user = await author.fetch()
+        if (window.app.cache.users[author.name] && window.app.cache.users[author.name].cached + 300000 > Date.now()) {
+            return window.app.cache.users[author.name]
+        } else {
+            var user = await this.request(author.fetch())
+            if (user) user.cached = Date.now()
             window.app.cache.users[user.name] = user
             return user
-        } catch(e) {
-            //console.error(e)
-            //console.log(author)
         }
     }
     static async request(method) {
@@ -219,12 +232,16 @@ export default class System {
             await method
             return method
         } catch(e) {
-            console.error('[Error]: Request Error!', e)
+            //console.error('[Error]: Request Error!', e) 
             //e.message
             //"snoowrap refused to continue because reddit's ratelimit was exceeded. For more information about reddit's ratelimit, please consult reddit's API rules at https://github.com/reddit/reddit/wiki/API."
             //"404"
-            await new Promise(res => setTimeout(() => res(), 10000))
-            return await this.request(method)
+            if (e.message === "404") {
+                return ''
+            } else { 
+                await new Promise(res => setTimeout(() => res(), 5000))
+                return await this.request(method)
+            }
         }
     }
     static get clientOnline() {
@@ -237,7 +254,7 @@ export default class System {
             } catch {
                 resolve(false)
             }
-        });
+        })
     }
     static get strings() {
         return require(`../strings-${window.localStorage.language}.json`)

@@ -34,16 +34,21 @@ export class HomePage extends Component {
         if (match) {
             if (match.params.sort && !window.app.sorts.some(sort => sort.id === match.params.sort)) {
                 setTimeout(() => this.props.history.push(`/home/${window.app.sorts[0].id}`), 0) //Redirect at the next tick
+                document.title = `${window.app.sorts[0].id} - all`
             } else if (match.params.flair && !window.app.flairs.some(flair => flair.hash === match.params.flair)) {
                 setTimeout(() => this.props.history.push(`/home/${match.params.sort}`), 0) //Redirect at the next tick
+                document.title = `${match.params.sort} - all`
             } else {
                 if (match.params.flair) {
                     const flair = window.app.flairs.find(flair => flair.hash === match.params.flair)
                     window.history.replaceState('', '', `/home/${match.params.sort}/${match.params.flair}/${flair.name}`)
+                    document.title = `${match.params.sort} - ${flair.name}`
                     var flairTxt = flair.text
                 } else {
                     match.params.flair = ''
                     var flairTxt = ''
+                    if (match.params.sort) document.title = `${match.params.sort} - all`
+                    else document.title = 'home'
                 }
                 if (!document.getElementById(`${match.params.sort}-${match.params.flair}`)) {
                     this.push({sort: match.params.sort, flair: flairTxt, id: `${match.params.sort}-${match.params.flair}`}, 'postsWrappers')
@@ -69,7 +74,7 @@ export class HomePage extends Component {
                 <Fab />
                 <style>{this.state.style}</style>
             </div>
-            <Route exact path={["/comments/:id"]} component={props => (
+            <Route exact path={["/comments/:id/:title?"]} component={props => (
                 <Submission {...props} />
             )}/>
             <Route exact path={["/submit"]} component={props => (
